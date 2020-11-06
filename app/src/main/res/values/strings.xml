@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">IntercityBusTicketApp</string>
+    <string name="identification_or_phone_number">Identification or Phone Number</string>
+    <string name="password">Password</string>
+    <string name="login">LOGIN</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="don_t_have_an_account">Don\'t Have an Account ?</string>
+    <string name="backbutton">backButton</string>
+    <string name="bus">bus</string>
+    <string name="sign_up_for_traveller_s_club_privileges">Sign Up For Traveller\'s Club Privileges</string>
+    <string name="todo">TODO</string>
+    <string name="national_id">National ID</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+</resources>
