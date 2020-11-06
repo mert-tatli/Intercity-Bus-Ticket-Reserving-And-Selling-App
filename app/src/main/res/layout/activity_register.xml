@@ -24,6 +24,7 @@
                 android:layout_marginLeft="4dp"
                 android:layout_marginTop="4dp"
                 android:contentDescription="@string/todo"
+                android:onClick="backbutton1"
                 app:srcCompat="@drawable/line2" />
 
             <TextView
