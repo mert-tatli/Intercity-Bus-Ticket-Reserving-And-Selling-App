@@ -4,38 +4,71 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background4"
+    android:background="@drawable/backgroundorange2"
+    android:orientation="horizontal"
     tools:context=".RegisterActivity">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="26dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/imageView4"
-                android:layout_width="40dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
                 android:contentDescription="@string/todo"
                 android:onClick="backbutton1"
-                app:srcCompat="@drawable/line2" />
+                app:srcCompat="?attr/homeAsUpIndicator" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="200dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="100dp"
+                android:layout_marginLeft="100dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="100dp"
+                android:layout_marginRight="100dp"
+                app:srcCompat="@drawable/ic_baseline_person"
+                android:contentDescription="TODO" />
 
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="8dp"
-                android:text="@string/sign_up_for_traveller_s_club_privileges"
-                android:textColor="#FFFFFF"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginRight="32dp"
+                android:text="SIGN UP FOR"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginEnd="32dp"
+
+                android:layout_marginRight="32dp"
+                android:text="TRAVELLER'S Club Privileges"
+                android:textColor="#ab000d"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -49,13 +82,16 @@
                 android:layout_marginEnd="32dp"
                 android:layout_marginRight="32dp"
                 android:background="@drawable/ic_text_round"
+                android:drawableStart="@drawable/ic_baseline_create"
+                android:drawableLeft="@drawable/ic_baseline_create"
+                android:drawablePadding="10dp"
                 android:ems="10"
                 android:hint="@string/national_id"
+                android:importantForAutofill="no"
                 android:inputType="text"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:textColorHint="#8A8787"
-                android:importantForAutofill="no" />
+                android:textColorHint="#8A8787" />
 
             <EditText
                 android:id="@+id/inputName"
@@ -66,14 +102,16 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginRight="32dp"
+                android:drawableLeft="@drawable/ic_baseline_create"
+                android:drawablePadding="10dp"
                 android:background="@drawable/ic_text_round"
                 android:ems="10"
                 android:hint="@string/name"
                 android:inputType="text"
-                android:textColorHint="#8A8787"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                />
+                android:textColorHint="#8A8787"
+                android:drawableStart="@drawable/ic_baseline_create" />
 
             <EditText
                 android:id="@+id/inputSurname"
@@ -84,24 +122,42 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginRight="32dp"
+                android:drawableLeft="@drawable/ic_baseline_create"
+                android:drawablePadding="10dp"
                 android:background="@drawable/ic_text_round"
                 android:ems="10"
                 android:hint="@string/surname"
                 android:inputType="text"
-                android:textColorHint="#8A8787"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                />
+                android:textColorHint="#8A8787"
+                android:drawableStart="@drawable/ic_baseline_create" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginBottom="24dp"
+                android:text="Gender"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="30dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginBottom="24dp">
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginBottom="4dp"
+                android:orientation="horizontal">
 
                 <RadioButton
                     android:id="@+id/radioButton"
@@ -129,11 +185,111 @@
                     android:textStyle="bold" />
             </RadioGroup>
 
-            <Spinner
-                android:id="@+id/spinner"
+            <EditText
+                android:id="@+id/inputPhoneNo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="50dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginRight="32dp"
+                android:drawableLeft="@drawable/ic_baseline_create"
+                android:drawablePadding="10dp"
+                android:background="@drawable/ic_text_round"
+                android:ems="10"
+                android:hint="Phone Number"
+                android:inputType="phone"
+                android:digits="0123456789+"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:drawableStart="@drawable/ic_baseline_create" />
 
+            <EditText
+                android:id="@+id/inputDate"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginRight="32dp"
+                android:drawableLeft="@drawable/ic_baseline_create"
+                android:drawablePadding="10dp"
+                android:background="@drawable/ic_text_round"
+                android:ems="10"
+                android:hint="Birthday"
+                android:inputType="date"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:drawableStart="@drawable/ic_baseline_create" />
+
+            <EditText
+                android:id="@+id/inputEmail"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginRight="32dp"
+                android:drawableLeft="@drawable/ic_baseline_create"
+                android:drawablePadding="10dp"
+                android:background="@drawable/ic_text_round"
+                android:ems="10"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:drawableStart="@drawable/ic_baseline_create" />
+
+            <EditText
+                android:id="@+id/inputPassword"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginRight="32dp"
+                android:drawableLeft="@drawable/ic_baseline_create"
+                android:drawablePadding="10dp"
+                android:background="@drawable/ic_text_round"
+                android:ems="10"
+                android:hint="New Password"
+                android:inputType="textPassword"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:drawableStart="@drawable/ic_baseline_create" />
+
+            <CheckBox
+                android:id="@+id/inputTerms"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginRight="32dp"
+                android:text="I have read and accept the Terms and Conditions"
+                android:textColor="#ab000d"
+                android:textColorLink="#FFFFFF" />
+
+            <Button
+                android:id="@+id/buttonSignUp"
+                android:layout_width="125dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="140dp"
+                android:layout_marginLeft="140dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="140dp"
+                android:layout_marginRight="140dp"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/ic_button_round"
+                android:text="SIGN UP"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
     </ScrollView>
