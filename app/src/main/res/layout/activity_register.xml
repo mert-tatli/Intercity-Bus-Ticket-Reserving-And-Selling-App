@@ -68,7 +68,7 @@
 
                 android:layout_marginRight="32dp"
                 android:text="TRAVELLER'S Club Privileges"
-                android:textColor="#ab000d"
+                android:textColor="@color/colorPrimary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -133,56 +133,49 @@
                 android:textColorHint="#8A8787"
                 android:drawableStart="@drawable/ic_baseline_create" />
 
-            <TextView
-                android:id="@+id/textView8"
+            <RadioGroup
+                android:id="@+id/radioGroupGender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginTop="24dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginRight="32dp"
-                android:layout_marginBottom="24dp"
-                android:text="Gender"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginRight="32dp"
-                android:layout_marginBottom="4dp"
-                android:orientation="horizontal">
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.236">
 
                 <RadioButton
-                    android:id="@+id/radioButton"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/MaleRadioButton"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:button="@drawable/custom_radiobutton"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_segmented_left"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:padding="8dp"
                     android:text="Male"
-                    android:textColor="#FFFFFF"
-                    android:textColorLink="#FF0000"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/black" />
 
                 <RadioButton
-                    android:id="@+id/radioButton2"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/FemaleRadioButton"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:button="@drawable/custom_radiobutton"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_segmented_right"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:padding="8dp"
                     android:text="Female"
-                    android:textColor="#FFFFFF"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:checked="true"
+                    android:textColor="@color/black" />
             </RadioGroup>
 
             <EditText
@@ -214,15 +207,15 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginRight="32dp"
+                android:background="@drawable/ic_text_round"
+                android:drawableStart="@drawable/ic_baseline_create"
                 android:drawableLeft="@drawable/ic_baseline_create"
                 android:drawablePadding="10dp"
-                android:background="@drawable/ic_text_round"
                 android:ems="10"
-                android:hint="Birthday"
+                android:hint="Birthday (mm/dd/yyyy)"
                 android:inputType="date"
                 android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:drawableStart="@drawable/ic_baseline_create" />
+                android:paddingRight="10dp" />
 
             <EditText
                 android:id="@+id/inputEmail"
@@ -272,7 +265,7 @@
                 android:layout_marginEnd="32dp"
                 android:layout_marginRight="32dp"
                 android:text="I have read and accept the Terms and Conditions"
-                android:textColor="#ab000d"
+                android:textColor="@color/colorPrimary"
                 android:textColorLink="#FFFFFF" />
 
             <Button
@@ -288,8 +281,7 @@
                 android:background="@drawable/ic_button_round"
                 android:text="SIGN UP"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textSize="18sp" />
 
         </LinearLayout>
     </ScrollView>
