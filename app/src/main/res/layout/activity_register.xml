@@ -30,7 +30,7 @@
                 android:layout_marginRight="16dp"
                 android:contentDescription="@string/todo"
                 android:onClick="backbutton1"
-                app:srcCompat="?attr/homeAsUpIndicator" />
+                app:srcCompat="@drawable/ic_baseline_arrow_back" />
 
             <ImageView
                 android:id="@+id/imageView2"
@@ -281,7 +281,7 @@
                 android:background="@drawable/ic_button_round"
                 android:text="SIGN UP"
                 android:textColor="#FFFFFF"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
     </ScrollView>

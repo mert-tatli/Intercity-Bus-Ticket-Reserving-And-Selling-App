@@ -22,7 +22,7 @@
         app:layout_constraintHorizontal_bias="0.372"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="?attr/homeAsUpIndicator" />
+        app:srcCompat="@drawable/ic_baseline_arrow_back" />
 
     <ImageView
         android:id="@+id/imageView"

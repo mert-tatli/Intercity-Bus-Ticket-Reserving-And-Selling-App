@@ -7,6 +7,8 @@ import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -34,11 +36,11 @@ public class MainActivity extends AppCompatActivity {
     private static int mYear2;
     private static int mMonth2;
     private static int mDay2;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
 
@@ -82,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             mMonth1 = month;
             mDay1 = day;
             returnDate.setEnabled(true);
-            returnDate.setText("SELECT RETURN DATE");
+            returnDate.setText("RETURN DATE");
 
             departureDate.setText(new StringBuilder()
                     .append(mDay1).append("/")
