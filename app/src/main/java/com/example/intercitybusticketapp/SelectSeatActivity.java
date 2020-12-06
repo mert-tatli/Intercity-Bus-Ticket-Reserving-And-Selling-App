@@ -18,23 +18,24 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
     ViewGroup layout;
 
     String seats =
-             "AU___AA/"
+              "UA___AA/"
             + "AA___AA/"
             + "AA___AA/"
             + "AA___AA/"
             + "AA___AA/"
             + "AA___AA/"
+            + "AA___AU/"
+            + "AA___AA/"
+            + "UA___AA/"
             + "AA___AA/"
             + "AA___AA/"
-            + "_______/"
-            + "AA___AA/"
-            + "AA___AA/"
-            + "AA___AA/"
-            + "AA___AA/"
-            + "_______/"
-            + "_______/";
+            + "AA___AA/";
 
+
+    ArrayList<Integer> seatOriantation =new ArrayList<>();
+    ArrayList<String> seatLocation=new ArrayList<>();
     List<TextView> seatViewList = new ArrayList<>();
+
     int seatSize = 160;
     int seatGaping =10;
 
@@ -42,7 +43,6 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
     int STATUS_BOOKED = 2;
     int STATUS_RESERVED = 3;
     String selectedIds = "";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +50,7 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
         layout = findViewById(R.id.layoutSeat);
 
         seats = "/" + seats;
+
 
         LinearLayout layoutSeat = new LinearLayout(this);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -69,6 +70,8 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
                 layoutSeat.addView(layout);
             } else if (seats.charAt(index) == 'U') {
                 count++;
+                seatOriantation.add(index);
+                seatLocation.add("U");
                 TextView view = new TextView(this);
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(seatSize, seatSize);
                 layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping);
@@ -86,6 +89,8 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
                 view.setOnClickListener(this);
             } else if (seats.charAt(index) == 'A') {
                 count++;
+                seatOriantation.add(index);
+                seatLocation.add("A");
                 TextView view = new TextView(this);
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(seatSize, seatSize);
                 layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping);
@@ -101,24 +106,7 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
                 layout.addView(view);
                 seatViewList.add(view);
                 view.setOnClickListener(this);
-            } else if (seats.charAt(index) == 'R') {
-                count++;
-                TextView view = new TextView(this);
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(seatSize, seatSize);
-                layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping);
-                view.setLayoutParams(layoutParams);
-                view.setPadding(0, 0, 0, 2 * seatGaping);
-                view.setId(count);
-                view.setGravity(Gravity.CENTER);
-                view.setBackgroundResource(R.drawable.ic_seats_reserved);
-                view.setText(count + "");
-                view.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 9);
-                view.setTextColor(Color.WHITE);
-                view.setTag(STATUS_RESERVED);
-                layout.addView(view);
-                seatViewList.add(view);
-                view.setOnClickListener(this);
-            } else if (seats.charAt(index) == '_') {
+            }  else if (seats.charAt(index) == '_') {
                 TextView view = new TextView(this);
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(seatSize, seatSize);
                 layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping);
@@ -135,9 +123,18 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
             if (selectedIds.contains(view.getId() + ",")) {
                 selectedIds = selectedIds.replace(+view.getId() + ",", "");
                 view.setBackgroundResource(R.drawable.ic_seats_book);
+
             } else {
                 selectedIds = selectedIds + view.getId() + ",";
                 view.setBackgroundResource(R.drawable.ic_seats_b);
+                int in=view.getId();
+                char[] myNameChars = seats.toCharArray();
+                myNameChars[seatOriantation.get(in-1)] = 'U';
+                seats = String.valueOf(myNameChars);
+                Toast.makeText(this, "Seat " + seats.charAt(seatOriantation.get(in-1)) +" is Selected", Toast.LENGTH_SHORT).show();
+                ArrayList<Integer> selectedSeats =new ArrayList<>();
+                selectedSeats.add(view.getId());
+
             }
         } else if ((int) view.getTag() == STATUS_BOOKED) {
             Toast.makeText(this, "Seat " + view.getId() + " is Booked", Toast.LENGTH_SHORT).show();

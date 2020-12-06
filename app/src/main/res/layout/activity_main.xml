@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginLeft="32dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
         android:background="@drawable/ic_button_round"
@@ -39,7 +39,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.538"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/departureDateButton" />
+        app:layout_constraintTop_toBottomOf="@+id/checkBox" />
 
     <Button
         android:id="@+id/returnDateButton"
@@ -127,7 +127,9 @@
             android:layout_weight="1"
             android:background="@drawable/btn_segmented_left"
             android:button="@android:color/transparent"
+            android:checked="true"
             android:gravity="center"
+            android:onClick="onClickRoundRadio"
             android:padding="8dp"
             android:text="Round Trip"
             android:textColor="@drawable/txt_segmented" />
@@ -139,8 +141,8 @@
             android:layout_weight="1"
             android:background="@drawable/btn_segmented_right"
             android:button="@android:color/transparent"
-            android:checked="true"
             android:gravity="center"
+            android:onClick="onClickOneWayRadio"
             android:padding="8dp"
             android:text="One Way"
             android:textColor="@drawable/txt_segmented" />
@@ -204,5 +206,16 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Reservation"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/departureDateButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

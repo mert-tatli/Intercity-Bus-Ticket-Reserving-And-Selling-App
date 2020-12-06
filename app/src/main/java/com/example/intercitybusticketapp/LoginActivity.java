@@ -9,7 +9,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 
-public class LoginActivity extends AppCompatActivity {
+import java.util.Observable;
+import java.util.Observer;
+
+public class LoginActivity extends AppCompatActivity implements Observer {
         EditText InputId;
         EditText passwordLogin;
     @Override
@@ -20,8 +23,6 @@ public class LoginActivity extends AppCompatActivity {
         InputId = findViewById(R.id.inputId);
         passwordLogin = findViewById(R.id.inputPassword);
     }
-
-
     public void signUp(View view){
 
         Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
@@ -40,5 +41,11 @@ public class LoginActivity extends AppCompatActivity {
 
         startActivity(intent);
     }
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
+
+
 
 }
