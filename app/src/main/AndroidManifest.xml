@@ -11,10 +11,10 @@
         android:theme="@style/AppTheme">
         <activity android:name=".TripActivity"></activity>
         <activity android:name=".AdminActivity" />
-        <activity android:name=".RegisterActivity" />
+        <activity android:name=".SelectSeatActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".SelectSeatActivity">
+        <activity android:name=".RegisterActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
