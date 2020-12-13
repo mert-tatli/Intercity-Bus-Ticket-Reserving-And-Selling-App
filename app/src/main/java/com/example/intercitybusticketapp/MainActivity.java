@@ -4,12 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -30,8 +32,14 @@ public class MainActivity extends AppCompatActivity {
     private static int mYear2;
     private static int mMonth2;
     private static int mDay2;
-    private RadioGroup radioGroup;
-    private RadioButton radioTrip;
+
+    private RadioButton round,oneway;
+    private String option="Round";
+    private CheckBox reservation;
+    private Spinner s1,s2;
+    private boolean reserve;
+    private String from,to;
+    private String departdate,returndate;
     String[] arraySpinner = new String[]{"Select the City","Adana","Adiyaman","Afyon","Agri","Aksaray","Amasya","Ankara","Antalya","Ardahan","Artvin","Aydin","Balikesir","Bartin","Batman","Bayburt","Bilecik","Bingol","Bitlis","Bolu","Burdur","Bursa","Canakkale","Cankiri","Corum","Denizli","Diyarbakir","Duzce","Edirne","Elazig","Erzincan","Erzurum","Eskisehir","Gaziantep","Giresun","Gumushane","Hakkari","Hatay","Igdir","Isparta","Istanbul","Izmir","Kahramanmaras",
            "Karabuk","Karaman","Kars","Kastamonu","Kayseri","Kilis","Kirikkale","Kirklareli","Kirsehir","Kocaeli","Konya","Kutahya","Malatya","Manisa","Mardin","Mersin","Mugla","Mus","Nevsehir","Nigde","Ordu","Osmaniye","Rize","Sakarya","Samsun","Sanliurfa","Siirt","Sinop","Sirnak","Sivas","Tekirdag","Tokat","Trabzon","Tunceli","Usak","Van","Yalova","Yozgat","Zonguldak"};
     @Override
@@ -41,17 +49,20 @@ public class MainActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
-        radioGroup=(RadioGroup) findViewById(R.id.radioGroupTrip);
+        round= findViewById(R.id.roundRadioButton);
+        oneway =findViewById(R.id.oneWayRadioButton);
+        reservation=findViewById(R.id.reservation);
 
-        Spinner s1 = (Spinner) findViewById(R.id.spinner);
-        Spinner s2 = (Spinner) findViewById(R.id.spinner2);
+         s1 = (Spinner) findViewById(R.id.spinner);
+         s2 = (Spinner) findViewById(R.id.spinner2);
 
         s1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
-                // TODO Auto-generated method stub
-                Toast.makeText(getBaseContext(), arraySpinner[position], Toast.LENGTH_SHORT).show();
+
+
+                from = arraySpinner[position];
             }
 
             @Override
@@ -64,8 +75,9 @@ public class MainActivity extends AppCompatActivity {
         {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
-                // TODO Auto-generated method stub
-                Toast.makeText(getBaseContext(), arraySpinner[position], Toast.LENGTH_SHORT).show();
+
+
+                to = arraySpinner[position];
             }
 
             @Override
@@ -101,6 +113,53 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    public void signmain(View view){
+        Intent intent = new Intent(MainActivity.this,RegisterActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void loginmain(View view){
+        Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void searchtrip(View view){
+
+        if (!from.equals(to) && !from.equals("Select the City") && !to.equals("Select the City")){
+            reserve = reservation.isChecked();
+             departdate = departureDate.getText().toString();
+             returndate = returnDate.getText().toString();
+            if (reserve == true ){ // burda kullanıcı ise , && ile kontrol edilmeli ,, (Sorgu yaparken iki date demek iki trip demek)
+                // dönüş için from --> to  , , , to--> from olucak   (2. trip yani)
+                // burda veritabınında trip varmı diye kontrol edilip ona göre yönlendirilmesi lazım
+
+                Intent intent = new Intent(MainActivity.this,TripActivity.class);
+                startActivity(intent);
+                finish();
+
+            }else if(reserve == true){  // ve kullanıcı değilse
+                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+
+            // burda veritabınında trip varmı diye kontrol edilip ona göre yönlendirilmesi lazım
+
+        }
+        else{
+            Toast.makeText(this, "Please Select Correct Places", Toast.LENGTH_SHORT).show();
+        }
+
+
+
+    }
+
+
+
 
     public static class DatePickerFragment1 extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
@@ -166,10 +225,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void onClickOneWayRadio(View view){
+            option = "OneWay";
             returnDate.setVisibility(View.INVISIBLE);
     }
     public void onClickRoundRadio(View view){
-        returnDate.setVisibility(View.VISIBLE);
+            option = "Round";
+            returnDate.setVisibility(View.VISIBLE);
     }
+
+
 
 }

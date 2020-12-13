@@ -17,6 +17,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:background="@drawable/ic_button_round"
+        android:onClick="loginmain"
         android:text="LOGIN"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
@@ -33,13 +34,14 @@
         android:layout_marginEnd="32dp"
         android:layout_marginRight="32dp"
         android:background="@drawable/ic_button_round"
+        android:onClick="searchtrip"
         android:text="SEARCH TRIP"
         android:textColor="#FFFFFF"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.538"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+        app:layout_constraintTop_toBottomOf="@+id/reservation" />
 
     <Button
         android:id="@+id/returnDateButton"
@@ -64,6 +66,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
+        android:onClick="signmain"
         android:text="Sign Up"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"
@@ -208,7 +211,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/reservation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"

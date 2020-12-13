@@ -27,8 +27,16 @@ public class LoginActivity extends AppCompatActivity implements Observer {
 
         Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
         startActivity(intent);
+        finish();
     }
     public  void loginButton(View view){
+        String id = InputId.getText().toString();
+        String password = passwordLogin.getText().toString();
+
+
+        Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+        startActivity(intent);
+        finish();
 
 
     }
@@ -36,7 +44,9 @@ public class LoginActivity extends AppCompatActivity implements Observer {
     public void backbutton(View view){
         Intent intent = new Intent(LoginActivity.this,MainActivity.class);
         startActivity(intent);
+        finish();
     }
+
     @Override
     public void update(Observable o, Object arg) {
 
