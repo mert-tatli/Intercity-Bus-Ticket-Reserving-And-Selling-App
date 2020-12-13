@@ -48,19 +48,14 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selectseat);
         layout = findViewById(R.id.layoutSeat);
-
         seats = "/" + seats;
-
-
         LinearLayout layoutSeat = new LinearLayout(this);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutSeat.setOrientation(LinearLayout.VERTICAL);
         layoutSeat.setLayoutParams(params);
         layoutSeat.setPadding(8 * seatGaping, 8 * seatGaping, 8 * seatGaping, 8 * seatGaping);
         layout.addView(layoutSeat);
-
         LinearLayout layout = null;
-
         int count = 0;
 
         for (int index = 0; index < seats.length(); index++) {

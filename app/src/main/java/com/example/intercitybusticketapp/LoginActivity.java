@@ -26,19 +26,15 @@ public class LoginActivity extends AppCompatActivity implements Observer {
     public void signUp(View view){
 
         Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
-
         startActivity(intent);
     }
     public  void loginButton(View view){
-      //  Intent intent = new Intent(LoginActivity.this,.......);
 
-      //  startActivity(intent);
 
     }
 
     public void backbutton(View view){
         Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-
         startActivity(intent);
     }
     @Override
