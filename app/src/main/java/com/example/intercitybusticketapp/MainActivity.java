@@ -146,12 +146,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-
+            Intent intent = new Intent(MainActivity.this,TripActivity.class);
+            startActivity(intent);
+            finish();
             // burda veritabınında trip varmı diye kontrol edilip ona göre yönlendirilmesi lazım
 
         }
         else{
-            Toast.makeText(this, "Please Select Correct Places", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please Select Correct Place", Toast.LENGTH_SHORT).show();
         }
 
 
