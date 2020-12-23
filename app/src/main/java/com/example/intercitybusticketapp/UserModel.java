@@ -7,6 +7,7 @@ public class UserModel {
     private ArrayList<User> users;
 
     public UserModel() {
+
         users=new ArrayList<>();
     }
 

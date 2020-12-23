@@ -154,7 +154,7 @@
         android:layout_height="50dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/ic_button_round"
-        android:onClick="loginButton"
+        android:onClick="addtrip"
         android:text="Add TRIP"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
