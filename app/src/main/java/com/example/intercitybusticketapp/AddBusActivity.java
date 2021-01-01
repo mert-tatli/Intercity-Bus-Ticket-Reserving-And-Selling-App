@@ -8,11 +8,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class AddBusActivity extends AppCompatActivity {
     EditText plateNo;
     EditText capacity;
     BusModel busmodel;
-
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +25,7 @@ public class AddBusActivity extends AppCompatActivity {
         plateNo=findViewById(R.id.inputBusPlate);
         capacity=findViewById(R.id.inputBusCapacity);
         busmodel = new BusModel();
+        mDatabase= FirebaseDatabase.getInstance().getReference();
     }
 
 
@@ -39,6 +43,7 @@ public class AddBusActivity extends AppCompatActivity {
             busmodel.setBus(b);
             Toast.makeText(this, "BUS WAS CREATED SUCCESFULLY", Toast.LENGTH_SHORT).show();
             Toast.makeText(this, b.toString(), Toast.LENGTH_SHORT).show();
+            mDatabase.child("Buses").child(plate).child("Capacity").setValue(capacityy);
         }
 
     }

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "597396873533",
+    "project_id": "bus-ticket-app-77b51",
+    "storage_bucket": "bus-ticket-app-77b51.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:597396873533:android:ab2adb3c9a49b4a4f5e554",
+        "android_client_info": {
+          "package_name": "com.example.intercitybusticketapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "597396873533-q24q0go8col55vf4jinofb9jf2r705qb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQgA1yNDHcZ3tB5OW3y78AT9w6R-bSYW8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "597396873533-q24q0go8col55vf4jinofb9jf2r705qb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class AddTripActivity extends AppCompatActivity {
 
     EditText tripid;
@@ -16,8 +19,8 @@ public class AddTripActivity extends AppCompatActivity {
     EditText time;
     EditText date;
     EditText price;
-
     TripModel tripmodel;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +33,9 @@ public class AddTripActivity extends AppCompatActivity {
         time=findViewById(R.id.inputTripTime);
         date=findViewById(R.id.inputTripDepartureDate);
         price=findViewById(R.id.inputTripPrice);
-
         tripmodel=new TripModel();
+        mDatabase= FirebaseDatabase.getInstance().getReference();
+
     }
 
 
@@ -52,6 +56,13 @@ public class AddTripActivity extends AppCompatActivity {
             tripmodel.setTrip(t);
             Toast.makeText(AddTripActivity.this,"TRIP WAS CREATED SUCCESFULLY",Toast.LENGTH_LONG).show();
             Toast.makeText(AddTripActivity.this,t.toString(),Toast.LENGTH_LONG).show();  // test amaçlı doğru çalışıyor
+            mDatabase.child("Trips").child(tripid1).child("from").setValue(from1);
+            mDatabase.child("Trips").child(tripid1).child("to").setValue(to1);
+            mDatabase.child("Trips").child(tripid1).child("time").setValue(time1);
+            mDatabase.child("Trips").child(tripid1).child("date").setValue(date1);
+            mDatabase.child("Trips").child(tripid1).child("price").setValue(price1);
+
+
         }
     }
 }

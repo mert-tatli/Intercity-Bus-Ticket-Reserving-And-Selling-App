@@ -11,6 +11,12 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+
 public class RegisterActivity extends AppCompatActivity  {
     Button buttonSign;
     EditText id,name,surname,phone,birthday,email,password;
@@ -18,7 +24,8 @@ public class RegisterActivity extends AppCompatActivity  {
     CheckBox terms;
     String gender;
     UserModel userModel;
-
+    FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +43,8 @@ public class RegisterActivity extends AppCompatActivity  {
         terms=findViewById(R.id.inputTerms);
         userModel=new UserModel();
         buttonSign=findViewById(R.id.buttonSignUp);
-
+        mAuth=FirebaseAuth.getInstance();
+        mDatabase= FirebaseDatabase.getInstance().getReference();
     }
     public void backbutton1(View view){
         Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
@@ -57,9 +65,43 @@ public class RegisterActivity extends AppCompatActivity  {
                 Toast.makeText(RegisterActivity.this,"All the Information Are Required",Toast.LENGTH_SHORT).show();
             }
             else{
+                System.out.println(gender);
                 User usr=new User(id1,name1,surname1,gender,phone1,birthday1,email1,password1);
                 userModel.setUsers(usr);
+                mAuth.createUserWithEmailAndPassword(email1,password1);
                 Toast.makeText(RegisterActivity.this,"User Created",Toast.LENGTH_LONG).show();
+              /*  String user_id=mAuth.getCurrentUser().getUid();
+                mDatabase.child("users").child(user_id).child("id").setValue(id1);
+                mDatabase.child("users").child(user_id).child("name").setValue(name1);
+                mDatabase.child("users").child(user_id).child("surname").setValue(surname1);
+                mDatabase.child("users").child(user_id).child("gender").setValue(gender);
+                mDatabase.child("users").child(user_id).child("phone").setValue(phone1);
+                mDatabase.child("users").child(user_id).child("birthday").setValue(birthday1);
+                mDatabase.child("users").child(user_id).child("email").setValue(email1);*/
+                mDatabase.child("users").child(id1).child("id").setValue(id1);
+                mDatabase.child("users").child(id1).child("name").setValue(name1);
+                mDatabase.child("users").child(id1).child("surname").setValue(surname1);
+                mDatabase.child("users").child(id1).child("gender").setValue(gender);
+                mDatabase.child("users").child(id1).child("phone").setValue(phone1);
+                mDatabase.child("users").child(id1).child("birthday").setValue(birthday1);
+                mDatabase.child("users").child(id1).child("email").setValue(email1);
+                //mDatabase.push().setValue(usr);
+                /* String user_id=mAuth.getCurrentUser().getUid();
+                HashMap<String,String> userMap=new HashMap<>();
+                userMap.put("name",name1);
+                userMap.put("gender",gender);
+                userMap.put("phone",phone1);
+                userMap.put("birthday",birthday1);
+                userMap.put("email",email1);
+                mDatabase.child("Users").child(user_id).setValue(userMap); */
+               /* if(view.getId()==deleteTripButton.getId()){
+            deleteTripButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String deleteTripIds = deleteTripId.getText().toString();
+                    mDatabase.child("Trips").child(deleteTripIds).removeValue();
+                }
+            }); */
 
             }
         }
