@@ -2,6 +2,7 @@ package com.example.intercitybusticketapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,7 +17,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SelectSeatActivity extends AppCompatActivity implements View.OnClickListener {
+public class Selectseat2Activity extends AppCompatActivity implements View.OnClickListener {
     ViewGroup layout;
 
     String seats =
@@ -45,15 +46,10 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
     int STATUS_BOOKED = 2;
     int STATUS_RESERVED = 3;
     String selectedIds = "";
-    boolean isReturn2=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selectseat);
-        Intent intent=new Intent();
-        boolean isReturn=false;
-        intent.getBooleanExtra("isReturn",isReturn);
-        isReturn2=isReturn;
         layout = findViewById(R.id.layoutSeat);
         seats = "/" + seats;
         LinearLayout layoutSeat = new LinearLayout(this);
@@ -143,20 +139,11 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
             Toast.makeText(this, "Seat " + view.getId() + " is Reserved", Toast.LENGTH_SHORT).show();
         }
     }
-    public void selectSeat1(View view){
-        if (isReturn2){
-            Intent intent=new Intent(this,Selectseat2Activity.class);
-            startActivity(intent);
-            //intent.putIntegerArrayListExtra("selectedSeats",selectedSeats);
-
-        }
-        else{
-            Intent intent=new Intent(this,PaymentActivity.class);
-            startActivity(intent);
-           // intent.putIntegerArrayListExtra("selectedSeats",selectedSeats);
-
-        }
-
+    public void selectSeat2(View view){
+        Intent intent=new Intent(this,PaymentActivity.class);
+        startActivity(intent);
+        intent.putIntegerArrayListExtra("selectedSeats",selectedSeats);
+        finish();
     }
-}
 
+}

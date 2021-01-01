@@ -2,6 +2,7 @@ package com.example.intercitybusticketapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -14,26 +15,22 @@ import android.widget.LinearLayout;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 
 
-public class TripActivity extends AppCompatActivity implements View.OnClickListener {
-    private boolean isReturn2=false;
-    private TextView textview;
-    private ImageView imageView;
-    private ViewGroup layout;
-    private int tripGaping = 10;
-    private int count = 0;
-    private ArrayList<String> arr = new ArrayList<>();
+public class ReturnTripActivity extends AppCompatActivity implements View.OnClickListener {
+    TextView textview;
+    ImageView imageView;
+    ViewGroup layout;
+    int tripGaping = 10;
+    int count = 0;
+    ArrayList<String> arr = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip);
-        Intent intent=getIntent();
-        boolean isReturn= intent.getExtras().getBoolean("isReturn");
-        isReturn2=isReturn;
-
         layout = findViewById(R.id.layoutTrip);
         LinearLayout layoutSeat = new LinearLayout(this);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -44,7 +41,7 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
         textview = new TextView(this);
         LinearLayout.LayoutParams textParams0 = new LinearLayout.LayoutParams(300, 200);
         textview.setLayoutParams(textParams0);
-        textview.setText("Outbound Trips");
+        textview.setText("Return Trips");
         textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
         textview.setTextColor(Color.BLACK);
         textview.setPadding(5, 5, 5, 5);
@@ -96,7 +93,7 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             textview = new TextView(this);
             LinearLayout.LayoutParams textParams3 = new LinearLayout.LayoutParams(900, 200);
             textview.setLayoutParams(textParams3);
-            textview.setText("Istanbul");
+            textview.setText("Adana");
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.BLACK);
             textview.setPadding(5, 5, 5, 5);
@@ -106,7 +103,7 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             textview = new TextView(this);
             LinearLayout.LayoutParams textParams4 = new LinearLayout.LayoutParams(900, 350);
             textview.setLayoutParams(textParams4);
-            textview.setText("Adana");
+            textview.setText("Istanbul");
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.BLACK);
             textview.setPadding(5, 5, 5, 5);
@@ -156,21 +153,17 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             layout.addView(view);
             view.setOnClickListener(this);
         }
+
+
     }
+
     @Override
     public void onClick(View view) {
         int in = view.getId();
         Toast.makeText(this, "Trip " + in + " is Selected", Toast.LENGTH_SHORT).show();
-        if (isReturn2) {
-            Intent intent = new Intent(this, ReturnTripActivity.class);
-            intent.putExtra("id", in);
-            startActivity(intent);
-        } else {
-            Intent intent = new Intent(this, SelectSeatActivity.class);
-            intent.putExtra("id", in);
-            intent.putExtra("isReturn",isReturn2);
-            startActivity(intent);
-        }
+         Intent intent =new Intent(this,SelectSeatActivity.class);
+         intent.putExtra("id",in);
+         startActivity(intent);
 
 
     }

@@ -249,8 +249,8 @@
                 android:drawableLeft="@drawable/ic_baseline_create"
                 android:drawablePadding="10dp"
                 android:ems="10"
-                android:hint="New Password"
-                android:inputType="text"
+                android:hint="New Password - At least 6 characters"
+                android:inputType="text|textPassword"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp" />
 
