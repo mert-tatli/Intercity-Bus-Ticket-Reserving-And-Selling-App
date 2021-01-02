@@ -1,5 +1,6 @@
 package com.example.intercitybusticketapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
@@ -19,7 +20,16 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -41,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
     private boolean reserve = false;
     private String from, to;
     private String departdate, returndate;
+    private DatabaseReference mDatabase;
+    private DatabaseReference mTrips;
+    private List<Trip> tripList;
     String[] arraySpinner = new String[]{"Select the City", "Adana", "Adiyaman", "Afyon", "Agri", "Aksaray", "Amasya", "Ankara", "Antalya", "Ardahan", "Artvin", "Aydin", "Balikesir", "Bartin", "Batman", "Bayburt", "Bilecik", "Bingol", "Bitlis", "Bolu", "Burdur", "Bursa", "Canakkale", "Cankiri", "Corum", "Denizli", "Diyarbakir", "Duzce", "Edirne", "Elazig", "Erzincan", "Erzurum", "Eskisehir", "Gaziantep", "Giresun", "Gumushane", "Hakkari", "Hatay", "Igdir", "Isparta", "Istanbul", "Izmir", "Kahramanmaras",
             "Karabuk", "Karaman", "Kars", "Kastamonu", "Kayseri", "Kilis", "Kirikkale", "Kirklareli", "Kirsehir", "Kocaeli", "Konya", "Kutahya", "Malatya", "Manisa", "Mardin", "Mersin", "Mugla", "Mus", "Nevsehir", "Nigde", "Ordu", "Osmaniye", "Rize", "Sakarya", "Samsun", "Sanliurfa", "Siirt", "Sinop", "Sirnak", "Sivas", "Tekirdag", "Tokat", "Trabzon", "Tunceli", "Usak", "Van", "Yalova", "Yozgat", "Zonguldak"};
 
@@ -50,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-
+        tripList = new ArrayList<>();
         round = findViewById(R.id.roundRadioButton);
         oneway = findViewById(R.id.oneWayRadioButton);
         reservation = findViewById(R.id.reservation);
@@ -127,7 +140,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void searchtrip(View view) {
         departdate = departureDate.getText().toString();
+        departdate.replace(" ", "");
         returndate = returnDate.getText().toString();
+        returndate.replace(" ", "");
         boolean check;
         if (option.equals("OneWay")) {
             isReturn = false;
@@ -144,10 +159,24 @@ public class MainActivity extends AppCompatActivity {
             if (reserve == false) { // burda kullanıcı ise , && ile kontrol edilmeli ,, (Sorgu yaparken iki date demek iki trip demek)
                 // dönüş için from --> to  , , , to--> from olucak   (2. trip yani)
                 // burda veritabınında trip varmı diye kontrol edilip ona göre yönlendirilmesi lazım
-                Intent intent = new Intent(MainActivity.this, TripActivity.class);
+
+                System.out.println("DENEME");
+                System.out.println("From: "+ from);
+                System.out.println("To: "+ to);
+                System.out.println("departure Date: "+ departdate);
+                System.out.println("Length of DepartDate :" + departdate.length());
+                mDatabase = FirebaseDatabase.getInstance().getReference();
+                mTrips = FirebaseDatabase.getInstance().getReference("Trips");
+                Query query1 = mTrips.orderByChild("from").equalTo(from);
+                query1.addListenerForSingleValueEvent(valueEventListener);
+
+
+
+
+                /*Intent intent = new Intent(MainActivity.this, TripActivity.class);
                 intent.putExtra("isReturn",isReturn);
                 startActivity(intent);
-                finish();
+                finish();*/
 
             } else if (reserve == true) {  // ve kullanıcı değilse
                 Toast.makeText(this, "To Make a Reservation Please First Login", Toast.LENGTH_LONG).show();
@@ -155,10 +184,19 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             } else {
-                Intent intent = new Intent(MainActivity.this, TripActivity.class);
+
+                System.out.println("From: "+ from);
+                System.out.println("To: "+ to);
+                System.out.println("departure Date: "+ departdate);
+
+
+
+
+
+                /*Intent intent = new Intent(MainActivity.this, TripActivity.class);
                 intent.putExtra("isReturn", isReturn);
                 startActivity(intent);
-                finish();
+                finish();*/
 
             }
 
@@ -168,6 +206,48 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "All information is required -- You cannot select the same city", Toast.LENGTH_SHORT).show();
         }
     }
+
+    ValueEventListener valueEventListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot datasnapshot) {
+            tripList.clear();
+            if (datasnapshot.exists()) {
+                for (DataSnapshot snapshot : datasnapshot.getChildren()) {
+                    Trip trip = snapshot.getValue(Trip.class);
+                    tripList.add(trip);
+                }
+
+            }
+            for (int i = 0; i < tripList.size(); i++) {
+                    System.out.println(tripList.get(i).toString());
+            }
+            System.out.println("***********************************************************");
+            for (int i = 0; i < tripList.size(); i++) {
+                if (!tripList.get(i).getTo().equals(to) || !tripList.get(i).getDate().equals(departdate)){
+                    tripList.remove(i);
+                    i--;
+                }
+            }
+            System.out.println("***********************************************************");
+            for (int i = 0; i < tripList.size(); i++) {
+                System.out.println(tripList.get(i).toString());
+            }
+            if (tripList.isEmpty()) {
+                System.out.println("Trip can not Found");
+                Toast.makeText(MainActivity.this, "Trip can not found!!", Toast.LENGTH_LONG).show();
+            } else {
+                Intent intent = new Intent(MainActivity.this, TripActivity.class);
+                intent.putExtra("isReturn", isReturn);
+                startActivity(intent);
+                finish();
+            }
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError error) {
+
+        }
+    };
 
     public static class DatePickerFragment1 extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {

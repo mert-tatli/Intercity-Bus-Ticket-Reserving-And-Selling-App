@@ -1,8 +1,9 @@
 package com.example.intercitybusticketapp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class TripModel {
+public class TripModel implements Serializable {
 
     private ArrayList<Trip> trips;
 

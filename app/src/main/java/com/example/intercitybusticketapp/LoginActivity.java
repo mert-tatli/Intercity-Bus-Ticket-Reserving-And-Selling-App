@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -39,10 +40,22 @@ public class LoginActivity extends AppCompatActivity implements Observer {
     public  void loginButton(View view){
         String id = InputId.getText().toString();
         String password = passwordLogin.getText().toString();
-        mAuth.signInWithEmailAndPassword(id,password);//id ile giriş değiştirilip mail ile giriş olarak düzeltilecek
-        Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-        startActivity(intent);
-        finish();
+        mAuth.signInWithEmailAndPassword(id,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    System.out.println(mAuth.getCurrentUser().getUid());
+                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                else {
+                    System.out.println("Kullanıcı sistemde kayıtlı değil.");
+                    Toast.makeText(LoginActivity.this, "Kullanıcı sistemde kayıtlı değil.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
     }
 
     public void backbutton(View view){

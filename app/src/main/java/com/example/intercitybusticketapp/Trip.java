@@ -19,6 +19,9 @@ public class Trip {
         this.date = date;
         this.price = price;
     }
+    public Trip(){
+
+    }
 
     @Override
     public String toString() {
@@ -31,4 +34,36 @@ public class Trip {
                 ", price='" + price + '\'' +
                 '}';
     }
+
+    public String getTripid() {
+        return tripid;
+    }
+
+
+    public String getFrom() {
+        return from;
+    }
+
+
+    public String getTo() {
+        return to;
+    }
+
+
+
+    public String getTime() {
+        return time;
+    }
+
+
+    public String getDate() {
+        return date;
+    }
+
+
+    public String getPrice() {
+        return price;
+    }
+
+
 }

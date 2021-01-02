@@ -14,6 +14,14 @@ import android.widget.LinearLayout;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 
 
@@ -24,7 +32,8 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
     private ViewGroup layout;
     private int tripGaping = 10;
     private int count = 0;
-    private ArrayList<String> arr = new ArrayList<>();
+    private DatabaseReference mTrips;
+    private ArrayList<Trip> arr = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +61,7 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
 
         layoutSeat.addView(textview);
         layout.addView(layoutSeat);
+
 
 
         LinearLayout layout = null;
@@ -82,7 +92,6 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             textview.setPadding(5, 5, 5, 5);
             textview.setGravity(Gravity.CENTER);
             view.addView(textview);
-
             textview = new TextView(this);
             LinearLayout.LayoutParams textParams2 = new LinearLayout.LayoutParams(300, 350);
             textview.setLayoutParams(textParams2);
@@ -96,7 +105,7 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             textview = new TextView(this);
             LinearLayout.LayoutParams textParams3 = new LinearLayout.LayoutParams(900, 200);
             textview.setLayoutParams(textParams3);
-            textview.setText("Istanbul");
+            textview.setText("From: Adana"  );
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.BLACK);
             textview.setPadding(5, 5, 5, 5);
@@ -106,7 +115,7 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             textview = new TextView(this);
             LinearLayout.LayoutParams textParams4 = new LinearLayout.LayoutParams(900, 350);
             textview.setLayoutParams(textParams4);
-            textview.setText("Adana");
+            textview.setText("To : İstanbul");
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.BLACK);
             textview.setPadding(5, 5, 5, 5);
@@ -116,7 +125,7 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             textview = new TextView(this);
             LinearLayout.LayoutParams textParams5 = new LinearLayout.LayoutParams(650, 680);
             textview.setLayoutParams(textParams5);
-            textview.setText("Travel Time: " + " 5 Hours");
+            textview.setText("Travel Time: 16h");
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.BLACK);
             textview.setPadding(5, 5, 5, 5);
@@ -157,6 +166,29 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             view.setOnClickListener(this);
         }
     }
+
+    ValueEventListener valueEventListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            arr.clear();
+            if (dataSnapshot.exists()) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Trip trip = snapshot.getValue(Trip.class);
+                    arr.add(trip);
+                }
+
+            }
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            System.out.println(databaseError.getMessage());
+        }
+    };
+
+
+
+
     @Override
     public void onClick(View view) {
         int in = view.getId();

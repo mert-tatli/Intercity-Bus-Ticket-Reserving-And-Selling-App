@@ -164,8 +164,6 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
          Intent intent =new Intent(this,SelectSeatActivity.class);
          intent.putExtra("id",in);
          startActivity(intent);
-
-
     }
 
 
