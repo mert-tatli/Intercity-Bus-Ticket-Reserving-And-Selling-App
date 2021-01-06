@@ -34,26 +34,28 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
                     + "AA___AA/";
 
 
-    ArrayList<Integer> seatOriantation =new ArrayList<>();
-    ArrayList<String> seatLocation=new ArrayList<>();
+    ArrayList<Integer> seatOriantation = new ArrayList<>();
+    ArrayList<String> seatLocation = new ArrayList<>();
     List<TextView> seatViewList = new ArrayList<>();
-    ArrayList<Integer>selectedSeats = new ArrayList<>();
+    ArrayList<Integer> selectedSeats = new ArrayList<>();
     int seatSize = 120;
-    int seatGaping =10;
+    int seatGaping = 10;
 
     int STATUS_AVAILABLE = 1;
     int STATUS_BOOKED = 2;
     int STATUS_RESERVED = 3;
     String selectedIds = "";
-    boolean isReturn2=false;
+    boolean isReturn2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selectseat);
-        Intent intent=new Intent();
-        boolean isReturn=false;
-        intent.getBooleanExtra("isReturn",isReturn);
-        isReturn2=isReturn;
+        Intent intent = getIntent();
+
+        isReturn2 = intent.getBooleanExtra("isReturn",false);
+        System.out.println(isReturn2 + " *********");
+
         layout = findViewById(R.id.layoutSeat);
         seats = "/" + seats;
         LinearLayout layoutSeat = new LinearLayout(this);
@@ -64,7 +66,6 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
         layout.addView(layoutSeat);
         LinearLayout layout = null;
         int count = 0;
-
         for (int index = 0; index < seats.length(); index++) {
             if (seats.charAt(index) == '/') {
                 layout = new LinearLayout(this);
@@ -108,7 +109,7 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
                 layout.addView(view);
                 seatViewList.add(view);
                 view.setOnClickListener(this);
-            }  else if (seats.charAt(index) == '_') {
+            } else if (seats.charAt(index) == '_') {
                 TextView view = new TextView(this);
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(seatSize, seatSize);
                 layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping);
@@ -119,6 +120,7 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
             }
         }
     }
+
     @Override
     public void onClick(View view) {
         if ((int) view.getTag() == STATUS_AVAILABLE) {
@@ -143,17 +145,17 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
             Toast.makeText(this, "Seat " + view.getId() + " is Reserved", Toast.LENGTH_SHORT).show();
         }
     }
-    public void selectSeat1(View view){
-        if (isReturn2){
-            Intent intent=new Intent(this,Selectseat2Activity.class);
+
+    public void selectSeat1(View v) {
+        if (isReturn2) {
+            Intent intent = new Intent(this, Selectseat2Activity.class);
             startActivity(intent);
             //intent.putIntegerArrayListExtra("selectedSeats",selectedSeats);
 
-        }
-        else{
-            Intent intent=new Intent(this,PaymentActivity.class);
+        } else {
+            Intent intent = new Intent(this, PaymentActivity.class);
             startActivity(intent);
-           // intent.putIntegerArrayListExtra("selectedSeats",selectedSeats);
+            // intent.putIntegerArrayListExtra("selectedSeats",selectedSeats);
 
         }
 

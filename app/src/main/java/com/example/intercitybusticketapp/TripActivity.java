@@ -2,6 +2,7 @@ package com.example.intercitybusticketapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -23,10 +24,11 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class TripActivity extends AppCompatActivity implements View.OnClickListener {
-    private boolean isReturn2=false;
+    private boolean isReturn2;
     private TextView textview;
     private ImageView imageView;
     private ViewGroup layout;
@@ -34,22 +36,30 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
     private int count = 0;
     private DatabaseReference mTrips;
     private ArrayList<Trip> arr = new ArrayList<>();
+    private List<Trip> ids;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip);
-        Intent intent=getIntent();
-        boolean isReturn= intent.getExtras().getBoolean("isReturn");
-        isReturn2=isReturn;
-
+        Intent intent = getIntent();
+        boolean isReturn = intent.getBooleanExtra("isReturn",false);
+        isReturn2 = isReturn;
+        ids = MainActivity.getTripList();
+        for (int i = 0; i < ids.size(); i++) {
+            if (ids.isEmpty()) {
+                System.out.println("ifin içindeyik");
+                break;
+            }
+            System.out.println(ids.get(i).toString());
+            System.out.println("selamun aleyküm");
+        }
         layout = findViewById(R.id.layoutTrip);
         LinearLayout layoutSeat = new LinearLayout(this);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutSeat.setOrientation(LinearLayout.VERTICAL);
         layoutSeat.setLayoutParams(params);
         layoutSeat.setPadding(4 * tripGaping, 4 * tripGaping, 4 * tripGaping, 4 * tripGaping);
-
         textview = new TextView(this);
         LinearLayout.LayoutParams textParams0 = new LinearLayout.LayoutParams(300, 200);
         textview.setLayoutParams(textParams0);
@@ -58,14 +68,17 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
         textview.setTextColor(Color.BLACK);
         textview.setPadding(5, 5, 5, 5);
         textview.setGravity(Gravity.CENTER);
-
         layoutSeat.addView(textview);
         layout.addView(layoutSeat);
-
-
-
+        mTrips = FirebaseDatabase.getInstance().getReference("Trips");
+        /*Query queryy = mTrips.orderByChild("tripid").equalTo(ids.get(0));
+        queryy.addListenerForSingleValueEvent(valueEventListener);
+        Query queryy1 = mTrips.orderByChild("tripid").equalTo(ids.get(0));
+        queryy1.addListenerForSingleValueEvent(valueEventListener);
+        */
+        System.out.println(isReturn2+"Trippp"+isReturn);
         LinearLayout layout = null;
-        for (int index = 0; index < 5; index++) {
+        for (int index = 0; index < ids.size(); index++) {
 
             count++;
             layout = new LinearLayout(this);
@@ -105,7 +118,7 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             textview = new TextView(this);
             LinearLayout.LayoutParams textParams3 = new LinearLayout.LayoutParams(900, 200);
             textview.setLayoutParams(textParams3);
-            textview.setText("From: Adana"  );
+            textview.setText("From: "+ids.get(index).getFrom());
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.BLACK);
             textview.setPadding(5, 5, 5, 5);
@@ -115,7 +128,7 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             textview = new TextView(this);
             LinearLayout.LayoutParams textParams4 = new LinearLayout.LayoutParams(900, 350);
             textview.setLayoutParams(textParams4);
-            textview.setText("To : İstanbul");
+            textview.setText("To :"+ids.get(index).getTo());
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.BLACK);
             textview.setPadding(5, 5, 5, 5);
@@ -125,7 +138,7 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             textview = new TextView(this);
             LinearLayout.LayoutParams textParams5 = new LinearLayout.LayoutParams(650, 680);
             textview.setLayoutParams(textParams5);
-            textview.setText("Travel Time: 16h");
+            textview.setText("Travel Time:"+ids.get(index).getTime());
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.BLACK);
             textview.setPadding(5, 5, 5, 5);
@@ -187,8 +200,6 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
     };
 
 
-
-
     @Override
     public void onClick(View view) {
         int in = view.getId();
@@ -196,11 +207,13 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
         if (isReturn2) {
             Intent intent = new Intent(this, ReturnTripActivity.class);
             intent.putExtra("id", in);
+            intent.putExtra("isReturn", isReturn2);
             startActivity(intent);
         } else {
             Intent intent = new Intent(this, SelectSeatActivity.class);
+
             intent.putExtra("id", in);
-            intent.putExtra("isReturn",isReturn2);
+            intent.putExtra("isReturn", isReturn2);
             startActivity(intent);
         }
 

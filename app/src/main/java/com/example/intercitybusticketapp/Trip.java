@@ -39,31 +39,47 @@ public class Trip {
         return tripid;
     }
 
+    public void setTripid(String tripid) {
+        this.tripid = tripid;
+    }
 
     public String getFrom() {
         return from;
     }
 
+    public void setFrom(String from) {
+        this.from = from;
+    }
 
     public String getTo() {
         return to;
     }
 
-
+    public void setTo(String to) {
+        this.to = to;
+    }
 
     public String getTime() {
         return time;
     }
 
+    public void setTime(String time) {
+        this.time = time;
+    }
 
     public String getDate() {
         return date;
     }
 
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public String getPrice() {
         return price;
     }
 
-
+    public void setPrice(String price) {
+        this.price = price;
+    }
 }

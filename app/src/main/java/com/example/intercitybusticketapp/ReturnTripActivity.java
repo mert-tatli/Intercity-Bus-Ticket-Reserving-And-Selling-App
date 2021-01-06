@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class ReturnTripActivity extends AppCompatActivity implements View.OnClickListener {
@@ -25,7 +26,8 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
     ViewGroup layout;
     int tripGaping = 10;
     int count = 0;
-    ArrayList<String> arr = new ArrayList<>();
+    List<Trip> arr;
+    boolean isReturn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +39,7 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
         layoutSeat.setOrientation(LinearLayout.VERTICAL);
         layoutSeat.setLayoutParams(params);
         layoutSeat.setPadding(4 * tripGaping, 4 * tripGaping, 4 * tripGaping, 4 * tripGaping);
-
+        arr = MainActivity.getTripsReturn();
         textview = new TextView(this);
         LinearLayout.LayoutParams textParams0 = new LinearLayout.LayoutParams(300, 200);
         textview.setLayoutParams(textParams0);
@@ -47,12 +49,15 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
         textview.setPadding(5, 5, 5, 5);
         textview.setGravity(Gravity.CENTER);
 
+        Intent intent = getIntent();
+        isReturn = intent.getBooleanExtra("isReturn",false);
+        System.out.println(isReturn+"Returndayık");
         layoutSeat.addView(textview);
         layout.addView(layoutSeat);
 
 
         LinearLayout layout = null;
-        for (int index = 0; index < 5; index++) {
+        for (int index = 0; index < arr.size(); index++) {
 
             count++;
             layout = new LinearLayout(this);
@@ -93,7 +98,7 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
             textview = new TextView(this);
             LinearLayout.LayoutParams textParams3 = new LinearLayout.LayoutParams(900, 200);
             textview.setLayoutParams(textParams3);
-            textview.setText("Adana");
+            textview.setText("From :" + arr.get(index).getFrom());
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.BLACK);
             textview.setPadding(5, 5, 5, 5);
@@ -103,7 +108,7 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
             textview = new TextView(this);
             LinearLayout.LayoutParams textParams4 = new LinearLayout.LayoutParams(900, 350);
             textview.setLayoutParams(textParams4);
-            textview.setText("Istanbul");
+            textview.setText("To :" + arr.get(index).getTo());
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.BLACK);
             textview.setPadding(5, 5, 5, 5);
@@ -113,7 +118,7 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
             textview = new TextView(this);
             LinearLayout.LayoutParams textParams5 = new LinearLayout.LayoutParams(650, 680);
             textview.setLayoutParams(textParams5);
-            textview.setText("Travel Time: " + " 5 Hours");
+            textview.setText("Travel Time: " + arr.get(index).getTime());
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.BLACK);
             textview.setPadding(5, 5, 5, 5);
@@ -161,9 +166,10 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View view) {
         int in = view.getId();
         Toast.makeText(this, "Trip " + in + " is Selected", Toast.LENGTH_SHORT).show();
-         Intent intent =new Intent(this,SelectSeatActivity.class);
-         intent.putExtra("id",in);
-         startActivity(intent);
+        Intent intent = new Intent(this, SelectSeatActivity.class);
+        intent.putExtra("id", in);
+        intent.putExtra("isReturn", isReturn);
+        startActivity(intent);
     }
 
 

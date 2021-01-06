@@ -139,10 +139,10 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
             Toast.makeText(this, "Seat " + view.getId() + " is Reserved", Toast.LENGTH_SHORT).show();
         }
     }
-    public void selectSeat2(View view){
-        Intent intent=new Intent(this,PaymentActivity.class);
+    public void selectSeat2(View v){
+        Intent intent=new Intent(Selectseat2Activity.this,PaymentActivity.class);
         startActivity(intent);
-        intent.putIntegerArrayListExtra("selectedSeats",selectedSeats);
+      //  intent.putIntegerArrayListExtra("selectedSeats",selectedSeats);
         finish();
     }
 

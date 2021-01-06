@@ -25,7 +25,7 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
 
-        layout = (ScrollView) findViewById(R.id.layoutView);
+       /* layout = (ScrollView) findViewById(R.id.layoutView);
         LinearLayout layoutSeat = new LinearLayout(this);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutSeat.setOrientation(LinearLayout.VERTICAL);
@@ -43,7 +43,7 @@ public class PaymentActivity extends AppCompatActivity implements View.OnClickLi
         textview.setOnClickListener(this);
         layoutSeat.addView(textview);
         layout.addView(layoutSeat);
-
+*/
     }
 
     @Override
