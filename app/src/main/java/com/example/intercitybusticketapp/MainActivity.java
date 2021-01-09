@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private static List<Trip> tripsReturn;
     FirebaseUser User;
     FirebaseAuth mAuth;
+    DatabaseReference mTrips;
     String[] arraySpinner = new String[]{"Select the City", "Adana", "Adiyaman", "Afyon", "Agri", "Aksaray", "Amasya", "Ankara", "Antalya", "Ardahan", "Artvin", "Aydin", "Balikesir", "Bartin", "Batman", "Bayburt", "Bilecik", "Bingol", "Bitlis", "Bolu", "Burdur", "Bursa", "Canakkale", "Cankiri", "Corum", "Denizli", "Diyarbakir", "Duzce", "Edirne", "Elazig", "Erzincan", "Erzurum", "Eskisehir", "Gaziantep", "Giresun", "Gumushane", "Hakkari", "Hatay", "Igdir", "Isparta", "Istanbul", "Izmir", "Kahramanmaras",
             "Karabuk", "Karaman", "Kars", "Kastamonu", "Kayseri", "Kilis", "Kirikkale", "Kirklareli", "Kirsehir", "Kocaeli", "Konya", "Kutahya", "Malatya", "Manisa", "Mardin", "Mersin", "Mugla", "Mus", "Nevsehir", "Nigde", "Ordu", "Osmaniye", "Rize", "Sakarya", "Samsun", "Sanliurfa", "Siirt", "Sinop", "Sirnak", "Sivas", "Tekirdag", "Tokat", "Trabzon", "Tunceli", "Usak", "Van", "Yalova", "Yozgat", "Zonguldak"};
 
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+        mTrips = FirebaseDatabase.getInstance().getReference("Trips");
         tripList = new ArrayList<>();
         tripsReturn = new ArrayList<>();
         RadioButton round = findViewById(R.id.roundRadioButton);
@@ -71,11 +73,14 @@ public class MainActivity extends AppCompatActivity {
         reservation = findViewById(R.id.reservation);
         mAuth = FirebaseAuth.getInstance();
         User = mAuth.getCurrentUser();
-      /*  if (User != null) {
+        if (User != null) {
             System.out.println("Current User:");
             System.out.println(User.getEmail());
             System.out.println(User.getUid());
-        }*/
+        }else{
+            System.out.println("No account has signed in!.");
+        }
+
         Spinner s1 = findViewById(R.id.spinner);
         Spinner s2 = findViewById(R.id.spinner2);
 
@@ -159,21 +164,17 @@ public class MainActivity extends AppCompatActivity {
 
 
             reserve = reservation.isChecked();
-            DatabaseReference mTrips;
-            DatabaseReference mDatabase;
+
+
             if (!reserve) { // burda kullanıcı ise , && ile kontrol edilmeli ,, (Sorgu yaparken iki date demek iki trip demek)
                 // dönüş için from --> to  , , , to--> from olucak   (2. trip yani)
                 // burda veritabınında trip varmı diye kontrol edilip ona göre yönlendirilmesi lazım
 
-               /* System.out.println("DENEME");
-                System.out.println("From: "+ from);
-                System.out.println("To: "+ to);
-                System.out.println("departure Date: "+ departdate);
-                System.out.println("Length of DepartDate :" + departdate.length()); */
-               // mDatabase = FirebaseDatabase.getInstance().getReference();
-                mTrips = FirebaseDatabase.getInstance().getReference("Trips");
-                Query query2 = mTrips.orderByChild("to").equalTo(from);
-                query2.addListenerForSingleValueEvent(valueEventListener1);
+
+               if(isReturn) {
+                   Query query2 = mTrips.orderByChild("to").equalTo(from);
+                   query2.addListenerForSingleValueEvent(valueEventListener1);
+               }
                 Query query1 = mTrips.orderByChild("from").equalTo(from);
                 query1.addListenerForSingleValueEvent(valueEventListener);
 
@@ -182,19 +183,20 @@ public class MainActivity extends AppCompatActivity {
 
                 System.out.println("RESERVE İŞARETLİ");
 
-
                 if (User == null) {
                     Toast.makeText(this, "To Make a Reservation Please First Login", Toast.LENGTH_LONG).show();
                     Intent intent1 = new Intent(MainActivity.this, LoginActivity.class);
                     startActivity(intent1);
                     finish();
                 }
-                //mDatabase = FirebaseDatabase.getInstance().getReference();
-                mTrips = FirebaseDatabase.getInstance().getReference("Trips");
-                Query query2 = mTrips.orderByChild("to").equalTo(from);
-                query2.addListenerForSingleValueEvent(valueEventListener1);
-                Query query1 = mTrips.orderByChild("from").equalTo(from);
-                query1.addListenerForSingleValueEvent(valueEventListener);
+                else {
+                    if (isReturn) {
+                        Query query2 = mTrips.orderByChild("to").equalTo(from);
+                        query2.addListenerForSingleValueEvent(valueEventListener1);
+                    }
+                    Query query1 = mTrips.orderByChild("from").equalTo(from);
+                    query1.addListenerForSingleValueEvent(valueEventListener);
+                }
 
             }
         } else {
@@ -219,7 +221,6 @@ public class MainActivity extends AppCompatActivity {
             if (datasnapshot.exists()) {
                 for (DataSnapshot snapshot : datasnapshot.getChildren()) {
                     Trip trip = snapshot.getValue(Trip.class);
-                    //trip.setDate(snapshot.child());
                     tripList.add(trip);
                 }
             }
@@ -231,17 +232,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            System.out.println("GİDİŞ Trip BİLGİLERİ 234. SATIRDA YAZILIYOR.");
-            for (int i = 0; i < tripList.size(); i++) {
-                System.out.println(tripList.get(i).toString());
-            }
+
 
             if (!isReturn) {
                 if (tripList.isEmpty()) {
                     System.out.println("Trip can not Found");
                     Toast.makeText(MainActivity.this, "Trip can not found!!", Toast.LENGTH_LONG).show();
                 } else {
-                    System.out.println("247 deyiz");
                     Intent intent = new Intent(MainActivity.this, TripActivity.class);
                     intent.putExtra("isReturn", isReturn);
                     startActivity(intent);
@@ -251,11 +248,9 @@ public class MainActivity extends AppCompatActivity {
                 if (tripList.isEmpty() || tripsReturn.isEmpty()) {
                     System.out.println("Trip can not Found");
                     Toast.makeText(MainActivity.this, "Trip can not found!!", Toast.LENGTH_LONG).show();
-                } else if (!tripList.isEmpty() && !tripsReturn.isEmpty()) {
-                    System.out.println("290dayık");
+                } else  {
                     Intent intent = new Intent(MainActivity.this, TripActivity.class);
                     intent.putExtra("isReturn", isReturn);
-                    //    intent.putExtra("tripsReturnn",tripsReturn.get(0).getTripid());
                     startActivity(intent);
                     finish();
                 }
@@ -293,14 +288,7 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println(tripsReturn.get(i).toString());
                 }
 
-            } /*else {
-                System.out.println("290dayık");
-                Intent intent = new Intent(MainActivity.this, TripActivity.class);
-                intent.putExtra("isReturn", isReturn);
-                //    intent.putExtra("tripsReturnn",tripsReturn.get(0).getTripid());
-                startActivity(intent);
-                finish();
-            }*/
+            }
         }
 
 

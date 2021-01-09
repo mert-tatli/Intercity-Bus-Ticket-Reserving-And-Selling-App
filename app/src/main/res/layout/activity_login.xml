@@ -94,7 +94,7 @@
         app:layout_constraintTop_toBottomOf="@+id/inputId" />
 
     <Button
-        android:id="@+id/loginButton5"
+        android:id="@+id/selectButton"
         android:layout_width="125dp"
         android:layout_height="50dp"
         android:layout_marginStart="32dp"
@@ -124,7 +124,7 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton5" />
+        app:layout_constraintTop_toBottomOf="@+id/selectButton" />
 
     <TextView
         android:id="@+id/buttonSignUp"

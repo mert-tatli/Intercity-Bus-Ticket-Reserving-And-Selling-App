@@ -11,8 +11,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="26dp">
+        tools:layout_editor_absoluteX="-41dp"
+        tools:layout_editor_absoluteY="-167dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -142,6 +142,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:gravity="center"
+                android:onClick="onRadioButtonClicked"
                 android:orientation="horizontal"
                 android:padding="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -231,7 +232,7 @@
                 android:drawablePadding="10dp"
                 android:ems="10"
                 android:hint="Email"
-                android:inputType="text"
+                android:inputType="text|textEmailAddress"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp" />
 

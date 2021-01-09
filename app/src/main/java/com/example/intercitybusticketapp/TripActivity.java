@@ -3,7 +3,6 @@ package com.example.intercitybusticketapp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -17,6 +16,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,10 +36,9 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
     private int tripGaping = 10;
     private int count = 0;
     private DatabaseReference mTrips;
-    private ArrayList<Trip> arr = new ArrayList<>();
-    private List<Trip> ids;
+    private List<Trip> Trips;
+    FirebaseAuth mAuth;
 
-    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,14 +46,10 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = getIntent();
         boolean isReturn = intent.getBooleanExtra("isReturn",false);
         isReturn2 = isReturn;
-        ids = MainActivity.getTripList();
-        for (int i = 0; i < ids.size(); i++) {
-            if (ids.isEmpty()) {
-                System.out.println("ifin içindeyik");
-                break;
-            }
-            System.out.println(ids.get(i).toString());
-            System.out.println("selamun aleyküm");
+        Trips = MainActivity.getTripList();
+        mAuth=FirebaseAuth.getInstance();
+        if (Trips.isEmpty()) {
+            System.out.println("Trip Activitydeki Tripler Boş");
         }
         layout = findViewById(R.id.layoutTrip);
         LinearLayout layoutSeat = new LinearLayout(this);
@@ -73,21 +68,16 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
         layoutSeat.addView(textview);
         layout.addView(layoutSeat);
         mTrips = FirebaseDatabase.getInstance().getReference("Trips");
-        /*Query queryy = mTrips.orderByChild("tripid").equalTo(ids.get(0));
-        queryy.addListenerForSingleValueEvent(valueEventListener);
-        Query queryy1 = mTrips.orderByChild("tripid").equalTo(ids.get(0));
-        queryy1.addListenerForSingleValueEvent(valueEventListener);
-        */
-        System.out.println(isReturn2+"Trippp"+isReturn);
+
         LinearLayout layout = null;
-        for (int index = 0; index < ids.size(); index++) {
+        for (int index = 0; index < Trips.size(); index++) {
 
             count++;
             layout = new LinearLayout(this);
             layout.setOrientation(LinearLayout.VERTICAL);
             layoutSeat.addView(layout);
             CardView view = new CardView(this);
-            @SuppressLint("UseCompatLoadingForDrawables") Drawable myDrawable = getResources().getDrawable(R.drawable.home_gradient_maths);
+            Drawable myDrawable = getResources().getDrawable(R.drawable.home_gradient_maths);
             view.setBackground(myDrawable);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             layoutParams.setMargins(5, 30, 5, 30);
@@ -120,7 +110,7 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             textview = new TextView(this);
             LinearLayout.LayoutParams textParams3 = new LinearLayout.LayoutParams(900, 200);
             textview.setLayoutParams(textParams3);
-            textview.setText("From: "+ids.get(index).getFrom());
+            textview.setText("From: "+Trips.get(index).getFrom());
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.BLACK);
             textview.setPadding(5, 5, 5, 5);
@@ -130,7 +120,7 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             textview = new TextView(this);
             LinearLayout.LayoutParams textParams4 = new LinearLayout.LayoutParams(900, 350);
             textview.setLayoutParams(textParams4);
-            textview.setText("To :"+ids.get(index).getTo());
+            textview.setText("To :"+Trips.get(index).getTo());
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.BLACK);
             textview.setPadding(5, 5, 5, 5);
@@ -140,7 +130,7 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             textview = new TextView(this);
             LinearLayout.LayoutParams textParams5 = new LinearLayout.LayoutParams(650, 680);
             textview.setLayoutParams(textParams5);
-            textview.setText("Travel Time:"+ids.get(index).getTime());
+            textview.setText("Travel Time:"+Trips.get(index).getTime());
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.BLACK);
             textview.setPadding(5, 5, 5, 5);
@@ -150,7 +140,7 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             imageView = new ImageView(this);
             LinearLayout.LayoutParams imgParams1 = new LinearLayout.LayoutParams(550, 220);
             imageView.setLayoutParams(imgParams1);
-            @SuppressLint("UseCompatLoadingForDrawables") Drawable myDrawable2 = getResources().getDrawable(R.drawable.ic_three_dots);
+            Drawable myDrawable2 = getResources().getDrawable(R.drawable.ic_three_dots);
             imgParams1.setMargins(0, 30, 0, 30);
             imageView.setPadding(0, 50, 0, 50);
             imageView.setImageDrawable(myDrawable2);
@@ -159,7 +149,7 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             imageView = new ImageView(this);
             LinearLayout.LayoutParams imgParams2 = new LinearLayout.LayoutParams(1500, 250);
             imageView.setLayoutParams(imgParams2);
-            @SuppressLint("UseCompatLoadingForDrawables") Drawable myDrawable3 = getResources().getDrawable(R.drawable.ic_bus_256);
+            Drawable myDrawable3 = getResources().getDrawable(R.drawable.ic_bus_256);
             imageView.setImageDrawable(myDrawable3);
             view.addView(imageView);
 
@@ -167,7 +157,7 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             LinearLayout.LayoutParams textParams6 = new LinearLayout.LayoutParams(400, 150);
             textview.setLayoutParams(textParams6);
             textview.setText("Select");
-            @SuppressLint("UseCompatLoadingForDrawables") Drawable myDrawable4 = getResources().getDrawable(R.drawable.ic_button_round);
+            Drawable myDrawable4 = getResources().getDrawable(R.drawable.ic_button_round);
             textview.setBackground(myDrawable4);
             textParams6.setMargins(500, 470, 500, 0);
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
@@ -182,18 +172,22 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
+
     @Override
     public void onClick(View view) {
         int in = view.getId();
+
         Toast.makeText(this, "Trip " + in + " is Selected", Toast.LENGTH_SHORT).show();
         if (isReturn2) {
             Intent intent = new Intent(this, ReturnTripActivity.class);
             intent.putExtra("id", in);
             intent.putExtra("isReturn", isReturn2);
+            intent.putExtra("TripID" , Trips.get(in-1).getTripid());
             startActivity(intent);
         } else {
             Intent intent = new Intent(this, SelectSeatActivity.class);
-
+            intent.putExtra("TripID" , Trips.get(in-1).getTripid());
             intent.putExtra("id", in);
             intent.putExtra("isReturn", isReturn2);
             startActivity(intent);

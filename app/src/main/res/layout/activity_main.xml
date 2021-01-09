@@ -10,7 +10,7 @@
 
 
     <Button
-        android:id="@+id/loginButton5"
+        android:id="@+id/selectButton"
         android:layout_width="0dp"
         android:layout_height="25dp"
         android:layout_marginTop="16dp"
@@ -70,7 +70,7 @@
         android:text="Sign Up"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/loginButton5"
+        app:layout_constraintEnd_toStartOf="@+id/selectButton"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView

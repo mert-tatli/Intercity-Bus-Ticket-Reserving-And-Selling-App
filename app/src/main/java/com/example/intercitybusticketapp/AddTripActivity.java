@@ -61,8 +61,18 @@ public class AddTripActivity extends AppCompatActivity {
             mDatabase.child("Trips").child(tripid1).child("time").setValue(time1);
             mDatabase.child("Trips").child(tripid1).child("date").setValue(date1);
             mDatabase.child("Trips").child(tripid1).child("price").setValue(price1);
-
-
+            mDatabase.child("Trips").child(tripid1).child("TripSeats").child("Seat").setValue("AA___AA/"
+                    + "AA___AA/"
+                    + "AA___AA/"
+                    + "AA___AA/"
+                    + "AA___AA/"
+                    + "AA___AA/"
+                    + "AA___AA/"
+                    + "AA___AA/"
+                    + "AA___AA/"
+                    + "AA___AA/"
+                    + "AA___AA/"
+                    + "AA___AA/");
         }
     }
 }

@@ -28,7 +28,7 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
     int count = 0;
     List<Trip> arr;
     boolean isReturn;
-
+    String TripId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,10 +51,9 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
 
         Intent intent = getIntent();
         isReturn = intent.getBooleanExtra("isReturn",false);
-        System.out.println(isReturn+"Returndayık");
         layoutSeat.addView(textview);
         layout.addView(layoutSeat);
-
+        TripId = intent.getStringExtra("TripID");
 
         LinearLayout layout = null;
         for (int index = 0; index < arr.size(); index++) {
@@ -169,6 +168,8 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
         Intent intent = new Intent(this, SelectSeatActivity.class);
         intent.putExtra("id", in);
         intent.putExtra("isReturn", isReturn);
+        intent.putExtra("ReturnTripID" , arr.get(in-1).getTripid());
+        intent.putExtra("TripID",TripId);
         startActivity(intent);
     }
 

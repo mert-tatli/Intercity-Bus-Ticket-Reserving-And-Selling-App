@@ -73,7 +73,6 @@ public class RegisterActivity extends AppCompatActivity {
             } else {
                 System.out.println(gender);
                 User usr = new User(id1, name1, surname1, gender, phone1, birthday1, email1, password1);
-                // userModel.setUsers(usr);
                 mAuth.createUserWithEmailAndPassword(email1, password1).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
