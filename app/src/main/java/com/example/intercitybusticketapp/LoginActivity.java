@@ -6,8 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -20,36 +18,38 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class LoginActivity extends AppCompatActivity implements Observer {
-        EditText InputId;
-        EditText passwordLogin;
-        FirebaseAuth mAuth;
+    EditText InputId;
+    EditText passwordLogin;
+    FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         InputId = findViewById(R.id.inputId);
         passwordLogin = findViewById(R.id.inputPassword);
-        mAuth=FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
     }
-    public void signUp(View view){
 
-        Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
+    public void signUp(View view) {
+
+        Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
         startActivity(intent);
         finish();
     }
-    public  void loginButton(View view){
+
+    public void loginButton(View view) {
         String id = InputId.getText().toString();
         String password = passwordLogin.getText().toString();
-        mAuth.signInWithEmailAndPassword(id,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        mAuth.signInWithEmailAndPassword(id, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     System.out.println(mAuth.getCurrentUser().getUid());
-                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
-                }
-                else {
+                } else {
                     System.out.println("Kullanıcı sistemde kayıtlı değil.");
                     Toast.makeText(LoginActivity.this, "Kullanıcı sistemde kayıtlı değil.", Toast.LENGTH_LONG).show();
                 }
@@ -58,8 +58,8 @@ public class LoginActivity extends AppCompatActivity implements Observer {
 
     }
 
-    public void backbutton(View view){
-        Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+    public void backbutton(View view) {
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
     }
@@ -68,7 +68,6 @@ public class LoginActivity extends AppCompatActivity implements Observer {
     public void update(Observable o, Object arg) {
 
     }
-
 
 
 }

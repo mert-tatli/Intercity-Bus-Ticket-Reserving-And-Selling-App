@@ -2,6 +2,7 @@ package com.example.intercitybusticketapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -47,6 +48,7 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
     String selectedIds = "";
     boolean isReturn2;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

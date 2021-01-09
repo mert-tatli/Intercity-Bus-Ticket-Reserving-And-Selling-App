@@ -4,11 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -17,12 +17,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -34,37 +31,32 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
     public static final String DATE_DIALOG_1 = "datePicker1";
+    @SuppressLint("StaticFieldLeak")
     static Button departureDate;
     private static int mYear1;
     private static int mMonth1;
     private static int mDay1;
     public static final String DATE_DIALOG_2 = "datePicker2";
+    @SuppressLint("StaticFieldLeak")
     static Button returnDate;
-    private static int mYear2;
-    private static int mMonth2;
-    private static int mDay2;
     private boolean isReturn = false;
-    private RadioButton round, oneway;
     private String option = "Round";
     private CheckBox reservation;
-    private Spinner s1, s2;
     private boolean reserve = false;
     private String from, to;
     private String departdate, returndate;
-    private DatabaseReference mDatabase;
-    private DatabaseReference mTrips;
     private static List<Trip> tripList;
     private static List<Trip> tripsReturn;
     FirebaseUser User;
     FirebaseAuth mAuth;
     String[] arraySpinner = new String[]{"Select the City", "Adana", "Adiyaman", "Afyon", "Agri", "Aksaray", "Amasya", "Ankara", "Antalya", "Ardahan", "Artvin", "Aydin", "Balikesir", "Bartin", "Batman", "Bayburt", "Bilecik", "Bingol", "Bitlis", "Bolu", "Burdur", "Bursa", "Canakkale", "Cankiri", "Corum", "Denizli", "Diyarbakir", "Duzce", "Edirne", "Elazig", "Erzincan", "Erzurum", "Eskisehir", "Gaziantep", "Giresun", "Gumushane", "Hakkari", "Hatay", "Igdir", "Isparta", "Istanbul", "Izmir", "Kahramanmaras",
             "Karabuk", "Karaman", "Kars", "Kastamonu", "Kayseri", "Kilis", "Kirikkale", "Kirklareli", "Kirsehir", "Kocaeli", "Konya", "Kutahya", "Malatya", "Manisa", "Mardin", "Mersin", "Mugla", "Mus", "Nevsehir", "Nigde", "Ordu", "Osmaniye", "Rize", "Sakarya", "Samsun", "Sanliurfa", "Siirt", "Sinop", "Sirnak", "Sivas", "Tekirdag", "Tokat", "Trabzon", "Tunceli", "Usak", "Van", "Yalova", "Yozgat", "Zonguldak"};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,18 +66,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         tripList = new ArrayList<>();
         tripsReturn = new ArrayList<>();
-        round = findViewById(R.id.roundRadioButton);
-        oneway = findViewById(R.id.oneWayRadioButton);
+        RadioButton round = findViewById(R.id.roundRadioButton);
+        RadioButton oneway = findViewById(R.id.oneWayRadioButton);
         reservation = findViewById(R.id.reservation);
         mAuth = FirebaseAuth.getInstance();
-        FirebaseUser User = mAuth.getCurrentUser();
-        if (User != null) {
+        User = mAuth.getCurrentUser();
+      /*  if (User != null) {
             System.out.println("Current User:");
             System.out.println(User.getEmail());
             System.out.println(User.getUid());
-        }
-        s1 = findViewById(R.id.spinner);
-        s2 = findViewById(R.id.spinner2);
+        }*/
+        Spinner s1 = findViewById(R.id.spinner);
+        Spinner s2 = findViewById(R.id.spinner2);
 
         s1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -136,11 +128,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void isReservation(View view) {
-        if (reservation.isChecked()) {
-            reserve = true;
-        } else {
-            reserve = false;
-        }
+        reserve = reservation.isChecked();
     }
 
     public void signmain(View view) {
@@ -171,7 +159,9 @@ public class MainActivity extends AppCompatActivity {
 
 
             reserve = reservation.isChecked();
-            if (reserve == false) { // burda kullanıcı ise , && ile kontrol edilmeli ,, (Sorgu yaparken iki date demek iki trip demek)
+            DatabaseReference mTrips;
+            DatabaseReference mDatabase;
+            if (!reserve) { // burda kullanıcı ise , && ile kontrol edilmeli ,, (Sorgu yaparken iki date demek iki trip demek)
                 // dönüş için from --> to  , , , to--> from olucak   (2. trip yani)
                 // burda veritabınında trip varmı diye kontrol edilip ona göre yönlendirilmesi lazım
 
@@ -180,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println("To: "+ to);
                 System.out.println("departure Date: "+ departdate);
                 System.out.println("Length of DepartDate :" + departdate.length()); */
-                mDatabase = FirebaseDatabase.getInstance().getReference();
+               // mDatabase = FirebaseDatabase.getInstance().getReference();
                 mTrips = FirebaseDatabase.getInstance().getReference("Trips");
                 Query query2 = mTrips.orderByChild("to").equalTo(from);
                 query2.addListenerForSingleValueEvent(valueEventListener1);
@@ -188,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                 query1.addListenerForSingleValueEvent(valueEventListener);
 
 
-            } else if (reserve == true) {  // USER DEĞİL İSE
+            } else {  // USER DEĞİL İSE
 
                 System.out.println("RESERVE İŞARETLİ");
 
@@ -199,13 +189,12 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent1);
                     finish();
                 }
-                mDatabase = FirebaseDatabase.getInstance().getReference();
+                //mDatabase = FirebaseDatabase.getInstance().getReference();
                 mTrips = FirebaseDatabase.getInstance().getReference("Trips");
+                Query query2 = mTrips.orderByChild("to").equalTo(from);
+                query2.addListenerForSingleValueEvent(valueEventListener1);
                 Query query1 = mTrips.orderByChild("from").equalTo(from);
                 query1.addListenerForSingleValueEvent(valueEventListener);
-
-            } else {
-
 
             }
         } else {
@@ -214,10 +203,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static List<Trip> getTripList() {
+
         return tripList;
     }
 
     public static List<Trip> getTripsReturn() {
+
         return tripsReturn;
     }
 
@@ -245,7 +236,6 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println(tripList.get(i).toString());
             }
 
-
             if (!isReturn) {
                 if (tripList.isEmpty()) {
                     System.out.println("Trip can not Found");
@@ -254,7 +244,18 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("247 deyiz");
                     Intent intent = new Intent(MainActivity.this, TripActivity.class);
                     intent.putExtra("isReturn", isReturn);
-//                    intent.putExtra("tripListt", (Parcelable) tripList);
+                    startActivity(intent);
+                    finish();
+                }
+            } else {
+                if (tripList.isEmpty() || tripsReturn.isEmpty()) {
+                    System.out.println("Trip can not Found");
+                    Toast.makeText(MainActivity.this, "Trip can not found!!", Toast.LENGTH_LONG).show();
+                } else if (!tripList.isEmpty() && !tripsReturn.isEmpty()) {
+                    System.out.println("290dayık");
+                    Intent intent = new Intent(MainActivity.this, TripActivity.class);
+                    intent.putExtra("isReturn", isReturn);
+                    //    intent.putExtra("tripsReturnn",tripsReturn.get(0).getTripid());
                     startActivity(intent);
                     finish();
                 }
@@ -291,19 +292,15 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < tripsReturn.size(); i++) {
                     System.out.println(tripsReturn.get(i).toString());
                 }
-                if (tripList.isEmpty()||tripsReturn.isEmpty()) {
 
-                    System.out.println("Trip can not Found");
-                    Toast.makeText(MainActivity.this, "Trip can not found!!", Toast.LENGTH_LONG).show();
-                }  else {
-                    System.out.println("290dayık");
-                    Intent intent = new Intent(MainActivity.this, TripActivity.class);
-                    intent.putExtra("isReturn", isReturn);
+            } /*else {
+                System.out.println("290dayık");
+                Intent intent = new Intent(MainActivity.this, TripActivity.class);
+                intent.putExtra("isReturn", isReturn);
                 //    intent.putExtra("tripsReturnn",tripsReturn.get(0).getTripid());
-                    startActivity(intent);
-                    finish();
-                }
-            }
+                startActivity(intent);
+                finish();
+            }*/
         }
 
 
@@ -316,6 +313,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static class DatePickerFragment1 extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
+        @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
@@ -330,6 +328,7 @@ public class MainActivity extends AppCompatActivity {
             return dpd;
         }
 
+        @SuppressLint("SetTextI18n")
         public void onDateSet(DatePicker view, int year, int month, int day) {
 
             mYear1 = year;
@@ -348,6 +347,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static class DatePickerFragment2 extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
+        @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
 
@@ -366,13 +366,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
-            mYear2 = year;
-            mMonth2 = month;
-            mDay2 = day;
             returnDate.setText(new StringBuilder()
-                    .append(mDay2).append("/")
-                    .append(mMonth2 + 1).append("/")
-                    .append(mYear2).append(""));
+                    .append(day).append("/")
+                    .append(month + 1).append("/")
+                    .append(year).append(""));
         }
     }
 
@@ -382,6 +379,7 @@ public class MainActivity extends AppCompatActivity {
         returnDate.setText("");
     }
 
+    @SuppressLint("SetTextI18n")
     public void onClickRoundRadio(View view) {
         option = "Round";
         returnDate.setVisibility(View.VISIBLE);

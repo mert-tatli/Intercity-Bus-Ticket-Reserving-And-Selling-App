@@ -1,8 +1,7 @@
 package com.example.intercitybusticketapp;
 
-import android.view.View;
 
-import java.util.ArrayList;
+import androidx.annotation.NonNull;
 
 public class Bus {
 
@@ -15,6 +14,7 @@ public class Bus {
 
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Bus{" +

@@ -3,6 +3,7 @@ package com.example.intercitybusticketapp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -38,6 +39,7 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<Trip> arr = new ArrayList<>();
     private List<Trip> ids;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +87,7 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             layout.setOrientation(LinearLayout.VERTICAL);
             layoutSeat.addView(layout);
             CardView view = new CardView(this);
-            Drawable myDrawable = getResources().getDrawable(R.drawable.home_gradient_maths);
+            @SuppressLint("UseCompatLoadingForDrawables") Drawable myDrawable = getResources().getDrawable(R.drawable.home_gradient_maths);
             view.setBackground(myDrawable);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             layoutParams.setMargins(5, 30, 5, 30);
@@ -148,7 +150,7 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             imageView = new ImageView(this);
             LinearLayout.LayoutParams imgParams1 = new LinearLayout.LayoutParams(550, 220);
             imageView.setLayoutParams(imgParams1);
-            Drawable myDrawable2 = getResources().getDrawable(R.drawable.ic_three_dots);
+            @SuppressLint("UseCompatLoadingForDrawables") Drawable myDrawable2 = getResources().getDrawable(R.drawable.ic_three_dots);
             imgParams1.setMargins(0, 30, 0, 30);
             imageView.setPadding(0, 50, 0, 50);
             imageView.setImageDrawable(myDrawable2);
@@ -157,7 +159,7 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             imageView = new ImageView(this);
             LinearLayout.LayoutParams imgParams2 = new LinearLayout.LayoutParams(1500, 250);
             imageView.setLayoutParams(imgParams2);
-            Drawable myDrawable3 = getResources().getDrawable(R.drawable.ic_bus_256);
+            @SuppressLint("UseCompatLoadingForDrawables") Drawable myDrawable3 = getResources().getDrawable(R.drawable.ic_bus_256);
             imageView.setImageDrawable(myDrawable3);
             view.addView(imageView);
 
@@ -165,7 +167,7 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             LinearLayout.LayoutParams textParams6 = new LinearLayout.LayoutParams(400, 150);
             textview.setLayoutParams(textParams6);
             textview.setText("Select");
-            Drawable myDrawable4 = getResources().getDrawable(R.drawable.ic_button_round);
+            @SuppressLint("UseCompatLoadingForDrawables") Drawable myDrawable4 = getResources().getDrawable(R.drawable.ic_button_round);
             textview.setBackground(myDrawable4);
             textParams6.setMargins(500, 470, 500, 0);
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
@@ -179,26 +181,6 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             view.setOnClickListener(this);
         }
     }
-
-    ValueEventListener valueEventListener = new ValueEventListener() {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-            arr.clear();
-            if (dataSnapshot.exists()) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Trip trip = snapshot.getValue(Trip.class);
-                    arr.add(trip);
-                }
-
-            }
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-            System.out.println(databaseError.getMessage());
-        }
-    };
-
 
     @Override
     public void onClick(View view) {

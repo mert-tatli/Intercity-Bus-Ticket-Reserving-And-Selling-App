@@ -2,6 +2,8 @@ package com.example.intercitybusticketapp;
 
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+
 public class Trip {
 
     private  String tripid;
@@ -23,6 +25,7 @@ public class Trip {
 
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Trip{" +
@@ -36,42 +39,52 @@ public class Trip {
     }
 
     public String getTripid() {
+
         return tripid;
     }
 
     public void setTripid(String tripid) {
+
         this.tripid = tripid;
     }
 
     public String getFrom() {
+
         return from;
     }
 
     public void setFrom(String from) {
+
         this.from = from;
     }
 
     public String getTo() {
+
         return to;
     }
 
     public void setTo(String to) {
+
         this.to = to;
     }
 
     public String getTime() {
+
         return time;
     }
 
     public void setTime(String time) {
+
         this.time = time;
     }
 
     public String getDate() {
+
         return date;
     }
 
     public void setDate(String date) {
+
         this.date = date;
     }
 

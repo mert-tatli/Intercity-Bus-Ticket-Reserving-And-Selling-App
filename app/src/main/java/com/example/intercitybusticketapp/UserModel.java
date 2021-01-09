@@ -12,6 +12,7 @@ public class UserModel {
     }
 
     public void setUsers(User user) {
+
         users.add(user);
     }
 }

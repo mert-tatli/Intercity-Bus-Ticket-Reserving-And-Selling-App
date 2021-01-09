@@ -26,18 +26,8 @@ public class DeleteTripActivity extends AppCompatActivity {
 
     public void deleteTrip(View view){
         String deleteTripIds = deleteTripId.getText().toString();
-       // System.out.println(deleteTripIds);
-       /* if(view.getId()==deleteTripButton.getId()){
-            deleteTripButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String deleteTripIds = deleteTripId.getText().toString();
-                    mDatabase.child("Trips").child(deleteTripIds).removeValue();
-                }
-            }); */
         mDatabase.child("Trips").child(deleteTripIds).setValue(null);
         Toast.makeText(DeleteTripActivity.this, "Trip deleted", Toast.LENGTH_LONG).show();
-
     }
 
 }
