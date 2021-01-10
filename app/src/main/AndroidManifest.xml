@@ -20,14 +20,15 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".SelectSeatActivity"></activity>
         <activity android:name=".TripActivity"></activity>
         <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".AdminActivity"></activity>
+        <activity android:name=".AdminActivity">
+
+        </activity>
         <activity android:name=".ReturnTripActivity"></activity>
         <activity android:name=".PaymentActivity"></activity>
         <activity android:name=".Selectseat2Activity"></activity>

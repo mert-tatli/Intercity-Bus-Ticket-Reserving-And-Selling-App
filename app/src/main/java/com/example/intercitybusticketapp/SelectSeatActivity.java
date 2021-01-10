@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -57,15 +59,16 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
             isReturn2 = intent.getBooleanExtra("isReturn",false);
             mSeats = FirebaseDatabase.getInstance().getReference("Trips");
 
+
+
             mSeats.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
                         seats = snapshot.child(tripId).child("TripSeats").child("Seat").getValue().toString();
+                        System.out.println("SelectSeats : " +seats);
                         layout = findViewById(R.id.layoutSeat);
-                        seats = "/" + seats;
-                        LinearLayout layoutSeat = new LinearLayout(SelectSeatActivity.this
-                        );
+                        LinearLayout layoutSeat = new LinearLayout(SelectSeatActivity.this);
                         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                         layoutSeat.setOrientation(LinearLayout.VERTICAL);
                         layoutSeat.setLayoutParams(params);
@@ -133,6 +136,8 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
                     Toast.makeText(SelectSeatActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
                 }
             });
+
+
         }
 
     @Override
@@ -169,21 +174,17 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
                     intent.putExtra("TripId", tripId);
                     intent.putIntegerArrayListExtra("selectedSeats",selectedSeats);
                     intent.putExtra("isReturn",isReturn2);
+                    intent.putExtra("roundTrip", seats);
                     startActivity(intent);
                     finish();
-
-
                 } else {
                     Intent intent = new Intent(this, PaymentActivity.class);
                     intent.putIntegerArrayListExtra("selectedSeats",selectedSeats);
                     intent.putExtra("TripId", tripId);
                     intent.putExtra("isReturn",isReturn2);
-
-
+                    intent.putExtra("oneWaySeats", seats);
                     startActivity(intent);
                     finish();
-
-
                 }
             }
             else {

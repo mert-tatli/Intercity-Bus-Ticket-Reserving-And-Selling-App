@@ -28,7 +28,7 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
     private ViewGroup layout;
 
     private String seats;
-
+    private String seatsFromSeatActivityOne;
 
 
     private ArrayList<Integer> seatOriantation = new ArrayList<>();
@@ -58,13 +58,13 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
         tripId = intent.getStringExtra("TripId");
         isReturn2 = intent.getBooleanExtra("isReturn",false);
         selectedSeats=intent.getIntegerArrayListExtra("selectedSeats");
-
+        seatsFromSeatActivityOne = intent.getStringExtra("roundTrip");
         mSeats = FirebaseDatabase.getInstance().getReference("Trips");
         mSeats.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    seats = snapshot.child(tripId).child("TripSeats").child("Seat").getValue().toString();
+                    seats = snapshot.child(returntripId).child("TripSeats").child("Seat").getValue().toString();
                     layout = findViewById(R.id.layoutSeat);
                     seats = "/" + seats;
                     LinearLayout layoutSeat = new LinearLayout(Selectseat2Activity.this
@@ -171,6 +171,8 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
             intent.putExtra("ReturnTripId", returntripId);
             intent.putExtra("TripId", tripId);
             intent.putExtra("isReturn",isReturn2);
+            intent.putExtra("selectSeatTwo",seats);
+            intent.putExtra("selectSeatOne",seatsFromSeatActivityOne);
             startActivity(intent);
             finish();
         }

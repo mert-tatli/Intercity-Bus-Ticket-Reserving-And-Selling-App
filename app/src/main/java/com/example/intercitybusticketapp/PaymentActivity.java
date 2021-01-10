@@ -1,5 +1,6 @@
 package com.example.intercitybusticketapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -19,7 +20,14 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
+import java.util.EventListener;
 
 
 public class PaymentActivity extends AppCompatActivity {
@@ -33,7 +41,11 @@ public class PaymentActivity extends AppCompatActivity {
     private  String tripId, returntripId;
     private ArrayList<Integer> selectedSeatsReturn = new ArrayList<>();
     private ArrayList<Integer> selectedSeats = new ArrayList<>();
-
+    int total=0;
+    private String selectSeatOne;
+    private String selectSeatOne1;
+    private String selectSeatTwo;
+    private DatabaseReference mTrips = FirebaseDatabase.getInstance().getReference("Trips");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,32 +61,46 @@ public class PaymentActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         isReturn2 = intent.getBooleanExtra("isReturn", false);
-        if(isReturn2){
+        if (isReturn2) {
             selectedSeatsReturn = intent.getIntegerArrayListExtra("selectedSeatsReturn");
             returntripId = intent.getStringExtra("ReturnTripId");
-        }
-        selectedSeats = intent.getIntegerArrayListExtra("selectedSeats");
-        tripId = intent.getStringExtra("TripId");
-
-
-        buySeats(); // alt tarafta değiştiği için
-
-        selectedSeats.addAll(selectedSeatsReturn);
-        ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_list_item_1, selectedSeats);
-        seatInfo.setAdapter(adapter);
-        price.setText("Price: ");//burada ayarlanacak... kaç bilet olduğuna göre
-
-    }
-
-
-    public void buySeats() {
-        for (int i = 0; i < selectedSeats.size(); i++) {
-            System.out.println(selectedSeats.get(i));
+            selectSeatTwo = intent.getStringExtra("selectSeatTwo");
+            selectSeatOne1 = intent.getStringExtra("selectSeatOne");
+            selectedSeats = intent.getIntegerArrayListExtra("selectedSeats");
+            tripId = intent.getStringExtra("TripId");
+        }else {
+            selectedSeats = intent.getIntegerArrayListExtra("selectedSeats");
+            tripId = intent.getStringExtra("TripId");
+            selectSeatOne = intent.getStringExtra("oneWaySeats");
         }
 
-        for (int i = 0; i < selectedSeatsReturn.size(); i++) {
-            System.out.println(selectedSeatsReturn.get(i));
-        }
+        System.out.println("Seat 1: " + selectSeatOne);
+        System.out.println("Seat 2: " + selectSeatTwo);
+
+
+        mTrips.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    if(!isReturn2) {
+                        total += selectedSeats.size() * Integer.parseInt(snapshot.child(tripId).child("price").getValue().toString());
+                    }else{
+                        total += selectedSeats.size() * Integer.parseInt(snapshot.child(tripId).child("price").getValue().toString());
+                        total += selectedSeatsReturn.size() * Integer.parseInt(snapshot.child(returntripId).child("price").getValue().toString());
+                    }
+                    selectedSeats.addAll(selectedSeatsReturn);
+                    ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(PaymentActivity.this, android.R.layout.simple_list_item_1, selectedSeats);
+                    seatInfo.setAdapter(adapter);
+                    price.setText("Price: "+ total + "₺");
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(PaymentActivity.this,error.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+
+
 
     }
 
@@ -86,20 +112,22 @@ public class PaymentActivity extends AppCompatActivity {
         String cvv1 = cvv.getText().toString();
 
         if (TextUtils.isEmpty(holderName1) || TextUtils.isEmpty(cardNumber1) || TextUtils.isEmpty(month1)||TextUtils.isEmpty(year1) || TextUtils.isEmpty(cvv1)){
-
-
                 Toast.makeText(PaymentActivity.this, "All the Informations Are Required", Toast.LENGTH_SHORT).show();
-
         }
         else{
+            if(isReturn2) {
+                mTrips.child(tripId).child("TripSeats").child("Seat").setValue(selectSeatOne1);
+                mTrips.child(returntripId).child("TripSeats").child("Seat").setValue(selectSeatTwo);
+            }
+            else{
+                mTrips.child(tripId).child("TripSeats").child("Seat").setValue(selectSeatOne);
+            }
             Toast.makeText(PaymentActivity.this, "The ticket(s) is paid. Have a Nice Trip", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(PaymentActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
 
         }
-
-
     }
 
 }
