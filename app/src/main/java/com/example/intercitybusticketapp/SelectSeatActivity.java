@@ -29,7 +29,7 @@ import java.util.List;
 public class SelectSeatActivity extends AppCompatActivity implements View.OnClickListener {
     private ViewGroup layout;
 
-    private String seats;
+    private String seats;//= "/UA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AU/"+ "AA___AA/"+ "UA___AA/"+ "AA___AA/ + \"AA___AA/ + \"AA___AA/";
 
     private ArrayList<Integer> seatOriantation = new ArrayList<>();
     private ArrayList<String> seatLocation = new ArrayList<>();
@@ -59,21 +59,19 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
             isReturn2 = intent.getBooleanExtra("isReturn",false);
             mSeats = FirebaseDatabase.getInstance().getReference("Trips");
 
+            layout = findViewById(R.id.layoutSeat);
+            LinearLayout layoutSeat = new LinearLayout(SelectSeatActivity.this);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutSeat.setOrientation(LinearLayout.VERTICAL);
+            layoutSeat.setLayoutParams(params);
+            layoutSeat.setPadding(8 * seatGaping, 8 * seatGaping, 8 * seatGaping, 8 * seatGaping);
+            layout.addView(layoutSeat);
 
-
-            mSeats.addValueEventListener(new ValueEventListener() {
+            mSeats.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if (snapshot.exists()) {
+                    if(snapshot.exists()){
                         seats = snapshot.child(tripId).child("TripSeats").child("Seat").getValue().toString();
-                        System.out.println("SelectSeats : " +seats);
-                        layout = findViewById(R.id.layoutSeat);
-                        LinearLayout layoutSeat = new LinearLayout(SelectSeatActivity.this);
-                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        layoutSeat.setOrientation(LinearLayout.VERTICAL);
-                        layoutSeat.setLayoutParams(params);
-                        layoutSeat.setPadding(8 * seatGaping, 8 * seatGaping, 8 * seatGaping, 8 * seatGaping);
-                        layout.addView(layoutSeat);
                         LinearLayout layout = null;
                         int count = 0;
                         for (int index = 0; index < seats.length(); index++) {
@@ -131,12 +129,12 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
                         }
                     }
                 }
+
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(SelectSeatActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
+
                 }
             });
-
 
         }
 

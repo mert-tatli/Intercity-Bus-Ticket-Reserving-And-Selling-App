@@ -60,20 +60,18 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
         selectedSeats=intent.getIntegerArrayListExtra("selectedSeats");
         seatsFromSeatActivityOne = intent.getStringExtra("roundTrip");
         mSeats = FirebaseDatabase.getInstance().getReference("Trips");
-        mSeats.addValueEventListener(new ValueEventListener() {
+        layout = findViewById(R.id.layoutSeat);
+        LinearLayout layoutSeat = new LinearLayout(Selectseat2Activity.this);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutSeat.setOrientation(LinearLayout.VERTICAL);
+        layoutSeat.setLayoutParams(params);
+        layoutSeat.setPadding(8 * seatGaping, 8 * seatGaping, 8 * seatGaping, 8 * seatGaping);
+        layout.addView(layoutSeat);
+        mSeats.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     seats = snapshot.child(returntripId).child("TripSeats").child("Seat").getValue().toString();
-                    layout = findViewById(R.id.layoutSeat);
-                    seats = "/" + seats;
-                    LinearLayout layoutSeat = new LinearLayout(Selectseat2Activity.this
-                    );
-                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                    layoutSeat.setOrientation(LinearLayout.VERTICAL);
-                    layoutSeat.setLayoutParams(params);
-                    layoutSeat.setPadding(8 * seatGaping, 8 * seatGaping, 8 * seatGaping, 8 * seatGaping);
-                    layout.addView(layoutSeat);
                     LinearLayout layout = null;
                     int count = 0;
                     for (int index = 0; index < seats.length(); index++) {

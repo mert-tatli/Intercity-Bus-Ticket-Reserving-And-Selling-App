@@ -118,6 +118,7 @@ public class PaymentActivity extends AppCompatActivity {
             if(isReturn2) {
                 mTrips.child(tripId).child("TripSeats").child("Seat").setValue(selectSeatOne1);
                 mTrips.child(returntripId).child("TripSeats").child("Seat").setValue(selectSeatTwo);
+
             }
             else{
                 mTrips.child(tripId).child("TripSeats").child("Seat").setValue(selectSeatOne);
