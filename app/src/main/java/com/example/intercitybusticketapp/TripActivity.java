@@ -37,7 +37,7 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
     private int count = 0;
     private DatabaseReference mTrips;
     private List<Trip> Trips;
-    FirebaseAuth mAuth;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

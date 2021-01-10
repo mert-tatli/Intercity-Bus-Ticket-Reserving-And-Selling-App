@@ -14,9 +14,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class AddBusActivity extends AppCompatActivity {
-    EditText plateNo;
-    EditText capacity;
-    BusModel busmodel;
+    private EditText plateNo;
+    private EditText capacity;
+    private BusModel busmodel;
     private DatabaseReference mDatabase;
 
     @Override

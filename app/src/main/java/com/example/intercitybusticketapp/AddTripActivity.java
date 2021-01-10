@@ -13,13 +13,13 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class AddTripActivity extends AppCompatActivity {
 
-    EditText tripid;
-    EditText from;
-    EditText to;
-    EditText time;
-    EditText date;
-    EditText price;
-    TripModel tripmodel;
+    private EditText tripid;
+    private EditText from;
+    private EditText to;
+    private EditText time;
+    private EditText date;
+    private EditText price;
+    private TripModel tripmodel;
     private DatabaseReference mDatabase;
 
     @Override

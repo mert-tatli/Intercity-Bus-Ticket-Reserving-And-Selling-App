@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -16,8 +17,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,13 +40,13 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     public static final String DATE_DIALOG_1 = "datePicker1";
     @SuppressLint("StaticFieldLeak")
-    static Button departureDate;
+    private static Button departureDate;
     private static int mYear1;
     private static int mMonth1;
     private static int mDay1;
     public static final String DATE_DIALOG_2 = "datePicker2";
     @SuppressLint("StaticFieldLeak")
-    static Button returnDate;
+    private static Button returnDate;
     private boolean isReturn = false;
     private String option = "Round";
     private CheckBox reservation;
@@ -52,12 +55,14 @@ public class MainActivity extends AppCompatActivity {
     private String departdate, returndate;
     private static List<Trip> tripList;
     private static List<Trip> tripsReturn;
-    FirebaseUser User;
-    FirebaseAuth mAuth;
-    DatabaseReference mTrips;
-    String[] arraySpinner = new String[]{"Select the City", "Adana", "Adiyaman", "Afyon", "Agri", "Aksaray", "Amasya", "Ankara", "Antalya", "Ardahan", "Artvin", "Aydin", "Balikesir", "Bartin", "Batman", "Bayburt", "Bilecik", "Bingol", "Bitlis", "Bolu", "Burdur", "Bursa", "Canakkale", "Cankiri", "Corum", "Denizli", "Diyarbakir", "Duzce", "Edirne", "Elazig", "Erzincan", "Erzurum", "Eskisehir", "Gaziantep", "Giresun", "Gumushane", "Hakkari", "Hatay", "Igdir", "Isparta", "Istanbul", "Izmir", "Kahramanmaras",
+    private Button logintext;
+    private TextView signup;
+    private ImageView userAccount;
+    private FirebaseUser User;
+    private FirebaseAuth mAuth;
+    private DatabaseReference mTrips;
+    private String[] arraySpinner = new String[]{"Select the City", "Adana", "Adiyaman", "Afyon", "Agri", "Aksaray", "Amasya", "Ankara", "Antalya", "Ardahan", "Artvin", "Aydin", "Balikesir", "Bartin", "Batman", "Bayburt", "Bilecik", "Bingol", "Bitlis", "Bolu", "Burdur", "Bursa", "Canakkale", "Cankiri", "Corum", "Denizli", "Diyarbakir", "Duzce", "Edirne", "Elazig", "Erzincan", "Erzurum", "Eskisehir", "Gaziantep", "Giresun", "Gumushane", "Hakkari", "Hatay", "Igdir", "Isparta", "Istanbul", "Izmir", "Kahramanmaras",
             "Karabuk", "Karaman", "Kars", "Kastamonu", "Kayseri", "Kilis", "Kirikkale", "Kirklareli", "Kirsehir", "Kocaeli", "Konya", "Kutahya", "Malatya", "Manisa", "Mardin", "Mersin", "Mugla", "Mus", "Nevsehir", "Nigde", "Ordu", "Osmaniye", "Rize", "Sakarya", "Samsun", "Sanliurfa", "Siirt", "Sinop", "Sirnak", "Sivas", "Tekirdag", "Tokat", "Trabzon", "Tunceli", "Usak", "Van", "Yalova", "Yozgat", "Zonguldak"};
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,19 +75,40 @@ public class MainActivity extends AppCompatActivity {
         tripsReturn = new ArrayList<>();
         RadioButton round = findViewById(R.id.roundRadioButton);
         RadioButton oneway = findViewById(R.id.oneWayRadioButton);
-        reservation = findViewById(R.id.reservation);
-        mAuth = FirebaseAuth.getInstance();
-        User = mAuth.getCurrentUser();
-        if (User != null) {
-            System.out.println("Current User:");
-            System.out.println(User.getEmail());
-            System.out.println(User.getUid());
-        }else{
-            System.out.println("No account has signed in!.");
-        }
 
         Spinner s1 = findViewById(R.id.spinner);
         Spinner s2 = findViewById(R.id.spinner2);
+        reservation = findViewById(R.id.reservation);
+        signup=findViewById(R.id.signUptext);
+        logintext=findViewById(R.id.selectButton);
+        userAccount=findViewById(R.id.userAccount);
+
+        mAuth = FirebaseAuth.getInstance();
+        User = mAuth.getCurrentUser();
+
+        if (User!=null) {
+            signup.setVisibility(View.INVISIBLE);
+            logintext.setVisibility(View.INVISIBLE);
+            userAccount.setVisibility(View.VISIBLE);
+
+        }else{
+
+            userAccount.setVisibility(View.INVISIBLE);
+            logintext.setVisibility(View.VISIBLE);
+            signup.setVisibility(View.VISIBLE);
+
+        }
+
+        userAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this,UserAccountActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
 
         s1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

@@ -25,27 +25,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Selectseat2Activity extends AppCompatActivity implements View.OnClickListener {
-    ViewGroup layout;
+    private ViewGroup layout;
 
-    String seats;
+    private String seats;
 
 
 
-    ArrayList<Integer> seatOriantation = new ArrayList<>();
-    ArrayList<String> seatLocation = new ArrayList<>();
-    List<TextView> seatViewList = new ArrayList<>();
-    ArrayList<Integer> selectedSeatsReturn = new ArrayList<>();
-    ArrayList<Integer> selectedSeats = new ArrayList<>();
-    int seatSize = 120;
-    int seatGaping = 10;
+    private ArrayList<Integer> seatOriantation = new ArrayList<>();
+    private ArrayList<String> seatLocation = new ArrayList<>();
+    private  List<TextView> seatViewList = new ArrayList<>();
+    private  ArrayList<Integer> selectedSeatsReturn = new ArrayList<>();
+    private  ArrayList<Integer> selectedSeats = new ArrayList<>();
+    private int seatSize = 120;
+    private  int seatGaping = 10;
 
-    int STATUS_AVAILABLE = 1;
-    int STATUS_BOOKED = 2;
-    int STATUS_RESERVED = 3;
-    String selectedIds = "";
-    boolean isReturn2;
-    String tripId,returntripId;
-    DatabaseReference mSeats;
+    private  int STATUS_AVAILABLE = 1;
+    private   int STATUS_BOOKED = 2;
+    private  int STATUS_RESERVED = 3;
+    private  String selectedIds = "";
+    private  boolean isReturn2;
+    private  String tripId,returntripId;
+    private  DatabaseReference mSeats;
 
 
     @Override
@@ -137,7 +137,6 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
             }
         });
     }
-
     @Override
     public void onClick(View view) {
         if ((int) view.getTag() == STATUS_AVAILABLE) {
@@ -152,7 +151,7 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
                 char[] myNameChars = seats.toCharArray();
                 myNameChars[seatOriantation.get(in - 1)] = 'U';
                 seats = String.valueOf(myNameChars);
-                Toast.makeText(this, "Seat " + seats.charAt(seatOriantation.get(in - 1)) + " is Selected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Seat " +  view.getId() + " is Selected", Toast.LENGTH_SHORT).show();
                 selectedSeatsReturn.add(view.getId());
 
             }
@@ -164,17 +163,24 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
     }
 
     public void selectSeat2(View v) {
-        Intent intent = new Intent(this, PaymentActivity.class);
-        intent.putIntegerArrayListExtra("selectedSeats",selectedSeats);
-        intent.putIntegerArrayListExtra("selectedSeatsReturn",selectedSeatsReturn);
-        intent.putExtra("ReturnTripId", returntripId);
-        intent.putExtra("TripId", tripId);
-        intent.putExtra("isReturn",isReturn2);
-        startActivity(intent);
-        finish();
+        if(selectedSeatsReturn.size()>0){
+
+            Intent intent = new Intent(this, PaymentActivity.class);
+            intent.putIntegerArrayListExtra("selectedSeats",selectedSeats);
+            intent.putIntegerArrayListExtra("selectedSeatsReturn",selectedSeatsReturn);
+            intent.putExtra("ReturnTripId", returntripId);
+            intent.putExtra("TripId", tripId);
+            intent.putExtra("isReturn",isReturn2);
+            startActivity(intent);
+            finish();
+        }
+        else{
+            Toast.makeText(this, "Choose at least one seat.", Toast.LENGTH_SHORT).show();
         }
 
     }
+
+}
 
 
 

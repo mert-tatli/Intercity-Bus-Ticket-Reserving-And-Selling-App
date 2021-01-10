@@ -25,25 +25,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SelectSeatActivity extends AppCompatActivity implements View.OnClickListener {
-    ViewGroup layout;
+    private ViewGroup layout;
 
-        String seats;
+    private String seats;
 
-        ArrayList<Integer> seatOriantation = new ArrayList<>();
-        ArrayList<String> seatLocation = new ArrayList<>();
-        List<TextView> seatViewList = new ArrayList<>();
-        ArrayList<Integer> selectedSeats = new ArrayList<>();
-        int seatSize = 120;
-        int seatGaping = 10;
+    private ArrayList<Integer> seatOriantation = new ArrayList<>();
+    private ArrayList<String> seatLocation = new ArrayList<>();
+    private List<TextView> seatViewList = new ArrayList<>();
+    private ArrayList<Integer> selectedSeats = new ArrayList<>();
+    private int seatSize = 120;
+    private int seatGaping = 10;
 
-        int STATUS_AVAILABLE = 1;
-        int STATUS_BOOKED = 2;
-        int STATUS_RESERVED = 3;
-        String selectedIds = "";
-        boolean isReturn2;
-        String tripId;
-        DatabaseReference mSeats;
-        String returnTripId;
+    private int STATUS_AVAILABLE = 1;
+    private  int STATUS_BOOKED = 2;
+    private  int STATUS_RESERVED = 3;
+    private  String selectedIds = "";
+    private  boolean isReturn2;
+    private  String tripId;
+    private DatabaseReference mSeats;
+    private  String returnTripId;
 
 
         @Override
@@ -162,28 +162,34 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void selectSeat1(View v) {
-        if (isReturn2) {
-            Intent intent = new Intent(this, Selectseat2Activity.class);
-            intent.putExtra("ReturnTripId", returnTripId);
-            intent.putExtra("TripId", tripId);
-            intent.putIntegerArrayListExtra("selectedSeats",selectedSeats);
-            intent.putExtra("isReturn",isReturn2);
-            startActivity(intent);
-            finish();
+            if(selectedSeats.size()>0){
+                if (isReturn2) {
+                    Intent intent = new Intent(this, Selectseat2Activity.class);
+                    intent.putExtra("ReturnTripId", returnTripId);
+                    intent.putExtra("TripId", tripId);
+                    intent.putIntegerArrayListExtra("selectedSeats",selectedSeats);
+                    intent.putExtra("isReturn",isReturn2);
+                    startActivity(intent);
+                    finish();
 
 
-        } else {
-            Intent intent = new Intent(this, PaymentActivity.class);
-            intent.putIntegerArrayListExtra("selectedSeats",selectedSeats);
-            intent.putExtra("TripId", tripId);
-            intent.putExtra("isReturn",isReturn2);
+                } else {
+                    Intent intent = new Intent(this, PaymentActivity.class);
+                    intent.putIntegerArrayListExtra("selectedSeats",selectedSeats);
+                    intent.putExtra("TripId", tripId);
+                    intent.putExtra("isReturn",isReturn2);
 
 
-            startActivity(intent);
-            finish();
+                    startActivity(intent);
+                    finish();
 
 
-        }
+                }
+            }
+            else {
+                Toast.makeText(this, "Choose at least one seat.", Toast.LENGTH_SHORT).show();
+            }
+
 
     }
 

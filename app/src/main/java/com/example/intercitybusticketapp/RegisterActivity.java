@@ -24,14 +24,14 @@ import com.google.firebase.database.FirebaseDatabase;
 
 
 public class RegisterActivity extends AppCompatActivity {
-    Button buttonSign;
-    EditText id, name, surname, phone, birthday, email, password;
+    private Button buttonSign;
+    private EditText id, name, surname, phone, birthday, email, password;
 
-    RadioButton male, female;
-    CheckBox terms;
-    String gender;
-    UserModel userModel;
-    FirebaseAuth mAuth;
+    private RadioButton male, female;
+    private CheckBox terms;
+    private String gender;
+    private UserModel userModel;
+    private  FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
 
     @Override

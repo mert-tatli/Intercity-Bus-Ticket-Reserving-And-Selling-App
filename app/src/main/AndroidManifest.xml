@@ -11,48 +11,26 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
-        <activity android:name=".DeleteBusActivity">
-
-        </activity>
-        <activity android:name=".AddBusActivity">
-
-        </activity>
-        <activity android:name=".DeleteTripActivity">
-
-        </activity>
-        <activity android:name=".AddTripActivity">
-
-        </activity>
-        <activity android:name=".RegisterActivity">
-
-        </activity>
+        <activity android:name=".UserAccountActivity"></activity>
+        <activity android:name=".DeleteBusActivity"></activity>
+        <activity android:name=".AddBusActivity"></activity>
+        <activity android:name=".DeleteTripActivity"></activity>
+        <activity android:name=".AddTripActivity"></activity>
+        <activity android:name=".RegisterActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SelectSeatActivity">
-
-        </activity>
-        <activity android:name=".TripActivity">
-
-        </activity>
-        <activity android:name=".LoginActivity">
-
-        </activity>
-        <activity android:name=".AdminActivity">
-
-        </activity>
-        <activity android:name=".ReturnTripActivity">
-
-        </activity>
-        <activity android:name=".PaymentActivity">
-
-        </activity>
-        <activity android:name=".Selectseat2Activity">
-
-        </activity>
+        <activity android:name=".SelectSeatActivity"></activity>
+        <activity android:name=".TripActivity"></activity>
+        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".AdminActivity"></activity>
+        <activity android:name=".ReturnTripActivity"></activity>
+        <activity android:name=".PaymentActivity"></activity>
+        <activity android:name=".Selectseat2Activity"></activity>
     </application>
 
 </manifest>

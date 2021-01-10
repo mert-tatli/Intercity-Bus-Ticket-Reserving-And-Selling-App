@@ -12,8 +12,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class DeleteTripActivity extends AppCompatActivity {
-    EditText deleteTripId;
-    Button deleteTripButton;
+    private EditText deleteTripId;
+    private Button deleteTripButton;
     private DatabaseReference mDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -21,14 +21,14 @@ import java.util.List;
 
 
 public class ReturnTripActivity extends AppCompatActivity implements View.OnClickListener {
-    TextView textview;
-    ImageView imageView;
-    ViewGroup layout;
-    int tripGaping = 10;
-    int count = 0;
-    List<Trip> arr;
-    boolean isReturn;
-    String TripId;
+    private TextView textview;
+    private ImageView imageView;
+    private ViewGroup layout;
+    private int tripGaping = 10;
+    private int count = 0;
+    private List<Trip> arr;
+    private boolean isReturn;
+    private String TripId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

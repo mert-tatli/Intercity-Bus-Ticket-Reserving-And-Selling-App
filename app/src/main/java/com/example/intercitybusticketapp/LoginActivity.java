@@ -19,9 +19,9 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class LoginActivity extends AppCompatActivity implements Observer {
-    EditText InputId;
-    EditText passwordLogin;
-    FirebaseAuth mAuth;
+    private EditText InputId;
+    private EditText passwordLogin;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

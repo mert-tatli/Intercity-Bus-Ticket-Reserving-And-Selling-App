@@ -30,9 +30,9 @@ public class PaymentActivity extends AppCompatActivity {
     private int tripGaping = 10;
     private int count = 0;
     boolean isReturn2;
-    String tripId, returntripId;
-    ArrayList<Integer> selectedSeatsReturn = new ArrayList<>();
-    ArrayList<Integer> selectedSeats = new ArrayList<>();
+    private  String tripId, returntripId;
+    private ArrayList<Integer> selectedSeatsReturn = new ArrayList<>();
+    private ArrayList<Integer> selectedSeats = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +48,14 @@ public class PaymentActivity extends AppCompatActivity {
         price = findViewById(R.id.textPrice);
 
         Intent intent = getIntent();
-        selectedSeats = intent.getIntegerArrayListExtra("selectedSeats");
-        selectedSeatsReturn = intent.getIntegerArrayListExtra("selectedSeatsReturn");
-        returntripId = intent.getStringExtra("ReturnTripId");
-        tripId = intent.getStringExtra("TripId");
         isReturn2 = intent.getBooleanExtra("isReturn", false);
+        if(isReturn2){
+            selectedSeatsReturn = intent.getIntegerArrayListExtra("selectedSeatsReturn");
+            returntripId = intent.getStringExtra("ReturnTripId");
+        }
+        selectedSeats = intent.getIntegerArrayListExtra("selectedSeats");
+        tripId = intent.getStringExtra("TripId");
+
 
         buySeats(); // alt tarafta değiştiği için
 

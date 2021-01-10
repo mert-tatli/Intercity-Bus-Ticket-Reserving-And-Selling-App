@@ -12,8 +12,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class DeleteBusActivity extends AppCompatActivity {
-    EditText deletebusId;
-    Button deletebusButton;
+    private  EditText deletebusId;
+    private Button deletebusButton;
     private DatabaseReference mDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
