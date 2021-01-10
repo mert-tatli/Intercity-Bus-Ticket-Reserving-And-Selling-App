@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -25,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class RegisterActivity extends AppCompatActivity {
     Button buttonSign;
     EditText id, name, surname, phone, birthday, email, password;
+
     RadioButton male, female;
     CheckBox terms;
     String gender;
@@ -51,6 +53,8 @@ public class RegisterActivity extends AppCompatActivity {
         buttonSign = findViewById(R.id.buttonSignUp);
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
+
     }
 
     public void backbutton1(View view) {
@@ -68,8 +72,13 @@ public class RegisterActivity extends AppCompatActivity {
             String birthday1 = birthday.getText().toString();
             String email1 = email.getText().toString();
             String password1 = password.getText().toString();
-            if (TextUtils.isEmpty(id1) || TextUtils.isEmpty(name1) || TextUtils.isEmpty(surname1) || TextUtils.isEmpty(phone1) || TextUtils.isEmpty(birthday1) || TextUtils.isEmpty(email1) || TextUtils.isEmpty(password1)) {
-                Toast.makeText(RegisterActivity.this, "All the Information Are Required", Toast.LENGTH_SHORT).show();
+
+
+
+
+            if (TextUtils.isEmpty(id1) || TextUtils.isEmpty(name1) || TextUtils.isEmpty(surname1) || TextUtils.isEmpty(phone1) || TextUtils.isEmpty(birthday1) || TextUtils.isEmpty(email1) || TextUtils.isEmpty(password1)
+            || password1.length()<6) {
+                Toast.makeText(RegisterActivity.this, "All the Information Are Required and CHECK the password length", Toast.LENGTH_SHORT).show();
             } else {
 
                 User usr = new User(id1, name1, surname1, gender, phone1, birthday1, email1, password1);

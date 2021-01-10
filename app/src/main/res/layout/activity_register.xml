@@ -74,6 +74,7 @@
 
             <EditText
                 android:id="@+id/idNumber"
+                android:maxLength="11"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginStart="32dp"
@@ -95,6 +96,7 @@
 
             <EditText
                 android:id="@+id/inputName"
+                android:maxLength="15"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginStart="32dp"
@@ -115,6 +117,7 @@
 
             <EditText
                 android:id="@+id/inputSurname"
+                android:maxLength="15"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginStart="32dp"
@@ -180,6 +183,7 @@
 
             <EditText
                 android:id="@+id/inputPhoneNo"
+                android:maxLength="13"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="32dp"
@@ -219,6 +223,7 @@
 
             <EditText
                 android:id="@+id/inputEmail"
+                android:maxLength="20"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="32dp"

@@ -22,15 +22,15 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-public class PaymentActivity extends AppCompatActivity{
+public class PaymentActivity extends AppCompatActivity {
 
     private TextView price;
-    private EditText holderName,cardNumber,month,year,cvv;
+    private EditText holderName, cardNumber, month, year, cvv;
     private ListView seatInfo;
     private int tripGaping = 10;
     private int count = 0;
     boolean isReturn2;
-    String tripId,returntripId;
+    String tripId, returntripId;
     ArrayList<Integer> selectedSeatsReturn = new ArrayList<>();
     ArrayList<Integer> selectedSeats = new ArrayList<>();
 
@@ -39,29 +39,64 @@ public class PaymentActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
 
-        seatInfo=findViewById(R.id.seatInfo);
-        holderName=findViewById(R.id.holderName);
-        cardNumber=findViewById(R.id.cardNumber);
-        month=findViewById(R.id.month);
-        year=findViewById(R.id.year);
-        cvv=findViewById(R.id.cvv);
-        price=findViewById(R.id.textPrice);
+        seatInfo = findViewById(R.id.seatInfo);
+        holderName = findViewById(R.id.holderName);
+        cardNumber = findViewById(R.id.cardNumber);
+        month = findViewById(R.id.month);
+        year = findViewById(R.id.year);
+        cvv = findViewById(R.id.cvv);
+        price = findViewById(R.id.textPrice);
 
-        Intent intent=getIntent();
-        selectedSeats=intent.getIntegerArrayListExtra("selectedSeats");
-        selectedSeatsReturn=intent.getIntegerArrayListExtra("selectedSeatsReturn");
-        returntripId=intent.getStringExtra("ReturnTripId");
-        tripId=intent.getStringExtra("TripId");
-        isReturn2=intent.getBooleanExtra("isReturn",false);
+        Intent intent = getIntent();
+        selectedSeats = intent.getIntegerArrayListExtra("selectedSeats");
+        selectedSeatsReturn = intent.getIntegerArrayListExtra("selectedSeatsReturn");
+        returntripId = intent.getStringExtra("ReturnTripId");
+        tripId = intent.getStringExtra("TripId");
+        isReturn2 = intent.getBooleanExtra("isReturn", false);
 
-        //fdfs
+        buySeats(); // alt tarafta değiştiği için
 
         selectedSeats.addAll(selectedSeatsReturn);
-        ArrayAdapter<Integer> adapter= new ArrayAdapter<Integer>(this, android.R.layout.simple_list_item_1, selectedSeats);
+        ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_list_item_1, selectedSeats);
         seatInfo.setAdapter(adapter);
-        price.setText("Price: "  );//burada ayarlanacak...
+        price.setText("Price: ");//burada ayarlanacak... kaç bilet olduğuna göre
 
     }
 
+
+    public void buySeats() {
+        for (int i = 0; i < selectedSeats.size(); i++) {
+            System.out.println(selectedSeats.get(i));
+        }
+
+        for (int i = 0; i < selectedSeatsReturn.size(); i++) {
+            System.out.println(selectedSeatsReturn.get(i));
+        }
+
+    }
+
+    public void onBuyClick(View view) {
+        String holderName1 = holderName.getText().toString();
+        String cardNumber1 = cardNumber.getText().toString();
+        String month1 = month.getText().toString();
+        String year1 = year.getText().toString();
+        String cvv1 = cvv.getText().toString();
+
+        if (TextUtils.isEmpty(holderName1) || TextUtils.isEmpty(cardNumber1) || TextUtils.isEmpty(month1)||TextUtils.isEmpty(year1) || TextUtils.isEmpty(cvv1)){
+
+
+                Toast.makeText(PaymentActivity.this, "All the Informations Are Required", Toast.LENGTH_SHORT).show();
+
+        }
+        else{
+            Toast.makeText(PaymentActivity.this, "The ticket(s) is paid. Have a Nice Trip", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(PaymentActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+
+        }
+
+
+    }
 
 }

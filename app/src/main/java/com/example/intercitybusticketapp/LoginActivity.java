@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -49,7 +50,13 @@ public class LoginActivity extends AppCompatActivity implements Observer {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
-                } else {
+                }
+
+                else if(TextUtils.isEmpty(id) || TextUtils.isEmpty(password) || password.length()<6){
+                    Toast.makeText(LoginActivity.this, "All the Information Are Required and CHECK the password length", Toast.LENGTH_SHORT).show();
+                }
+
+                else {
 
                     Toast.makeText(LoginActivity.this, "Kullanıcı sistemde kayıtlı değil.", Toast.LENGTH_LONG).show();
                 }
