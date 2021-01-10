@@ -9,15 +9,17 @@
 
     <Button
         android:id="@+id/toPayment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="125dp"
+        android:layout_height="50dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
+        android:background="@drawable/ic_button_round"
         android:onClick="selectSeat2"
-        android:text="Button"
+        android:text="Select"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -27,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="46dp">
+        tools:layout_editor_absoluteY="0dp">
 
         <HorizontalScrollView
             android:id="@+id/layoutSeat"

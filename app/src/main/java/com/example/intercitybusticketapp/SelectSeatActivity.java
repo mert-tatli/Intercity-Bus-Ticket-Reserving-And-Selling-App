@@ -29,8 +29,6 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
 
         String seats;
 
-
-
         ArrayList<Integer> seatOriantation = new ArrayList<>();
         ArrayList<String> seatLocation = new ArrayList<>();
         List<TextView> seatViewList = new ArrayList<>();
@@ -55,11 +53,8 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
 
             Intent intent = getIntent();
             returnTripId = intent.getStringExtra("ReturnTripID");
-            System.out.println("Select Seat Sayfası : " + returnTripId);
             tripId = intent.getStringExtra("TripID");
-            System.out.println(tripId);
             isReturn2 = intent.getBooleanExtra("isReturn",false);
-            System.out.println(isReturn2 + " SelectSeatActivity");
             mSeats = FirebaseDatabase.getInstance().getReference("Trips");
 
             mSeats.addValueEventListener(new ValueEventListener() {
@@ -67,10 +62,6 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
                         seats = snapshot.child(tripId).child("TripSeats").child("Seat").getValue().toString();
-                        System.out.println(seats);
-
-                        System.out.println(tripId);
-                        System.out.println("OTURMA PLANI :    "  + seats);
                         layout = findViewById(R.id.layoutSeat);
                         seats = "/" + seats;
                         LinearLayout layoutSeat = new LinearLayout(SelectSeatActivity.this
@@ -158,7 +149,8 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
                 char[] myNameChars = seats.toCharArray();
                 myNameChars[seatOriantation.get(in - 1)] = 'U';
                 seats = String.valueOf(myNameChars);
-                Toast.makeText(this, "Seat " + seats.charAt(seatOriantation.get(in - 1)) + " is Selected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Seat " +  view.getId() + " is Selected", Toast.LENGTH_SHORT).show();
+                //if(view.getId()==selectedSeats.get())
                 selectedSeats.add(view.getId());
 
             }
@@ -173,15 +165,23 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
         if (isReturn2) {
             Intent intent = new Intent(this, Selectseat2Activity.class);
             intent.putExtra("ReturnTripId", returnTripId);
+            intent.putExtra("TripId", tripId);
+            intent.putIntegerArrayListExtra("selectedSeats",selectedSeats);
+            intent.putExtra("isReturn",isReturn2);
             startActivity(intent);
             finish();
-            //intent.putIntegerArrayListExtra("selectedSeats",selectedSeats);
+
 
         } else {
             Intent intent = new Intent(this, PaymentActivity.class);
+            intent.putIntegerArrayListExtra("selectedSeats",selectedSeats);
+            intent.putExtra("TripId", tripId);
+            intent.putExtra("isReturn",isReturn2);
+
+
             startActivity(intent);
             finish();
-            // intent.putIntegerArrayListExtra("selectedSeats",selectedSeats);
+
 
         }
 

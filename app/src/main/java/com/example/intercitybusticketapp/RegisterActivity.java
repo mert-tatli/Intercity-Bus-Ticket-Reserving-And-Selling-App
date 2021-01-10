@@ -71,7 +71,7 @@ public class RegisterActivity extends AppCompatActivity {
             if (TextUtils.isEmpty(id1) || TextUtils.isEmpty(name1) || TextUtils.isEmpty(surname1) || TextUtils.isEmpty(phone1) || TextUtils.isEmpty(birthday1) || TextUtils.isEmpty(email1) || TextUtils.isEmpty(password1)) {
                 Toast.makeText(RegisterActivity.this, "All the Information Are Required", Toast.LENGTH_SHORT).show();
             } else {
-                System.out.println(gender);
+
                 User usr = new User(id1, name1, surname1, gender, phone1, birthday1, email1, password1);
                 mAuth.createUserWithEmailAndPassword(email1, password1).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override

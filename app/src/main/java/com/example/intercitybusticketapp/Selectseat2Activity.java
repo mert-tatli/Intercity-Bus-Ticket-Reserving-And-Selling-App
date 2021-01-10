@@ -34,6 +34,7 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
     ArrayList<Integer> seatOriantation = new ArrayList<>();
     ArrayList<String> seatLocation = new ArrayList<>();
     List<TextView> seatViewList = new ArrayList<>();
+    ArrayList<Integer> selectedSeatsReturn = new ArrayList<>();
     ArrayList<Integer> selectedSeats = new ArrayList<>();
     int seatSize = 120;
     int seatGaping = 10;
@@ -43,7 +44,7 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
     int STATUS_RESERVED = 3;
     String selectedIds = "";
     boolean isReturn2;
-    String tripId;
+    String tripId,returntripId;
     DatabaseReference mSeats;
 
 
@@ -53,21 +54,17 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_selectseat2);
 
         Intent intent = getIntent();
-        tripId = intent.getStringExtra("ReturnTripId");
-        System.out.println(tripId);
+        returntripId = intent.getStringExtra("ReturnTripId");
+        tripId = intent.getStringExtra("TripId");
         isReturn2 = intent.getBooleanExtra("isReturn",false);
-        System.out.println(isReturn2 + "   SelectSeatActivity");
-        mSeats = FirebaseDatabase.getInstance().getReference("Trips");
+        selectedSeats=intent.getIntegerArrayListExtra("selectedSeats");
 
+        mSeats = FirebaseDatabase.getInstance().getReference("Trips");
         mSeats.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     seats = snapshot.child(tripId).child("TripSeats").child("Seat").getValue().toString();
-                    System.out.println(seats);
-
-                    System.out.println(tripId);
-                    System.out.println("OTURMA PLANI :    "  + seats);
                     layout = findViewById(R.id.layoutSeat);
                     seats = "/" + seats;
                     LinearLayout layoutSeat = new LinearLayout(Selectseat2Activity.this
@@ -156,7 +153,7 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
                 myNameChars[seatOriantation.get(in - 1)] = 'U';
                 seats = String.valueOf(myNameChars);
                 Toast.makeText(this, "Seat " + seats.charAt(seatOriantation.get(in - 1)) + " is Selected", Toast.LENGTH_SHORT).show();
-                selectedSeats.add(view.getId());
+                selectedSeatsReturn.add(view.getId());
 
             }
         } else if ((int) view.getTag() == STATUS_BOOKED) {
@@ -168,6 +165,11 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
 
     public void selectSeat2(View v) {
         Intent intent = new Intent(this, PaymentActivity.class);
+        intent.putIntegerArrayListExtra("selectedSeats",selectedSeats);
+        intent.putIntegerArrayListExtra("selectedSeatsReturn",selectedSeatsReturn);
+        intent.putExtra("ReturnTripId", returntripId);
+        intent.putExtra("TripId", tripId);
+        intent.putExtra("isReturn",isReturn2);
         startActivity(intent);
         finish();
         }

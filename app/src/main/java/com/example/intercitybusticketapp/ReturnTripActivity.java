@@ -34,12 +34,17 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip);
         layout = findViewById(R.id.layoutTrip);
+
+
+        arr = MainActivity.getTripsReturn();
+
+
         LinearLayout layoutSeat = new LinearLayout(this);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutSeat.setOrientation(LinearLayout.VERTICAL);
         layoutSeat.setLayoutParams(params);
         layoutSeat.setPadding(4 * tripGaping, 4 * tripGaping, 4 * tripGaping, 4 * tripGaping);
-        arr = MainActivity.getTripsReturn();
+
         textview = new TextView(this);
         LinearLayout.LayoutParams textParams0 = new LinearLayout.LayoutParams(300, 200);
         textview.setLayoutParams(textParams0);
@@ -157,8 +162,6 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
             layout.addView(view);
             view.setOnClickListener(this);
         }
-
-
     }
 
     @Override
@@ -166,11 +169,11 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
         int in = view.getId();
         Toast.makeText(this, "Trip " + in + " is Selected", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, SelectSeatActivity.class);
-        intent.putExtra("id", in);
         intent.putExtra("isReturn", isReturn);
         intent.putExtra("ReturnTripID" , arr.get(in-1).getTripid());
         intent.putExtra("TripID",TripId);
         startActivity(intent);
+        finish();
     }
 
 

@@ -181,8 +181,6 @@ public class MainActivity extends AppCompatActivity {
 
             } else {  // USER DEĞİL İSE
 
-                System.out.println("RESERVE İŞARETLİ");
-
                 if (User == null) {
                     Toast.makeText(this, "To Make a Reservation Please First Login", Toast.LENGTH_LONG).show();
                     Intent intent1 = new Intent(MainActivity.this, LoginActivity.class);
@@ -236,7 +234,6 @@ public class MainActivity extends AppCompatActivity {
 
             if (!isReturn) {
                 if (tripList.isEmpty()) {
-                    System.out.println("Trip can not Found");
                     Toast.makeText(MainActivity.this, "Trip can not found!!", Toast.LENGTH_LONG).show();
                 } else {
                     Intent intent = new Intent(MainActivity.this, TripActivity.class);
@@ -246,7 +243,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             } else {
                 if (tripList.isEmpty() || tripsReturn.isEmpty()) {
-                    System.out.println("Trip can not Found");
                     Toast.makeText(MainActivity.this, "Trip can not found!!", Toast.LENGTH_LONG).show();
                 } else  {
                     Intent intent = new Intent(MainActivity.this, TripActivity.class);
@@ -282,12 +278,6 @@ public class MainActivity extends AppCompatActivity {
                         i--;
                     }
                 }
-                System.out.println("***********************************************************");
-                System.out.println("DÖNÜŞ TRİP BİLGİLERİ 280. SATIRDA");
-                for (int i = 0; i < tripsReturn.size(); i++) {
-                    System.out.println(tripsReturn.get(i).toString());
-                }
-
             }
         }
 

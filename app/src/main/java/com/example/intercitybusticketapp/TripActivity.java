@@ -48,9 +48,6 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
         isReturn2 = isReturn;
         Trips = MainActivity.getTripList();
         mAuth=FirebaseAuth.getInstance();
-        if (Trips.isEmpty()) {
-            System.out.println("Trip Activitydeki Tripler Boş");
-        }
         layout = findViewById(R.id.layoutTrip);
         LinearLayout layoutSeat = new LinearLayout(this);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -181,16 +178,16 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
         Toast.makeText(this, "Trip " + in + " is Selected", Toast.LENGTH_SHORT).show();
         if (isReturn2) {
             Intent intent = new Intent(this, ReturnTripActivity.class);
-            intent.putExtra("id", in);
             intent.putExtra("isReturn", isReturn2);
             intent.putExtra("TripID" , Trips.get(in-1).getTripid());
             startActivity(intent);
+            finish();
         } else {
             Intent intent = new Intent(this, SelectSeatActivity.class);
             intent.putExtra("TripID" , Trips.get(in-1).getTripid());
-            intent.putExtra("id", in);
             intent.putExtra("isReturn", isReturn2);
             startActivity(intent);
+            finish();
         }
 
 

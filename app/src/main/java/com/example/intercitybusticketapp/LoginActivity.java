@@ -45,12 +45,12 @@ public class LoginActivity extends AppCompatActivity implements Observer {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    System.out.println(mAuth.getCurrentUser().getUid());
+
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
                 } else {
-                    System.out.println("Kullanıcı sistemde kayıtlı değil.");
+
                     Toast.makeText(LoginActivity.this, "Kullanıcı sistemde kayıtlı değil.", Toast.LENGTH_LONG).show();
                 }
             }
