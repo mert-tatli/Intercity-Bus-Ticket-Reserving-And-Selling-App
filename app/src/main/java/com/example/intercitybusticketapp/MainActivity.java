@@ -108,8 +108,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
         s1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
@@ -171,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
     public void loginmain(View view) {
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
-        finish();
+
     }
 
     public void searchtrip(View view) {

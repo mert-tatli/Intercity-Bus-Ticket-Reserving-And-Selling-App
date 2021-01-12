@@ -82,7 +82,7 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
             textview = new TextView(this);
             LinearLayout.LayoutParams textParams1 = new LinearLayout.LayoutParams(300, 200);
             textview.setLayoutParams(textParams1);
-            textview.setText("18:30");
+            textview.setText("19:30");
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.BLACK);
             textview.setPadding(5, 5, 5, 5);
@@ -92,7 +92,7 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
             textview = new TextView(this);
             LinearLayout.LayoutParams textParams2 = new LinearLayout.LayoutParams(300, 350);
             textview.setLayoutParams(textParams2);
-            textview.setText("22:30");
+            textview.setText("23:30");
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.BLACK);
             textview.setPadding(5, 5, 5, 5);
@@ -122,7 +122,7 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
             textview = new TextView(this);
             LinearLayout.LayoutParams textParams5 = new LinearLayout.LayoutParams(650, 680);
             textview.setLayoutParams(textParams5);
-            textview.setText("Travel Time: " + arr.get(index).getTime());
+            textview.setText("Travel Time: " + arr.get(index).getTime()+"Hours");
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.BLACK);
             textview.setPadding(5, 5, 5, 5);

@@ -47,12 +47,15 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
     private  String tripId,returntripId;
     private  DatabaseReference mSeats;
 
+    private TextView backtoSeat;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selectseat2);
 
+        backtoSeat=findViewById(R.id.backtoSeat);
         Intent intent = getIntent();
         returntripId = intent.getStringExtra("ReturnTripId");
         tripId = intent.getStringExtra("TripId");
@@ -178,6 +181,11 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
             Toast.makeText(this, "Choose at least one seat.", Toast.LENGTH_SHORT).show();
         }
 
+    }
+    public void backToSeatselect(View view){
+        Intent intent =new Intent(Selectseat2Activity.this,SelectSeatActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }

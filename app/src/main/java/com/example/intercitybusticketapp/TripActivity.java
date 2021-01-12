@@ -127,7 +127,7 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             textview = new TextView(this);
             LinearLayout.LayoutParams textParams5 = new LinearLayout.LayoutParams(650, 680);
             textview.setLayoutParams(textParams5);
-            textview.setText("Travel Time:"+Trips.get(index).getTime());
+            textview.setText("Travel Time:"+Trips.get(index).getTime()+"Hours");
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.BLACK);
             textview.setPadding(5, 5, 5, 5);

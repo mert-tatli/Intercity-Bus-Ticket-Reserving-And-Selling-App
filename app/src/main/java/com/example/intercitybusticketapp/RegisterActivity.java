@@ -22,6 +22,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Calendar;
+import java.util.Date;
+
 
 public class RegisterActivity extends AppCompatActivity {
     private Button buttonSign;
@@ -73,42 +76,44 @@ public class RegisterActivity extends AppCompatActivity {
             String email1 = email.getText().toString();
             String password1 = password.getText().toString();
 
+            if(checkDate()){
+                if (TextUtils.isEmpty(id1) || TextUtils.isEmpty(name1) || TextUtils.isEmpty(surname1) || TextUtils.isEmpty(phone1) || TextUtils.isEmpty(birthday1) || TextUtils.isEmpty(email1) || TextUtils.isEmpty(password1)
+                        || password1.length()<6) {
+                    Toast.makeText(RegisterActivity.this, "All the Information Are Required and CHECK the password length", Toast.LENGTH_SHORT).show();
+                } else {
 
-
-
-            if (TextUtils.isEmpty(id1) || TextUtils.isEmpty(name1) || TextUtils.isEmpty(surname1) || TextUtils.isEmpty(phone1) || TextUtils.isEmpty(birthday1) || TextUtils.isEmpty(email1) || TextUtils.isEmpty(password1)
-            || password1.length()<6) {
-                Toast.makeText(RegisterActivity.this, "All the Information Are Required and CHECK the password length", Toast.LENGTH_SHORT).show();
-            } else {
-
-                User usr = new User(id1, name1, surname1, gender, phone1, birthday1, email1, password1);
-                mAuth.createUserWithEmailAndPassword(email1, password1).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(RegisterActivity.this, "User Created", Toast.LENGTH_LONG).show();
-                            mDatabase.child("users").child(id1).child("id").setValue(id1);
-                            mDatabase.child("users").child(id1).child("name").setValue(name1);
-                            mDatabase.child("users").child(id1).child("surname").setValue(surname1);
-                            mDatabase.child("users").child(id1).child("gender").setValue(gender);
-                            mDatabase.child("users").child(id1).child("phone").setValue(phone1);
-                            mDatabase.child("users").child(id1).child("birthday").setValue(birthday1);
-                            mDatabase.child("users").child(id1).child("email").setValue(email1);
-                            mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(RegisterActivity.this, "Verify your email address", Toast.LENGTH_LONG).show();
+                    User usr = new User(id1, name1, surname1, gender, phone1, birthday1, email1, password1);
+                    mAuth.createUserWithEmailAndPassword(email1, password1).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(RegisterActivity.this, "User Created", Toast.LENGTH_LONG).show();
+                                mDatabase.child("users").child(id1).child("id").setValue(id1);
+                                mDatabase.child("users").child(id1).child("name").setValue(name1);
+                                mDatabase.child("users").child(id1).child("surname").setValue(surname1);
+                                mDatabase.child("users").child(id1).child("gender").setValue(gender);
+                                mDatabase.child("users").child(id1).child("phone").setValue(phone1);
+                                mDatabase.child("users").child(id1).child("birthday").setValue(birthday1);
+                                mDatabase.child("users").child(id1).child("email").setValue(email1);
+                                mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(RegisterActivity.this, "Verify your email address", Toast.LENGTH_LONG).show();
+                                        }
                                     }
-                                }
-                            });
-                            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                            startActivity(intent);
+                                });
+                                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            }
                         }
-                    }
-                });
+                    });
 
 
+                }
+            }
+            else{
+                Toast.makeText(RegisterActivity.this, "Check Your Birth Date.", Toast.LENGTH_SHORT).show();
             }
         } else {
             Toast.makeText(RegisterActivity.this, "Please Accept the Terms And Conditions", Toast.LENGTH_SHORT).show();
@@ -127,6 +132,21 @@ public class RegisterActivity extends AppCompatActivity {
                 if (checked)
                     gender = "Female";
                 break;
+        }
+    }
+    public boolean checkDate(){
+       String[] birth= birthday.getText().toString().split("/");
+        int now=Calendar.getInstance().get(Calendar.YEAR);
+
+        int month= Integer.parseInt(birth[0]);
+        int day= Integer.parseInt(birth[1]);
+        int year= Integer.parseInt(birth[2]);
+
+        if ( year<= now-18 && month>0 && month<13 && day>0 && day<=31){
+                return true;
+        }
+        else{
+            return false;
         }
     }
 

@@ -19,25 +19,25 @@ public class AdminActivity extends AppCompatActivity {
 
         Intent intent = new Intent(AdminActivity.this,AddBusActivity.class);
         startActivity(intent);
-        finish();
+
     }
     public void addtrip(View view){
 
         Intent intent = new Intent(AdminActivity.this,AddTripActivity.class);
         startActivity(intent);
-        finish();
+
     }
     public void deletebus(View view){
 
         Intent intent = new Intent(AdminActivity.this,DeleteBusActivity.class);
         startActivity(intent);
-        finish();
+
     }
     public void deletetrip(View view){
 
         Intent intent = new Intent(AdminActivity.this,DeleteTripActivity.class);
         startActivity(intent);
-        finish();
+
     }
 
 }

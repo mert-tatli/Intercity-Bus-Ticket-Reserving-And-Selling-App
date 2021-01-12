@@ -87,6 +87,7 @@
                 android:drawableLeft="@drawable/ic_baseline_create"
                 android:drawablePadding="10dp"
                 android:ems="10"
+                android:digits="0123456789+"
                 android:hint="@string/national_id"
                 android:importantForAutofill="no"
                 android:inputType="text"
@@ -96,7 +97,7 @@
 
             <EditText
                 android:id="@+id/inputName"
-                android:maxLength="15"
+                android:maxLength="25"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginStart="32dp"
@@ -117,7 +118,7 @@
 
             <EditText
                 android:id="@+id/inputSurname"
-                android:maxLength="15"
+                android:maxLength="25"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginStart="32dp"
@@ -223,7 +224,7 @@
 
             <EditText
                 android:id="@+id/inputEmail"
-                android:maxLength="20"
+                android:maxLength="50"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="32dp"

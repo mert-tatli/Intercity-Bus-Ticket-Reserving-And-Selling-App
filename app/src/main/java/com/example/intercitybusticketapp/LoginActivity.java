@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.Observable;
 import java.util.Observer;
 
-public class LoginActivity extends AppCompatActivity implements Observer {
+public class LoginActivity extends AppCompatActivity {
     private EditText InputId;
     private EditText passwordLogin;
     private FirebaseAuth mAuth;
@@ -42,26 +42,35 @@ public class LoginActivity extends AppCompatActivity implements Observer {
     public void loginButton(View view) {
         String id = InputId.getText().toString();
         String password = passwordLogin.getText().toString();
-        mAuth.signInWithEmailAndPassword(id, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
+        if(id.equals("admin")&&password.equals("123456")){
+            Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        else{
 
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
+            mAuth.signInWithEmailAndPassword(id, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    else if(TextUtils.isEmpty(id) || TextUtils.isEmpty(password) || password.length()<6){
+                        Toast.makeText(LoginActivity.this, "All the Information Are Required and CHECK the password length", Toast.LENGTH_SHORT).show();
+                    }
+
+                    else {
+
+                        Toast.makeText(LoginActivity.this, "Kullanıcı sistemde kayıtlı değil.", Toast.LENGTH_LONG).show();
+                    }
                 }
+            });
+        }
 
-                else if(TextUtils.isEmpty(id) || TextUtils.isEmpty(password) || password.length()<6){
-                    Toast.makeText(LoginActivity.this, "All the Information Are Required and CHECK the password length", Toast.LENGTH_SHORT).show();
-                }
-
-                else {
-
-                    Toast.makeText(LoginActivity.this, "Kullanıcı sistemde kayıtlı değil.", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
 
     }
 
@@ -71,10 +80,6 @@ public class LoginActivity extends AppCompatActivity implements Observer {
         finish();
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-
-    }
 
 
 }

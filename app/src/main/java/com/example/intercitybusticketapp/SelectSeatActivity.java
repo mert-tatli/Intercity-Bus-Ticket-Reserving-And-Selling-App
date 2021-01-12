@@ -29,7 +29,7 @@ import java.util.List;
 public class SelectSeatActivity extends AppCompatActivity implements View.OnClickListener {
     private ViewGroup layout;
 
-    private String seats;//= "/UA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AU/"+ "AA___AA/"+ "UA___AA/"+ "AA___AA/ + \"AA___AA/ + \"AA___AA/";
+    private String seats;
 
     private ArrayList<Integer> seatOriantation = new ArrayList<>();
     private ArrayList<String> seatLocation = new ArrayList<>();
@@ -174,7 +174,7 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
                     intent.putExtra("isReturn",isReturn2);
                     intent.putExtra("roundTrip", seats);
                     startActivity(intent);
-                    finish();
+
                 } else {
                     Intent intent = new Intent(this, PaymentActivity.class);
                     intent.putIntegerArrayListExtra("selectedSeats",selectedSeats);

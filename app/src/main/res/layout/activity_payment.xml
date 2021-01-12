@@ -41,6 +41,7 @@
         android:drawableStart="@drawable/ic_baseline_create"
         android:drawablePadding="10dp"
         android:ems="10"
+        android:digits="0123456789+"
         android:hint="Card Number"
         android:inputType="textPersonName"
         android:padding="10dp"
