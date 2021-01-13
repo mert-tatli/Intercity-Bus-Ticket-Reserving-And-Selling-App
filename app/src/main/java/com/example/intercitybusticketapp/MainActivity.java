@@ -99,6 +99,12 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+        if(User!=null){
+            System.out.println(User.getDisplayName() +" nameeeeeeee");
+            System.out.println(User.getEmail());
+            System.out.println(User.getUid());
+        }
+
         userAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

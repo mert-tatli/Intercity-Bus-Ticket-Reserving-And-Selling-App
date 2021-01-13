@@ -1,12 +1,16 @@
 package com.example.intercitybusticketapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class UserAccountActivity extends AppCompatActivity {
@@ -35,5 +39,10 @@ public class UserAccountActivity extends AppCompatActivity {
         Intent intent = new Intent(UserAccountActivity.this,MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    public void changeMyPassword(View view){
+       Intent intent = new Intent(UserAccountActivity.this,PasswordChangeActivity.class);
+       startActivity(intent);
     }
 }

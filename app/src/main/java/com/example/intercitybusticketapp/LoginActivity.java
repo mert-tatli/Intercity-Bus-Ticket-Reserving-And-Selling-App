@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -78,6 +79,27 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    public void forgetMyPassword(View view){
+
+
+        Intent intent = new Intent(LoginActivity.this, ForgetMyPasswordActivity.class);
+        startActivity(intent);
+        finish();
+
+        /*mAuth.sendPasswordResetEmail("simdilik bos ama denedik calısıyor.").addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()) {
+                    Log.d("Success","Email sent.");
+                    Toast.makeText(LoginActivity.this, "Password reset email has been sent", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Toast.makeText(LoginActivity.this, "You cant send multiple password reset emails.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });*/
     }
 
 
