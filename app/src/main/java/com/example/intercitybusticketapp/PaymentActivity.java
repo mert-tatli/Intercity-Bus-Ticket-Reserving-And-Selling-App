@@ -73,7 +73,7 @@ public class PaymentActivity extends AppCompatActivity {
             tripId = intent.getStringExtra("TripId");
             selectSeatOne = intent.getStringExtra("oneWaySeats");
         }
-        mTrips.addValueEventListener(new ValueEventListener() {
+        mTrips.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
