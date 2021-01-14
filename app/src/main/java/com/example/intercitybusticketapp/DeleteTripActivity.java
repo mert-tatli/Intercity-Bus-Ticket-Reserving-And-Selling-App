@@ -3,7 +3,9 @@ package com.example.intercitybusticketapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -51,9 +53,36 @@ public class DeleteTripActivity extends AppCompatActivity {
     }
 
     public void deleteTrip(View view){
-        String deleteTripIds = deleteTripId.getText().toString();
-        mDatabase.child("Trips").child(deleteTripIds).setValue(null);
-        Toast.makeText(DeleteTripActivity.this, "Trip deleted", Toast.LENGTH_LONG).show();
+        if(TextUtils.isEmpty(deleteTripId.getText().toString())){
+            Toast.makeText(DeleteTripActivity.this, "Fill the Text Area", Toast.LENGTH_LONG).show();
+        }else{
+            String deleteTripIds = deleteTripId.getText().toString();
+            mDatabase.child("Trips").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(snapshot.exists()){
+                        if(snapshot.hasChild(deleteTripIds)){
+                            mDatabase.child("Trips").child(deleteTripIds).setValue(null);
+                            Toast.makeText(DeleteTripActivity.this, "Trip deleted", Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(DeleteTripActivity.this, "Trip Can not Found.", Toast.LENGTH_LONG).show();
+                        }
+                    }else{
+                        Toast.makeText(DeleteTripActivity.this, "Couldn't find anything on Database", Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(DeleteTripActivity.this,"Something went wrong",Toast.LENGTH_LONG).show();
+                    Toast.makeText(DeleteTripActivity.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(DeleteTripActivity.this,AdminActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+
+
     }
 
 }

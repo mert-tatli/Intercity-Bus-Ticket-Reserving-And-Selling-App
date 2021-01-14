@@ -3,7 +3,9 @@ package com.example.intercitybusticketapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,29 +25,14 @@ public class DeleteBusActivity extends AppCompatActivity {
     private Button deletebusButton;
     private DatabaseReference mDatabase;
     private String[] buses;
-    private String deletingPlate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_bus);
         deletebusId = findViewById(R.id.inputBusPlateDelete);
         deletebusButton =findViewById(R.id.deleteBus);
-        Spinner spinner = findViewById(R.id.spinnerDeleteBus);
         mDatabase= FirebaseDatabase.getInstance().getReference();
-
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
-                deletingPlate = buses[position];
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-                // TODO Auto-generated method stub
-            }
-        });
-
         mDatabase.child("Buses").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -71,26 +58,32 @@ public class DeleteBusActivity extends AppCompatActivity {
 
 
     public void deleteBus(View view){
+       if(TextUtils.isEmpty(deletebusId.getText().toString())){
+           Toast.makeText(DeleteBusActivity.this, "Fill the Text Area", Toast.LENGTH_SHORT).show();
+       }else{
+           String deleteBusIds = deletebusId.getText().toString();
         mDatabase.child("Buses").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
-                    if(snapshot.hasChild(deletingPlate)){
-                        String deleteBusIds = deletebusId.getText().toString();
-                        mDatabase.child("Buses").child(deletingPlate).setValue(null);
-                        Toast.makeText(DeleteBusActivity.this, "Bus deleted", Toast.LENGTH_LONG).show();
+                    if(snapshot.hasChild(deleteBusIds)){
+                        mDatabase.child("Buses").child(deleteBusIds).setValue(null);
+                        Toast.makeText(DeleteBusActivity.this, "Bus deleted", Toast.LENGTH_SHORT).show();
                     }
                     else{
-                        Toast.makeText(DeleteBusActivity.this, "Bus can not found.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(DeleteBusActivity.this, "Bus can not found.", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(DeleteBusActivity.this,"Something went wrong",Toast.LENGTH_SHORT).show();
+                Toast.makeText(DeleteBusActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(DeleteBusActivity.this,AdminActivity.class);
+                startActivity(intent);
             }
         });
 
+    }
     }
 }

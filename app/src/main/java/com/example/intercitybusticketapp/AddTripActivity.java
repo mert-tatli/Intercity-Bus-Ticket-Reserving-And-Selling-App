@@ -26,14 +26,12 @@ public class AddTripActivity extends AppCompatActivity {
     private EditText price;
     private TripModel tripmodel;
     private DatabaseReference mDatabase;
-    private int id;
-    private String tripId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_trip);
-        //tripid=findViewById(R.id.inputTripId);
+        tripid=findViewById(R.id.inputTripId);
         from = findViewById(R.id.inputTripFrom);
         to=findViewById(R.id.inputTripTo);
         time=findViewById(R.id.inputTripTime);
@@ -45,39 +43,35 @@ public class AddTripActivity extends AppCompatActivity {
 
 
     public void addtrip(View view){
-        String tripid1 ="Trip";      //tripid.getText().toString();
+        String tripid1 =tripid.getText().toString();
         String from1=from.getText().toString();
         String to1=to.getText().toString();
         String time1=time.getText().toString();
         String date1=date.getText().toString();
         String price1=price.getText().toString();
 
-        if (/*TextUtils.isEmpty(tripid1) || */ TextUtils.isEmpty(from1) || TextUtils.isEmpty(to1)|| TextUtils.isEmpty(time1)|| TextUtils.isEmpty(date1)|| TextUtils.isEmpty(price1))
+        if (TextUtils.isEmpty(tripid1) ||  TextUtils.isEmpty(from1) || TextUtils.isEmpty(to1)|| TextUtils.isEmpty(time1)|| TextUtils.isEmpty(date1)|| TextUtils.isEmpty(price1))
         {
-            Toast.makeText(AddTripActivity.this,"All the Information Are Required,PLEASE CHECK",Toast.LENGTH_LONG).show();
+            Toast.makeText(AddTripActivity.this,"All the Information Are Required,PLEASE CHECK",Toast.LENGTH_SHORT).show();
         }
         else{
-            mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            mDatabase.child("Trips").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if(snapshot.exists()){
-                        id = Integer.parseInt(snapshot.child("AutoId").getValue().toString());
-                        tripId = "Trip" + snapshot.child("AutoId").getValue();
-                        if(snapshot.hasChild(tripId)){
-                            Toast.makeText(AddTripActivity.this,"The trip is already Created",Toast.LENGTH_LONG).show();
+                        if(snapshot.hasChild(tripid1)){
+                            Toast.makeText(AddTripActivity.this,"The trip is already Created",Toast.LENGTH_SHORT).show();
                         }else{
                             Trip t = new Trip(tripid1,from1,to1,time1,date1,price1);
                             tripmodel.setTrip(t);
-                            Toast.makeText(AddTripActivity.this,"TRIP WAS CREATED SUCCESFULLY",Toast.LENGTH_LONG).show();
-                            mDatabase.child("Trips").child(tripId).child("tripid").setValue(tripId);
-                            mDatabase.child("Trips").child(tripId).child("from").setValue(from1);
-                            mDatabase.child("Trips").child(tripId).child("to").setValue(to1);
-                            mDatabase.child("Trips").child(tripId).child("time").setValue(time1);
-                            mDatabase.child("Trips").child(tripId).child("date").setValue(date1);
-                            mDatabase.child("Trips").child(tripId).child("price").setValue(price1);
-                            mDatabase.child("Trips").child(tripId).child("TripSeats").child("Seat").setValue("AA___AA/" + "AA___AA/" + "AA___AA/" + "AA___AA/"+ "AA___AA/" + "AA___AA/" + "AA___AA/" + "AA___AA/" + "AA___AA/" + "AA___AA/" + "AA___AA/");
-                            id++;
-                            mDatabase.child("AutoId").setValue(id);
+                            Toast.makeText(AddTripActivity.this,"TRIP WAS CREATED SUCCESFULLY",Toast.LENGTH_SHORT).show();
+                            mDatabase.child("Trips").child(tripid1).child("tripid").setValue(tripid1);
+                            mDatabase.child("Trips").child(tripid1).child("from").setValue(from1);
+                            mDatabase.child("Trips").child(tripid1).child("to").setValue(to1);
+                            mDatabase.child("Trips").child(tripid1).child("time").setValue(time1);
+                            mDatabase.child("Trips").child(tripid1).child("date").setValue(date1);
+                            mDatabase.child("Trips").child(tripid1).child("price").setValue(price1);
+                            mDatabase.child("Trips").child(tripid1).child("TripSeats").child("Seat").setValue("/AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/" + "AA___AA/"+ "AA___AA/");
                         }
                     }
                 }
