@@ -33,8 +33,6 @@ public class AddTripActivity extends AppCompatActivity {
     private static Button departureDate;
     private EditText tripid;
     private Spinner to,from,fromTime,toTime;
-    private EditText time;
-    private EditText date;
     private EditText price;
     private TripModel tripmodel;
     private DatabaseReference mDatabase;
@@ -144,7 +142,7 @@ public class AddTripActivity extends AppCompatActivity {
 
         departureDate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                DialogFragment newFragment1 = new MainActivity.DatePickerFragment1();
+                DialogFragment newFragment1 = new DatePickerFragment1();
                 newFragment1.show(getSupportFragmentManager(), DATE_DIALOG_1);
             }
         });
@@ -157,11 +155,13 @@ public class AddTripActivity extends AppCompatActivity {
         String tripid1 =tripid.getText().toString();
         String from1=fromtrip;
         String to1=toTrip;
-        String time1=time.getText().toString();
-        String date1=date.getText().toString();
+        String fromtimetrip1=fromtimetrip;
+        String totimetrip1=totimetrip;
+        departdate = departureDate.getText().toString();
+
         String price1=price.getText().toString();
 
-        if (TextUtils.isEmpty(tripid1) ||  TextUtils.isEmpty(from1) || TextUtils.isEmpty(to1)|| TextUtils.isEmpty(time1)|| TextUtils.isEmpty(date1)|| TextUtils.isEmpty(price1))
+        if (TextUtils.isEmpty(tripid1) ||  TextUtils.isEmpty(from1) || TextUtils.isEmpty(to1)|| TextUtils.isEmpty(fromtimetrip1)|| TextUtils.isEmpty(totimetrip1)|| TextUtils.isEmpty(price1))
         {
             Toast.makeText(AddTripActivity.this,"All the Information Are Required,PLEASE CHECK",Toast.LENGTH_SHORT).show();
         }
@@ -173,14 +173,15 @@ public class AddTripActivity extends AppCompatActivity {
                         if(snapshot.hasChild(tripid1)){
                             Toast.makeText(AddTripActivity.this,"The trip is already Created",Toast.LENGTH_SHORT).show();
                         }else{
-                            Trip t = new Trip(tripid1,from1,to1,time1,date1,price1);
+                            Trip t = new Trip(tripid1,from1,to1,fromtimetrip1,totimetrip1,departdate,price1);
                             tripmodel.setTrip(t);
                             Toast.makeText(AddTripActivity.this,"TRIP WAS CREATED SUCCESFULLY",Toast.LENGTH_SHORT).show();
                             mDatabase.child("Trips").child(tripid1).child("tripid").setValue(tripid1);
                             mDatabase.child("Trips").child(tripid1).child("from").setValue(from1);
                             mDatabase.child("Trips").child(tripid1).child("to").setValue(to1);
-                            mDatabase.child("Trips").child(tripid1).child("time").setValue(time1);
-                            mDatabase.child("Trips").child(tripid1).child("date").setValue(date1);
+                            mDatabase.child("Trips").child(tripid1).child("departureTime").setValue(fromtimetrip1);
+                            mDatabase.child("Trips").child(tripid1).child("arrivalTime").setValue(totimetrip1);
+                            mDatabase.child("Trips").child(tripid1).child("date").setValue(departdate);
                             mDatabase.child("Trips").child(tripid1).child("price").setValue(price1);
                             mDatabase.child("Trips").child(tripid1).child("TripSeats").child("Seat").setValue("/AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/" + "AA___AA/"+ "AA___AA/");
                         }
@@ -195,7 +196,6 @@ public class AddTripActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-
         }
     }
 

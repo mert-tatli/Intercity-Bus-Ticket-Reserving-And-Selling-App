@@ -88,16 +88,17 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             textview = new TextView(this);
             LinearLayout.LayoutParams textParams1 = new LinearLayout.LayoutParams(300, 200);
             textview.setLayoutParams(textParams1);
-            textview.setText("18:30");
+            textview.setText("Departure Time :"  + Trips.get(index).getDepartTime());
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.BLACK);
             textview.setPadding(5, 5, 5, 5);
             textview.setGravity(Gravity.CENTER);
             view.addView(textview);
+
             textview = new TextView(this);
             LinearLayout.LayoutParams textParams2 = new LinearLayout.LayoutParams(300, 350);
             textview.setLayoutParams(textParams2);
-            textview.setText("22:30");
+            textview.setText("Arrival Time :"  + Trips.get(index).getArrivalTime());
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.BLACK);
             textview.setPadding(5, 5, 5, 5);
@@ -124,15 +125,15 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             textview.setGravity(Gravity.CENTER);
             view.addView(textview);
 
-            textview = new TextView(this);
+            /*textview = new TextView(this);
             LinearLayout.LayoutParams textParams5 = new LinearLayout.LayoutParams(650, 680);
             textview.setLayoutParams(textParams5);
-            textview.setText("Travel Time:"+Trips.get(index).getTime()+"Hours");
+            textview.setText("Travel Time: " + (Integer.parseInt(Trips.get(index).getArrivalTime())- Integer.parseInt(Trips.get(index).getDepartTime())) +"Hours");
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.BLACK);
             textview.setPadding(5, 5, 5, 5);
             textview.setGravity(Gravity.CENTER);
-            view.addView(textview);
+            view.addView(textview);*/
 
             imageView = new ImageView(this);
             LinearLayout.LayoutParams imgParams1 = new LinearLayout.LayoutParams(550, 220);

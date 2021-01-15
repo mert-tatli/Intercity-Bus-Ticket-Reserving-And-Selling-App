@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class DeleteBusActivity extends AppCompatActivity {
     private Spinner deletebusId;
     private DatabaseReference mDatabase;
-    private ArrayList<String> buses =new ArrayList<>();
+    private static ArrayList<String> buses =new ArrayList<>();
     private String busplate;
 
     @Override
@@ -38,10 +38,8 @@ public class DeleteBusActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    int index =0;
                     for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                         buses.add(snapshot1.getKey());
-                        index++;
                     }
                 }
             }
@@ -71,7 +69,10 @@ public class DeleteBusActivity extends AppCompatActivity {
     }
 
     public void deleteBus(View view){
-       if(TextUtils.isEmpty(busplate)){
+       for (int i =0;i<buses.size();i++){
+           System.out.println(buses.get(i));
+       }
+        if(TextUtils.isEmpty(busplate)){
            Toast.makeText(DeleteBusActivity.this, "Select The Bus", Toast.LENGTH_SHORT).show();
        }else{
 

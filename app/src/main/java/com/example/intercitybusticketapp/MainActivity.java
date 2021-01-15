@@ -242,6 +242,7 @@ public class MainActivity extends AppCompatActivity {
             if (datasnapshot.exists()) {
                 for (DataSnapshot snapshot : datasnapshot.getChildren()) {
                     Trip trip = snapshot.getValue(Trip.class);
+                    System.out.println(trip.toString());
                     tripList.add(trip);
                 }
             }
