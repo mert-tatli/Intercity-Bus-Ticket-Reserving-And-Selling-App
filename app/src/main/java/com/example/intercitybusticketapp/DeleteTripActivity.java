@@ -7,8 +7,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -17,31 +20,27 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class DeleteTripActivity extends AppCompatActivity {
-    private EditText deleteTripId;
-    private Button deleteTripButton;
+    private Spinner deleteTripId;
+    private String deleteid;
     private DatabaseReference mDatabase;
-    private String[] trips;
+    private ArrayList<String> trips=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_trip);
-        deleteTripId = findViewById(R.id.inputTripIdDelete);
-        deleteTripButton =findViewById(R.id.deleteTrip);
+        deleteTripId = findViewById(R.id.inputDeleteTrip);
         mDatabase= FirebaseDatabase.getInstance().getReference();
-
         mDatabase.child("Trips").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    trips = new String[(int)snapshot.getChildrenCount()];
                     int index =0;
                     for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                        trips[index] = snapshot1.getKey();
+                        trips.add(snapshot1.getKey());
                         index++;
-                    }
-                    for(int i =0;i<trips.length;i++){
-                        System.out.println(trips[i]);
                     }
                 }
             }
@@ -50,19 +49,33 @@ public class DeleteTripActivity extends AppCompatActivity {
 
             }
         });
-    }
+        deleteTripId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
+                deleteid = trips.get(position);
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, trips);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        deleteTripId.setAdapter(adapter);
+
+    }
     public void deleteTrip(View view){
-        if(TextUtils.isEmpty(deleteTripId.getText().toString())){
+        if(TextUtils.isEmpty(deleteid)){
             Toast.makeText(DeleteTripActivity.this, "Fill the Text Area", Toast.LENGTH_LONG).show();
         }else{
-            String deleteTripIds = deleteTripId.getText().toString();
             mDatabase.child("Trips").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if(snapshot.exists()){
-                        if(snapshot.hasChild(deleteTripIds)){
-                            mDatabase.child("Trips").child(deleteTripIds).setValue(null);
+                        if(snapshot.hasChild(deleteid)){
+                            mDatabase.child("Trips").child(deleteid).setValue(null);
                             Toast.makeText(DeleteTripActivity.this, "Trip deleted", Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(DeleteTripActivity.this, "Trip Can not Found.", Toast.LENGTH_LONG).show();
@@ -71,7 +84,6 @@ public class DeleteTripActivity extends AppCompatActivity {
                         Toast.makeText(DeleteTripActivity.this, "Couldn't find anything on Database", Toast.LENGTH_LONG).show();
                     }
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                     Toast.makeText(DeleteTripActivity.this,"Something went wrong",Toast.LENGTH_LONG).show();
@@ -81,8 +93,5 @@ public class DeleteTripActivity extends AppCompatActivity {
                 }
             });
         }
-
-
     }
-
 }

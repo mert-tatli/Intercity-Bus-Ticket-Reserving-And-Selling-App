@@ -20,54 +20,67 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class DeleteBusActivity extends AppCompatActivity {
-    private  EditText deletebusId;
-    private Button deletebusButton;
+    private Spinner deletebusId;
     private DatabaseReference mDatabase;
-    private String[] buses;
+    private ArrayList<String> buses =new ArrayList<>();
+    private String busplate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_bus);
         deletebusId = findViewById(R.id.inputBusPlateDelete);
-        deletebusButton =findViewById(R.id.deleteBus);
         mDatabase= FirebaseDatabase.getInstance().getReference();
         mDatabase.child("Buses").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    buses = new String[(int)snapshot.getChildrenCount()];
                     int index =0;
                     for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                        buses[index] = snapshot1.getKey();
+                        buses.add(snapshot1.getKey());
                         index++;
                     }
-                    for(int i =0;i<buses.length;i++){
-                        System.out.println(buses[i]);
-                    }
                 }
-                }
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
+
+        deletebusId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
+                busplate = buses.get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, buses);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        deletebusId.setAdapter(adapter);
+
     }
 
-
-
     public void deleteBus(View view){
-       if(TextUtils.isEmpty(deletebusId.getText().toString())){
-           Toast.makeText(DeleteBusActivity.this, "Fill the Text Area", Toast.LENGTH_SHORT).show();
+       if(TextUtils.isEmpty(busplate)){
+           Toast.makeText(DeleteBusActivity.this, "Select The Bus", Toast.LENGTH_SHORT).show();
        }else{
-           String deleteBusIds = deletebusId.getText().toString();
-        mDatabase.child("Buses").addListenerForSingleValueEvent(new ValueEventListener() {
+
+            mDatabase.child("Buses").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
-                    if(snapshot.hasChild(deleteBusIds)){
-                        mDatabase.child("Buses").child(deleteBusIds).setValue(null);
+                    if(snapshot.hasChild(busplate)){
+                        mDatabase.child("Buses").child(busplate).setValue(null);
                         Toast.makeText(DeleteBusActivity.this, "Bus deleted", Toast.LENGTH_SHORT).show();
                     }
                     else{
