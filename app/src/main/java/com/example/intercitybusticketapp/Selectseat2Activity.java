@@ -55,7 +55,6 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selectseat2);
 
-        backtoSeat=findViewById(R.id.backtoSeat);
         Intent intent = getIntent();
         returntripId = intent.getStringExtra("ReturnTripId");
         tripId = intent.getStringExtra("TripId");
@@ -141,25 +140,30 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View view) {
         if ((int) view.getTag() == STATUS_AVAILABLE) {
-            if (selectedIds.contains(view.getId() + ",")) {
-                selectedIds = selectedIds.replace(+view.getId() + ",", "");
-                view.setBackgroundResource(R.drawable.ic_seats_book);
-
-            } else {
-                selectedIds = selectedIds + view.getId() + ",";
-                view.setBackgroundResource(R.drawable.ic_seats_b);
-                int in = view.getId();
-                char[] myNameChars = seats.toCharArray();
-                myNameChars[seatOriantation.get(in - 1)] = 'U';
-                seats = String.valueOf(myNameChars);
-                Toast.makeText(this, "Seat " +  view.getId() + " is Selected", Toast.LENGTH_SHORT).show();
+            view.setBackgroundResource(R.drawable.ic_seats_b);
+            int in = view.getId();
+            char[] myNameChars = seats.toCharArray();
+            myNameChars[seatOriantation.get(in - 1)] = 'U';
+            seats = String.valueOf(myNameChars);
+            if (!selectedSeatsReturn.contains(view.getId()))
                 selectedSeatsReturn.add(view.getId());
+            view.setTag(STATUS_RESERVED);
 
-            }
         } else if ((int) view.getTag() == STATUS_BOOKED) {
             Toast.makeText(this, "Seat " + view.getId() + " is Booked", Toast.LENGTH_SHORT).show();
         } else if ((int) view.getTag() == STATUS_RESERVED) {
-            Toast.makeText(this, "Seat " + view.getId() + " is Reserved", Toast.LENGTH_SHORT).show();
+            view.setBackgroundResource(R.drawable.ic_seats_book);
+            int in = view.getId();
+            char[] myNameChars = seats.toCharArray();
+            myNameChars[seatOriantation.get(in - 1)] = 'A';
+            seats = String.valueOf(myNameChars);
+            for ( int i =0;i<selectedSeatsReturn.size();i++){
+                if (selectedSeatsReturn.get(i).equals(view.getId())){
+                    selectedSeatsReturn.remove(i);
+                }
+            }
+
+            view.setTag(STATUS_AVAILABLE);
         }
     }
 
@@ -181,11 +185,6 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
             Toast.makeText(this, "Choose at least one seat.", Toast.LENGTH_SHORT).show();
         }
 
-    }
-    public void backToSeatselect(View view){
-        Intent intent =new Intent(Selectseat2Activity.this,SelectSeatActivity.class);
-        startActivity(intent);
-        finish();
     }
 
 }

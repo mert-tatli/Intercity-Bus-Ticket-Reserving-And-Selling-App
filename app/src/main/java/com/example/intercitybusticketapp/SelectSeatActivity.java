@@ -41,7 +41,6 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
     private int STATUS_AVAILABLE = 1;
     private  int STATUS_BOOKED = 2;
     private  int STATUS_RESERVED = 3;
-    private  String selectedIds = "";
     private  boolean isReturn2;
     private  String tripId;
     private DatabaseReference mSeats;
@@ -141,26 +140,30 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View view) {
         if ((int) view.getTag() == STATUS_AVAILABLE) {
-            if (selectedIds.contains(view.getId() + ",")) {
-                selectedIds = selectedIds.replace(+view.getId() + ",", "");
-                view.setBackgroundResource(R.drawable.ic_seats_book);
-
-            } else {
-                selectedIds = selectedIds + view.getId() + ",";
                 view.setBackgroundResource(R.drawable.ic_seats_b);
                 int in = view.getId();
                 char[] myNameChars = seats.toCharArray();
                 myNameChars[seatOriantation.get(in - 1)] = 'U';
                 seats = String.valueOf(myNameChars);
-                Toast.makeText(this, "Seat " +  view.getId() + " is Selected", Toast.LENGTH_SHORT).show();
-                //if(view.getId()==selectedSeats.get())
+            if (!selectedSeats.contains(view.getId()))
                 selectedSeats.add(view.getId());
+                view.setTag(STATUS_RESERVED);
 
-            }
         } else if ((int) view.getTag() == STATUS_BOOKED) {
             Toast.makeText(this, "Seat " + view.getId() + " is Booked", Toast.LENGTH_SHORT).show();
         } else if ((int) view.getTag() == STATUS_RESERVED) {
-            Toast.makeText(this, "Seat " + view.getId() + " is Reserved", Toast.LENGTH_SHORT).show();
+            view.setBackgroundResource(R.drawable.ic_seats_book);
+            int in = view.getId();
+            char[] myNameChars = seats.toCharArray();
+            myNameChars[seatOriantation.get(in - 1)] = 'A';
+            seats = String.valueOf(myNameChars);
+            for ( int i =0;i<selectedSeats.size();i++){
+               if (selectedSeats.get(i).equals(view.getId())){
+                   selectedSeats.remove(i);
+               }
+            }
+
+            view.setTag(STATUS_AVAILABLE);
         }
     }
 
