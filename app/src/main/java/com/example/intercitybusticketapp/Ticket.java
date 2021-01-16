@@ -5,12 +5,13 @@ public class Ticket {
     private String tripId;
     private String TicketId;
     private String UserId;
-    private  String from;
+    private String from;
     private String to;
     private String departureTime;
     private String arrivalTime;
     private String date;
     private String price;
+    private String seats,plateNumber;
 
 
     public Ticket(String tripId, String ticketId, String userId, String from, String to, String departureTime, String arrivalTime, String date, String price) {
@@ -23,6 +24,8 @@ public class Ticket {
         this.arrivalTime = arrivalTime;
         this.date = date;
         this.price = price;
+        // SEATS
+        // OTOBUS PLAKASI.
     }
 
 

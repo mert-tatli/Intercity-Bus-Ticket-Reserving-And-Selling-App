@@ -37,11 +37,24 @@ public class DeleteTripActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    int index =0;
                     for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                         trips.add(snapshot1.getKey());
-                        index++;
                     }
+                    deleteTripId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
+                            deleteid = trips.get(position);
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> arg0) {
+                            // TODO Auto-generated method stub
+                        }
+                    });
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(DeleteTripActivity.this,
+                            android.R.layout.simple_spinner_item, trips);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    deleteTripId.setAdapter(adapter);
                 }
             }
             @Override
@@ -49,21 +62,7 @@ public class DeleteTripActivity extends AppCompatActivity {
 
             }
         });
-        deleteTripId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
-                deleteid = trips.get(position);
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-                // TODO Auto-generated method stub
-            }
-        });
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, trips);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        deleteTripId.setAdapter(adapter);
 
     }
     public void deleteTrip(View view){
@@ -76,6 +75,23 @@ public class DeleteTripActivity extends AppCompatActivity {
                     if(snapshot.exists()){
                         if(snapshot.hasChild(deleteid)){
                             mDatabase.child("Trips").child(deleteid).setValue(null);
+                            deleteTripId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
+                                    deleteid = trips.get(position);
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> arg0) {
+                                    // TODO Auto-generated method stub
+                                }
+                            });
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(DeleteTripActivity.this,
+                                    android.R.layout.simple_spinner_item, trips);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            deleteTripId.setAdapter(adapter);
+                            trips.remove(deleteid);
+
                             Toast.makeText(DeleteTripActivity.this, "Trip deleted", Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(DeleteTripActivity.this, "Trip Can not Found.", Toast.LENGTH_LONG).show();

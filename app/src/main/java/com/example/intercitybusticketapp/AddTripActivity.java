@@ -161,7 +161,7 @@ public class AddTripActivity extends AppCompatActivity {
 
         String price1=price.getText().toString();
 
-        if (TextUtils.isEmpty(tripid1) ||  TextUtils.isEmpty(from1) || TextUtils.isEmpty(to1)|| TextUtils.isEmpty(fromtimetrip1)|| TextUtils.isEmpty(totimetrip1)|| TextUtils.isEmpty(price1))
+        if (TextUtils.isEmpty(tripid1) ||  TextUtils.isEmpty(from1) || TextUtils.isEmpty(to1)|| TextUtils.isEmpty(fromtimetrip1) || TextUtils.isEmpty(totimetrip1)|| TextUtils.isEmpty(price1))
         {
             Toast.makeText(AddTripActivity.this,"All the Information Are Required,PLEASE CHECK",Toast.LENGTH_SHORT).show();
         }
@@ -179,8 +179,8 @@ public class AddTripActivity extends AppCompatActivity {
                             mDatabase.child("Trips").child(tripid1).child("tripid").setValue(tripid1);
                             mDatabase.child("Trips").child(tripid1).child("from").setValue(from1);
                             mDatabase.child("Trips").child(tripid1).child("to").setValue(to1);
-                            mDatabase.child("Trips").child(tripid1).child("departureTime").setValue(fromtimetrip1);
-                            mDatabase.child("Trips").child(tripid1).child("arrivalTime").setValue(totimetrip1);
+                            mDatabase.child("Trips").child(tripid1).child("departuretime").setValue(fromtimetrip1);
+                            mDatabase.child("Trips").child(tripid1).child("arrivaltime").setValue(totimetrip1);
                             mDatabase.child("Trips").child(tripid1).child("date").setValue(departdate);
                             mDatabase.child("Trips").child(tripid1).child("price").setValue(price1);
                             mDatabase.child("Trips").child(tripid1).child("TripSeats").child("Seat").setValue("/AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/" + "AA___AA/"+ "AA___AA/");

@@ -1,7 +1,5 @@
 package com.example.intercitybusticketapp;
 
-import android.widget.EditText;
-
 import androidx.annotation.NonNull;
 
 public class Trip {
@@ -9,17 +7,17 @@ public class Trip {
     private  String tripid;
     private  String from;
     private String to;
-    private String departureTime;
-    private String arrivalTime;
+    private String departuretime;
+    private String arrivaltime;
     private String date;
     private String price;
 
-    public Trip(String tripid, String from, String to, String departureTime, String arrivalTime, String date, String price) {
+    public Trip(String tripid, String from, String to, String departuretime, String arrivaltime, String date, String price) {
         this.tripid = tripid;
         this.from = from;
         this.to = to;
-        this.departureTime = departureTime;
-        this.arrivalTime = arrivalTime;
+        this.departuretime = departuretime;
+        this.arrivaltime = arrivaltime;
         this.date = date;
         this.price = price;
     }
@@ -34,8 +32,8 @@ public class Trip {
                 "tripid='" + tripid + '\'' +
                 ", from='" + from + '\'' +
                 ", to='" + to + '\'' +
-                ", departureTime='" + departureTime + '\'' +
-                ", arrivalTime='" + arrivalTime + '\'' +
+                ", departureTime='" + departuretime + '\'' +
+                ", arrivalTime='" + arrivaltime + '\'' +
                 ", date='" + date + '\'' +
                 ", price='" + price + '\'' +
                 '}';
@@ -81,19 +79,19 @@ public class Trip {
     }
 
     public String getDepartTime() {
-        return departureTime;
+        return departuretime;
     }
 
     public void setDepartTime(String departTime) {
-        this.departureTime = departTime;
+        this.departuretime = departTime;
     }
 
-    public String getArrivalTime() {
-        return arrivalTime;
+    public String getArrivaltime() {
+        return arrivaltime;
     }
 
-    public void setArrivalTime(String arrivalTime) {
-        this.arrivalTime = arrivalTime;
+    public void setArrivaltime(String arrivaltime) {
+        this.arrivaltime = arrivaltime;
     }
 
     public String getPrice() {

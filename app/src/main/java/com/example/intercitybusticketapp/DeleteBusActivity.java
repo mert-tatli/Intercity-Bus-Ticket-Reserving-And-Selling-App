@@ -41,30 +41,36 @@ public class DeleteBusActivity extends AppCompatActivity {
                     for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                         buses.add(snapshot1.getKey());
                     }
+
+                    deletebusId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
+                            busplate = buses.get(position);
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> arg0) {
+                            // TODO Auto-generated method stub
+                        }
+
+                    });
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(DeleteBusActivity.this,
+                            android.R.layout.simple_spinner_item, buses);
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    deletebusId.setAdapter(adapter);
                 }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Toast.makeText(DeleteBusActivity.this,"Something went wrong",Toast.LENGTH_SHORT).show();
+                Toast.makeText(DeleteBusActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(DeleteBusActivity.this,AdminActivity.class);
+                startActivity(intent);
             }
         });
 
-        deletebusId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
-                busplate = buses.get(position);
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-                // TODO Auto-generated method stub
-            }
-        });
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, buses);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        deletebusId.setAdapter(adapter);
 
     }
 
@@ -82,6 +88,26 @@ public class DeleteBusActivity extends AppCompatActivity {
                 if(snapshot.exists()){
                     if(snapshot.hasChild(busplate)){
                         mDatabase.child("Buses").child(busplate).setValue(null);
+
+                        deletebusId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
+                                busplate = buses.get(position);
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> arg0) {
+                                // TODO Auto-generated method stub
+                            }
+                        });
+
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(DeleteBusActivity.this,
+                                android.R.layout.simple_spinner_item, buses);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        deletebusId.setAdapter(adapter);
+                        buses.remove(busplate);
+
+
                         Toast.makeText(DeleteBusActivity.this, "Bus deleted", Toast.LENGTH_SHORT).show();
                     }
                     else{

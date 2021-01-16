@@ -20,6 +20,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -46,6 +47,8 @@ public class PaymentActivity extends AppCompatActivity {
     private String selectSeatOne1;
     private String selectSeatTwo;
     private DatabaseReference mTrips = FirebaseDatabase.getInstance().getReference("Trips");
+    private DatabaseReference mTicket =  FirebaseDatabase.getInstance().getReference("Ticket");
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +61,8 @@ public class PaymentActivity extends AppCompatActivity {
         year = findViewById(R.id.year);
         cvv = findViewById(R.id.cvv);
         price = findViewById(R.id.textPrice);
+
+        mAuth = FirebaseAuth.getInstance();
 
         Intent intent = getIntent();
         isReturn2 = intent.getBooleanExtra("isReturn", false);
@@ -113,10 +118,46 @@ public class PaymentActivity extends AppCompatActivity {
             if(isReturn2) {
                 mTrips.child(tripId).child("TripSeats").child("Seat").setValue(selectSeatOne1);
                 mTrips.child(returntripId).child("TripSeats").child("Seat").setValue(selectSeatTwo);
-
             }
             else{
                 mTrips.child(tripId).child("TripSeats").child("Seat").setValue(selectSeatOne);
+                mTrips.child(tripId).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()){
+
+                            String userID = "unRegisteredUser";
+                            if(mAuth.getCurrentUser()!=null){
+                                userID = mAuth.getCurrentUser().getEmail();
+                            }
+                            String TicketId="Tickett1";
+                            String from = snapshot.child("from").getValue().toString();
+                            String to = snapshot.child("to").getValue().toString();
+                            String departureTime = snapshot.child("departuretime").getValue().toString();
+                            String arrivalTime = snapshot.child("arrivaltime").getValue().toString();
+                            String date = snapshot.child("date").getValue().toString();
+                            String price = snapshot.child("price").getValue().toString();
+
+                            Ticket a = new Ticket(tripId,"TicketID",userID,from,to,departureTime,arrivalTime,date,price);
+                            mTicket.child(TicketId).child("tripId").setValue(tripId);
+                            mTicket.child(TicketId).child("ticketId").setValue(TicketId);
+                            mTicket.child(TicketId).child("from").setValue(from);
+                            mTicket.child(TicketId).child("to").setValue(to);
+                            mTicket.child(TicketId).child("deptime").setValue(departureTime);
+                            mTicket.child(TicketId).child("arrivetime").setValue(arrivalTime);
+                            mTicket.child(TicketId).child("date").setValue(date);
+                            mTicket.child(TicketId).child("price").setValue(price);
+                            mTicket.child(TicketId).child("userID").setValue(userID);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
             }
             Toast.makeText(PaymentActivity.this, "The ticket(s) is paid. Have a Nice Trip", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(PaymentActivity.this, MainActivity.class);
