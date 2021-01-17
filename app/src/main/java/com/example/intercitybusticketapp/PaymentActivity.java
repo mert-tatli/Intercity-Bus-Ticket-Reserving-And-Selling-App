@@ -43,7 +43,7 @@ public class PaymentActivity extends AppCompatActivity {
     private ArrayList<Integer> selectedSeatsReturn = new ArrayList<>();
     private ArrayList<Integer> selectedSeats = new ArrayList<>();
     int total=0;
-    private String selectSeatOne;
+    private String selectSeatOne,unRegisteredUserMail;
     private String selectSeatOne1;
     private String selectSeatTwo;
     private DatabaseReference mTrips = FirebaseDatabase.getInstance().getReference("Trips");
@@ -53,6 +53,8 @@ public class PaymentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
+
+        System.out.println("payment Activity");
 
         seatInfo = findViewById(R.id.seatInfo);
         holderName = findViewById(R.id.holderName);
@@ -78,6 +80,8 @@ public class PaymentActivity extends AppCompatActivity {
             tripId = intent.getStringExtra("TripId");
             selectSeatOne = intent.getStringExtra("oneWaySeats");
         }
+
+        unRegisteredUserMail = intent.getStringExtra("unregisteredUser");
         mTrips.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -126,11 +130,11 @@ public class PaymentActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.exists()){
 
-                            String userID = "unRegisteredUser";
+                            String userID = unRegisteredUserMail;
                             if(mAuth.getCurrentUser()!=null){
                                 userID = mAuth.getCurrentUser().getEmail();
                             }
-                            String TicketId="Tickett1";
+                            String TicketId="Tickett12";
                             String from = snapshot.child("from").getValue().toString();
                             String to = snapshot.child("to").getValue().toString();
                             String departureTime = snapshot.child("departuretime").getValue().toString();

@@ -262,6 +262,8 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Intent intent = new Intent(MainActivity.this, TripActivity.class);
                     intent.putExtra("isReturn", isReturn);
+                    intent.putExtra("reserve", reserve);
+                    System.out.println("MAİN:" + reserve);
                     startActivity(intent);
                     finish();
                 }
@@ -271,6 +273,8 @@ public class MainActivity extends AppCompatActivity {
                 } else  {
                     Intent intent = new Intent(MainActivity.this, TripActivity.class);
                     intent.putExtra("isReturn", isReturn);
+                    intent.putExtra("reserve", reserve);
+                    System.out.println("MAİN:" + reserve);
                     startActivity(intent);
                     finish();
                 }

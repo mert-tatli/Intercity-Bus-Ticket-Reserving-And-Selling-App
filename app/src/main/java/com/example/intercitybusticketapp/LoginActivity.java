@@ -65,7 +65,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                     else {
-
                         Toast.makeText(LoginActivity.this, "Kullanıcı sistemde kayıtlı değil.", Toast.LENGTH_LONG).show();
                     }
                 }
@@ -82,24 +81,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void forgetMyPassword(View view){
-
-
         Intent intent = new Intent(LoginActivity.this, ForgetMyPasswordActivity.class);
         startActivity(intent);
         finish();
-
-        /*mAuth.sendPasswordResetEmail("simdilik bos ama denedik calısıyor.").addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()) {
-                    Log.d("Success","Email sent.");
-                    Toast.makeText(LoginActivity.this, "Password reset email has been sent", Toast.LENGTH_LONG).show();
-                }
-                else{
-                    Toast.makeText(LoginActivity.this, "You cant send multiple password reset emails.", Toast.LENGTH_LONG).show();
-                }
-            }
-        });*/
     }
 
 

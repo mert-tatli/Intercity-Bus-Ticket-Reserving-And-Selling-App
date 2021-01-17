@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/backgroundorange2"
     android:orientation="horizontal"
-    tools:context=".RegisterActivity">
+
+    tools:context=".UnregisteredUserInfo">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -20,20 +21,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:contentDescription="@string/todo"
-                android:onClick="backbutton1"
-                app:srcCompat="@drawable/ic_baseline_arrow_back" />
-
-            <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/imageView2Unregistered"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_marginStart="100dp"
@@ -45,7 +33,7 @@
                 app:srcCompat="@drawable/ic_baseline_person" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/textView2Unregistered"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="32dp"
@@ -59,7 +47,7 @@
                 android:textStyle="normal" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/textView3Unregistered"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="32dp"
@@ -73,7 +61,7 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/idNumber"
+                android:id="@+id/idNumberUnregistered"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginStart="32dp"
@@ -89,14 +77,14 @@
                 android:ems="10"
                 android:hint="@string/national_id"
                 android:importantForAutofill="no"
-                android:inputType="text|numberDecimal"
+                android:inputType="text"
                 android:maxLength="11"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:textColorHint="#8A8787" />
 
             <EditText
-                android:id="@+id/inputName"
+                android:id="@+id/inputNameUnregistered"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginStart="32dp"
@@ -117,7 +105,7 @@
                 android:textColorHint="#8A8787" />
 
             <EditText
-                android:id="@+id/inputSurname"
+                android:id="@+id/inputSurnameUnregistered"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_marginStart="32dp"
@@ -146,7 +134,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:gravity="center"
-                android:onClick="onRadioButtonClicked"
+                android:onClick="onRadioButtonClickedUnregisted"
                 android:orientation="horizontal"
                 android:padding="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -157,7 +145,7 @@
                 app:layout_constraintVertical_bias="0.236">
 
                 <RadioButton
-                    android:id="@+id/MaleRadioButton"
+                    android:id="@+id/MaleRadioButtonUnregistered"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -169,7 +157,7 @@
                     android:textColor="@color/black" />
 
                 <RadioButton
-                    android:id="@+id/FemaleRadioButton"
+                    android:id="@+id/FemaleRadioButtonUnregistered"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -183,7 +171,7 @@
             </RadioGroup>
 
             <EditText
-                android:id="@+id/inputPhoneNo"
+                android:id="@+id/inputPhoneNoUnregistered"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="32dp"
@@ -198,13 +186,13 @@
                 android:drawablePadding="10dp"
                 android:ems="10"
                 android:hint="Phone Number (5xx-xxx-xx-xx)"
-                android:inputType="text|phone"
+                android:inputType="text"
                 android:maxLength="13"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp" />
 
             <EditText
-                android:id="@+id/inputDate"
+                android:id="@+id/inputDateUnregistered"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="32dp"
@@ -223,7 +211,7 @@
                 android:paddingRight="10dp" />
 
             <EditText
-                android:id="@+id/inputEmail"
+                android:id="@+id/inputEmailUnregistered"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginStart="32dp"
@@ -242,40 +230,9 @@
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp" />
 
-            <EditText
-                android:id="@+id/inputPassword"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginRight="32dp"
-                android:background="@drawable/ic_text_round"
-                android:drawableStart="@drawable/ic_baseline_create"
-                android:drawableLeft="@drawable/ic_baseline_create"
-                android:drawablePadding="10dp"
-                android:ems="10"
-                android:hint="New Password - At least 6 characters"
-                android:inputType="text|textPassword"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp" />
-
-            <CheckBox
-                android:id="@+id/inputTerms"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginRight="32dp"
-                android:text="I have read and accept the Terms and Conditions"
-                android:textColor="@color/colorPrimary"
-                android:textColorLink="#FFFFFF" />
 
             <Button
-                android:id="@+id/buttonSignUp"
+                android:id="@+id/buttonSignUpUnregistered"
                 android:layout_width="125dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="140dp"
@@ -285,8 +242,8 @@
                 android:layout_marginRight="140dp"
                 android:layout_marginBottom="24dp"
                 android:background="@drawable/ic_button_round"
-                android:onClick="onClickSignup"
-                android:text="SIGN UP"
+                android:onClick="onClickSaveUnregistered"
+                android:text="SAVE"
                 android:textColor="#FFFFFF"
                 android:textSize="14sp" />
 

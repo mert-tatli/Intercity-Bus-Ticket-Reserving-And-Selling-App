@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,7 +31,7 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
     private ViewGroup layout;
 
     private String seats;
-
+    private boolean reserved;
     private ArrayList<Integer> seatOriantation = new ArrayList<>();
     private ArrayList<String> seatLocation = new ArrayList<>();
     private List<TextView> seatViewList = new ArrayList<>();
@@ -45,7 +46,11 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
     private  String tripId;
     private DatabaseReference mSeats;
     private  String returnTripId;
+    private FirebaseAuth mAuth;
 
+
+    private DatabaseReference mTrips = FirebaseDatabase.getInstance().getReference("Trips");
+    private DatabaseReference mTicket =  FirebaseDatabase.getInstance().getReference("Ticket");
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +58,18 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
             setContentView(R.layout.activity_selectseat);
 
             Intent intent = getIntent();
+
+            boolean reserved1 = intent.getBooleanExtra("reserve",false);
+            reserved = reserved1;
+            System.out.println("SelectSeat 1 " + reserved);
+
             returnTripId = intent.getStringExtra("ReturnTripID");
             tripId = intent.getStringExtra("TripID");
+            System.out.println(tripId);
             isReturn2 = intent.getBooleanExtra("isReturn",false);
             mSeats = FirebaseDatabase.getInstance().getReference("Trips");
+
+            mAuth=FirebaseAuth.getInstance();
 
             layout = findViewById(R.id.layoutSeat);
             LinearLayout layoutSeat = new LinearLayout(SelectSeatActivity.this);
@@ -168,24 +181,76 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void selectSeat1(View v) {
-            if(selectedSeats.size()>0){
-                if (isReturn2) {
+            if(selectedSeats.size()>0) {
+                System.out.println("184    " + reserved);
+                 if (isReturn2) {
                     Intent intent = new Intent(this, Selectseat2Activity.class);
                     intent.putExtra("ReturnTripId", returnTripId);
                     intent.putExtra("TripId", tripId);
                     intent.putIntegerArrayListExtra("selectedSeats",selectedSeats);
                     intent.putExtra("isReturn",isReturn2);
                     intent.putExtra("roundTrip", seats);
+                    intent.putExtra("reserve", reserved);
                     startActivity(intent);
 
-                } else {
-                    Intent intent = new Intent(this, PaymentActivity.class);
-                    intent.putIntegerArrayListExtra("selectedSeats",selectedSeats);
-                    intent.putExtra("TripId", tripId);
-                    intent.putExtra("isReturn",isReturn2);
-                    intent.putExtra("oneWaySeats", seats);
-                    startActivity(intent);
-                    finish();
+                }
+                else if (reserved) {
+                    System.out.println("198    " + reserved);
+                    mTrips.child(tripId).child("TripSeats").child("Seat").setValue(seats);
+                    mTrips.child(tripId).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if (snapshot.exists()) {
+                                String userID = mAuth.getCurrentUser().getEmail();
+                                String TicketId = "Tickett1123";
+                                String from = snapshot.child("from").getValue().toString();
+                                String to = snapshot.child("to").getValue().toString();
+                                String departureTime = snapshot.child("departuretime").getValue().toString();
+                                String arrivalTime = snapshot.child("arrivaltime").getValue().toString();
+                                String date = snapshot.child("date").getValue().toString();
+                                String price = snapshot.child("price").getValue().toString();
+                                Ticket a = new Ticket(tripId, "TicketID", userID, from, to, departureTime, arrivalTime, date, price);
+                                mTicket.child(TicketId).child("tripId").setValue(tripId);
+                                mTicket.child(TicketId).child("ticketId").setValue(TicketId);
+                                mTicket.child(TicketId).child("from").setValue(from);
+                                mTicket.child(TicketId).child("to").setValue(to);
+                                mTicket.child(TicketId).child("deptime").setValue(departureTime);
+                                mTicket.child(TicketId).child("arrivetime").setValue(arrivalTime);
+                                mTicket.child(TicketId).child("date").setValue(date);
+                                mTicket.child(TicketId).child("price").setValue(price);
+                                mTicket.child(TicketId).child("userID").setValue(userID);
+                                Toast.makeText(SelectSeatActivity.this, "Your seat(s) has ben reserved! Have a nice trip.", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(SelectSeatActivity.this,UserAccountActivity.class);
+                                startActivity(intent);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+                }
+                 else {
+                    if (mAuth.getCurrentUser()==null) {
+                        Intent intent = new Intent(this, UnregisteredUserInfo.class);
+                        intent.putIntegerArrayListExtra("selectedSeats", selectedSeats);
+                        intent.putExtra("TripId", tripId);
+                        intent.putExtra("isReturn", isReturn2);
+                        intent.putExtra("oneWaySeats", seats);
+                        intent.putExtra("reserve", reserved);
+                        startActivity(intent);
+                        finish();
+                    }else{
+                        Intent intent = new Intent(this, PaymentActivity.class);
+                        intent.putIntegerArrayListExtra("selectedSeats", selectedSeats);
+                        intent.putExtra("TripId", tripId);
+                        intent.putExtra("isReturn", isReturn2);
+                        intent.putExtra("oneWaySeats", seats);
+                        intent.putExtra("reserve", reserved);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
             }
             else {

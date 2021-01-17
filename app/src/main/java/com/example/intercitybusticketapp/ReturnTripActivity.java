@@ -27,7 +27,7 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
     private int tripGaping = 10;
     private int count = 0;
     private List<Trip> arr;
-    private boolean isReturn;
+    private boolean isReturn,reserved;
     private String TripId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +56,11 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
 
         Intent intent = getIntent();
         isReturn = intent.getBooleanExtra("isReturn",false);
+
+        reserved = intent.getBooleanExtra("reserve",false);
+        System.out.println(reserved);
+
+
         layoutSeat.addView(textview);
         layout.addView(layoutSeat);
         TripId = intent.getStringExtra("TripID");
@@ -92,7 +97,7 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
             textview = new TextView(this);
             LinearLayout.LayoutParams textParams2 = new LinearLayout.LayoutParams(300, 350);
             textview.setLayoutParams(textParams2);
-            textview.setText("Arrival Time :"  + arr.get(index).getArrivalTime());
+            textview.setText("Arrival Time :"  + arr.get(index).getArrivaltime());
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.BLACK);
             textview.setPadding(5, 5, 5, 5);
@@ -172,6 +177,7 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
         intent.putExtra("isReturn", isReturn);
         intent.putExtra("ReturnTripID" , arr.get(in-1).getTripid());
         intent.putExtra("TripID",TripId);
+        intent.putExtra("reserve",reserved);
         startActivity(intent);
         finish();
     }

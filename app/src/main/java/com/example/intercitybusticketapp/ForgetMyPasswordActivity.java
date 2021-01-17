@@ -29,7 +29,7 @@ public class ForgetMyPasswordActivity extends AppCompatActivity {
         sendPassEmailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if(/*!eMail.getText().toString().equals(null) &&*/ !TextUtils.isEmpty(eMail.getText().toString())) {
+               if(!TextUtils.isEmpty(eMail.getText().toString())) {
                    mAuth.sendPasswordResetEmail(eMail.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
                        @Override
                        public void onComplete(@NonNull Task<Void> task) {

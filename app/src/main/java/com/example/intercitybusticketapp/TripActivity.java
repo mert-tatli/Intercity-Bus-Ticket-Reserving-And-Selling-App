@@ -24,6 +24,7 @@ import java.util.List;
 
 
 public class TripActivity extends AppCompatActivity implements View.OnClickListener {
+    private boolean reserved;
     private boolean isReturn2;
     private TextView textview;
     private ImageView imageView;
@@ -39,10 +40,19 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip);
         Intent intent = getIntent();
+
         boolean isReturn = intent.getBooleanExtra("isReturn",false);
         isReturn2 = isReturn;
+        boolean reserved1 = intent.getBooleanExtra("reserve",false);
+        reserved = reserved1;
+        System.out.println(reserved);
+
+
         Trips = MainActivity.getTripList();
         mAuth=FirebaseAuth.getInstance();
+
+
+
         layout = findViewById(R.id.layoutTrip);
         LinearLayout layoutSeat = new LinearLayout(this);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -176,12 +186,14 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent(this, ReturnTripActivity.class);
             intent.putExtra("isReturn", isReturn2);
             intent.putExtra("TripID" , Trips.get(in-1).getTripid());
+            intent.putExtra("reserve" , reserved);
             startActivity(intent);
             finish();
         } else {
             Intent intent = new Intent(this, SelectSeatActivity.class);
             intent.putExtra("TripID" , Trips.get(in-1).getTripid());
             intent.putExtra("isReturn", isReturn2);
+            intent.putExtra("reserve" , reserved);
             startActivity(intent);
             finish();
         }
