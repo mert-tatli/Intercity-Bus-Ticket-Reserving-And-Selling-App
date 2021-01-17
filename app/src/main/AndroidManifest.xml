@@ -11,7 +11,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
-        <activity android:name=".ForgetMyPasswordActivity"></activity>
+        <activity android:name=".UnregisteredUserInfo"></activity>
+        <activity android:name=".ForgetMyPasswordActivity" />
         <activity android:name=".PasswordChangeActivity" />
         <activity android:name=".UserAccountActivity" />
         <activity android:name=".DeleteBusActivity" />
