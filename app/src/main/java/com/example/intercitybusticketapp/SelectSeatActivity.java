@@ -30,6 +30,8 @@ import java.util.List;
 public class SelectSeatActivity extends AppCompatActivity implements View.OnClickListener {
     private ViewGroup layout;
 
+    private int autoTicketID;
+
     private String seats;
     private boolean reserved;
     private ArrayList<Integer> seatOriantation = new ArrayList<>();
@@ -51,6 +53,8 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
 
     private DatabaseReference mTrips = FirebaseDatabase.getInstance().getReference("Trips");
     private DatabaseReference mTicket =  FirebaseDatabase.getInstance().getReference("Ticket");
+    private DatabaseReference mDatabase =  FirebaseDatabase.getInstance().getReference();
+
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +65,6 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
 
             boolean reserved1 = intent.getBooleanExtra("reserve",false);
             reserved = reserved1;
-            System.out.println("SelectSeat 1 " + reserved);
 
             returnTripId = intent.getStringExtra("ReturnTripID");
             tripId = intent.getStringExtra("TripID");
@@ -182,7 +185,7 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
 
     public void selectSeat1(View v) {
             if(selectedSeats.size()>0) {
-                System.out.println("184    " + reserved);
+
                  if (isReturn2) {
                     Intent intent = new Intent(this, Selectseat2Activity.class);
                     intent.putExtra("ReturnTripId", returnTripId);
@@ -195,21 +198,36 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
 
                 }
                 else if (reserved) {
-                    System.out.println("198    " + reserved);
+
+                     mDatabase.child("autoTicketID").addListenerForSingleValueEvent(new ValueEventListener() {
+                         @Override
+                         public void onDataChange(@NonNull DataSnapshot autoTicket) {
+                             autoTicketID = Integer.parseInt(autoTicket.getValue().toString());
+                         }
+
+                         @Override
+                         public void onCancelled(@NonNull DatabaseError error) {
+                             Toast.makeText(SelectSeatActivity.this,"Something went wrong! DATABASE CONNECTİON FAİLED.",Toast.LENGTH_SHORT).show();
+                             Toast.makeText(SelectSeatActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
+                             Intent intent = new Intent(SelectSeatActivity.this,MainActivity.class);
+                             startActivity(intent);
+                         }
+                     });
+
                     mTrips.child(tripId).child("TripSeats").child("Seat").setValue(seats);
                     mTrips.child(tripId).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if (snapshot.exists()) {
                                 String userID = mAuth.getCurrentUser().getEmail();
-                                String TicketId = "Tickett1123";
+                                String TicketId = "Ticket" + autoTicketID;
                                 String from = snapshot.child("from").getValue().toString();
                                 String to = snapshot.child("to").getValue().toString();
                                 String departureTime = snapshot.child("departuretime").getValue().toString();
                                 String arrivalTime = snapshot.child("arrivaltime").getValue().toString();
                                 String date = snapshot.child("date").getValue().toString();
                                 String price = snapshot.child("price").getValue().toString();
-                                Ticket a = new Ticket(tripId, "TicketID", userID, from, to, departureTime, arrivalTime, date, price);
+                                Ticket a = new Ticket(tripId, "TicketID", userID, from, to, departureTime, arrivalTime, date, price ,selectedSeats);
                                 mTicket.child(TicketId).child("tripId").setValue(tripId);
                                 mTicket.child(TicketId).child("ticketId").setValue(TicketId);
                                 mTicket.child(TicketId).child("from").setValue(from);
@@ -219,6 +237,20 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
                                 mTicket.child(TicketId).child("date").setValue(date);
                                 mTicket.child(TicketId).child("price").setValue(price);
                                 mTicket.child(TicketId).child("userID").setValue(userID);
+                                //
+                                autoTicketID++;
+                                String SeatsDeparture ="";
+                                for(int i=0 ; i<selectedSeats.size() ; i++){
+                                    if(SeatsDeparture.equals("")){
+                                        SeatsDeparture =selectedSeats.get(i).toString();
+                                    }else
+                                        SeatsDeparture = SeatsDeparture + " --> " +  selectedSeats.get(i).toString();
+                                }
+                                mTicket.child(TicketId).child("seats").setValue(SeatsDeparture);
+                                mDatabase.child("autoTicketID").setValue(autoTicketID);
+                                //
+
+
                                 Toast.makeText(SelectSeatActivity.this, "Your seat(s) has ben reserved! Have a nice trip.", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(SelectSeatActivity.this,UserAccountActivity.class);
                                 startActivity(intent);
@@ -227,7 +259,10 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-
+                            Toast.makeText(SelectSeatActivity.this,"Something went wrong! DATABASE CONNECTİON FAİLED.",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SelectSeatActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(SelectSeatActivity.this,MainActivity.class);
+                            startActivity(intent);
                         }
                     });
                 }

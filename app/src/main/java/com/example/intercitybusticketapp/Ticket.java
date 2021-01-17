@@ -1,5 +1,7 @@
 package com.example.intercitybusticketapp;
 
+import java.util.ArrayList;
+
 public class Ticket {
 
     private String tripId;
@@ -11,10 +13,11 @@ public class Ticket {
     private String arrivalTime;
     private String date;
     private String price;
-    private String seats,plateNumber;
+    private ArrayList<Integer> seats;
+    private String plateNumber;
 
 
-    public Ticket(String tripId, String ticketId, String userId, String from, String to, String departureTime, String arrivalTime, String date, String price) {
+    public Ticket(String tripId, String ticketId, String userId, String from, String to, String departureTime, String arrivalTime, String date, String price,ArrayList<Integer> seats/*String plateNumber*/) {
         this.tripId = tripId;
         this.TicketId = ticketId;
         this.UserId = userId;
@@ -24,12 +27,9 @@ public class Ticket {
         this.arrivalTime = arrivalTime;
         this.date = date;
         this.price = price;
-        // SEATS
-        // OTOBUS PLAKASI.
+        this.seats= seats;
+        /*this.plateNumber=plateNumber;*/
     }
-
-
-
 
 
     @Override
@@ -44,6 +44,8 @@ public class Ticket {
                 ", arrivalTime='" + arrivalTime + '\'' +
                 ", date='" + date + '\'' +
                 ", price='" + price + '\'' +
+                ", seats='" + seats + '\'' +
+                /*", plateNumber='" + plateNumber + '\'' +*/
                 '}';
     }
 
@@ -117,5 +119,13 @@ public class Ticket {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public ArrayList<Integer> getSeats() {
+        return seats;
+    }
+
+    public String getPlateNumber() {
+        return plateNumber;
     }
 }

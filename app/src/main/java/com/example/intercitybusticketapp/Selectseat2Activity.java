@@ -31,6 +31,7 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
     private String seats;
     private String seatsFromSeatActivityOne;
 
+    private int autoTicketID;
 
     private ArrayList<Integer> seatOriantation = new ArrayList<>();
     private ArrayList<String> seatLocation = new ArrayList<>();
@@ -53,6 +54,7 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
 
     private DatabaseReference mTrips = FirebaseDatabase.getInstance().getReference("Trips");
     private DatabaseReference mTicket =  FirebaseDatabase.getInstance().getReference("Ticket");
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
 
     @Override
@@ -142,7 +144,12 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(Selectseat2Activity.this, error.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(Selectseat2Activity.this,"Something went wrong! DATABASE CONNECTİON FAİLED.",Toast.LENGTH_SHORT).show();
+                Toast.makeText(Selectseat2Activity.this,"DATABASE CONNECTİON FAİLED.",Toast.LENGTH_SHORT).show();
+                Toast.makeText(Selectseat2Activity.this,"Please Try Again Later",Toast.LENGTH_SHORT).show();
+                Toast.makeText(Selectseat2Activity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(Selectseat2Activity.this,MainActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -179,10 +186,23 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
     public void selectSeat2(View v) {
         if(selectedSeatsReturn.size()>0) {
 
-            System.out.println("181: "+  reserved);
-            if(reserved){
 
-                System.out.println("184: " +  reserved);
+            if(reserved){
+                mDatabase.child("autoTicketID").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot autoTicket) {
+                        autoTicketID = Integer.parseInt(autoTicket.getValue().toString());
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(Selectseat2Activity.this,"Something went wrong! DATABASE CONNECTİON FAİLED.",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Selectseat2Activity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(Selectseat2Activity.this,MainActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
                 mTrips.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -190,7 +210,7 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
 
                                 String userID = mAuth.getCurrentUser().getEmail();
 
-                                String TicketIdDept="TicketDeparture";
+                                String TicketIdDept="Ticket" + autoTicketID;
                                 String fromDeparture = snapshot.child(tripId).child("from").getValue().toString();
                                 String toDeparture = snapshot.child(tripId).child("to").getValue().toString();
                                 String departureTimeDeparture = snapshot.child(tripId).child("departuretime").getValue().toString();
@@ -198,7 +218,7 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
                                 String dateDeparture= snapshot.child(tripId).child("date").getValue().toString();
                                 String priceDeparture = snapshot.child(tripId).child("price").getValue().toString();
 
-                                String TicketIdArrive="TicketArrival";
+
                                 String fromArrival = snapshot.child(returntripId).child("from").getValue().toString();
                                 String toArrival = snapshot.child(returntripId).child("to").getValue().toString();
                                 String departureTimeArrival = snapshot.child(returntripId).child("departuretime").getValue().toString();
@@ -206,7 +226,7 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
                                 String dateArrival= snapshot.child(returntripId).child("date").getValue().toString();
                                 String priceArrival = snapshot.child(returntripId).child("price").getValue().toString();
 
-                                Ticket a = new Ticket(tripId,TicketIdDept,userID,fromDeparture,toDeparture,departureTimeDeparture,arrivalTimeDeparture,dateDeparture,priceDeparture);
+                                Ticket a = new Ticket(tripId,TicketIdDept,userID,fromDeparture,toDeparture,departureTimeDeparture,arrivalTimeDeparture,dateDeparture,priceDeparture,selectedSeats);
                                 mTicket.child(TicketIdDept).child("tripId").setValue(tripId);
                                 mTicket.child(TicketIdDept).child("ticketId").setValue(TicketIdDept);
                                 mTicket.child(TicketIdDept).child("from").setValue(fromDeparture);
@@ -217,7 +237,22 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
                                 mTicket.child(TicketIdDept).child("price").setValue(priceDeparture);
                                 mTicket.child(TicketIdDept).child("userID").setValue(userID);
 
-                                Ticket b = new Ticket(returntripId,TicketIdArrive,userID,fromArrival,toArrival,departureTimeArrival,arrivalTimeArrival,dateArrival,priceArrival);
+                                //
+                                autoTicketID++;
+                                String SeatsDeparture ="";
+                                for(int i=0 ; i<selectedSeats.size() ; i++){
+                                    if(SeatsDeparture.equals("")){
+                                        SeatsDeparture =selectedSeats.get(i).toString();
+                                    }else
+                                        SeatsDeparture = SeatsDeparture + " --> " +  selectedSeats.get(i).toString();
+                                }
+                                mTicket.child(TicketIdDept).child("seats").setValue(SeatsDeparture);
+                                mDatabase.child("autoTicketID").setValue(autoTicketID);
+                                //
+
+                                String TicketIdArrive="Ticket" + autoTicketID;
+
+                                Ticket b = new Ticket(returntripId,TicketIdArrive,userID,fromArrival,toArrival,departureTimeArrival,arrivalTimeArrival,dateArrival,priceArrival,selectedSeatsReturn);
                                 mTicket.child(TicketIdArrive).child("tripId").setValue(returntripId);
                                 mTicket.child(TicketIdArrive).child("ticketId").setValue(TicketIdArrive);
                                 mTicket.child(TicketIdArrive).child("from").setValue(fromArrival);
@@ -228,6 +263,18 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
                                 mTicket.child(TicketIdArrive).child("price").setValue(priceArrival);
                                 mTicket.child(TicketIdArrive).child("userID").setValue(userID);
 
+                                //
+                                autoTicketID++;
+                                String SeatsArrival ="";
+                                for(int i=0 ; i<selectedSeatsReturn.size() ; i++){
+                                    if(SeatsArrival.equals("")){
+                                        SeatsArrival =selectedSeatsReturn.get(i).toString();
+                                    }else
+                                        SeatsArrival = SeatsArrival + " --> " +  selectedSeatsReturn.get(i).toString();
+                                }
+                                mTicket.child(TicketIdArrive).child("seats").setValue(SeatsArrival);
+                                mDatabase.child("autoTicketID").setValue(autoTicketID);
+                                //
 
                                 mTrips.child(tripId).child("TripSeats").child("Seat").setValue(seatsFromSeatActivityOne);
                                 mTrips.child(returntripId).child("TripSeats").child("Seat").setValue(seats);
@@ -240,7 +287,10 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-
+                            Toast.makeText(Selectseat2Activity.this,"Something went wrong",Toast.LENGTH_LONG).show();
+                            Toast.makeText(Selectseat2Activity.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(Selectseat2Activity.this,MainActivity.class);
+                            startActivity(intent);
                         }
                     });
 
@@ -274,6 +324,7 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
                 intent.putExtra("selectSeatTwo", seats);
                 intent.putExtra("selectSeatOne", seatsFromSeatActivityOne);
                 intent.putExtra("reserve", reserved);
+
                 startActivity(intent);
                 finish();
             }

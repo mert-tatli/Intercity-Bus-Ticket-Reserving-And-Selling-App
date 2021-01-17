@@ -284,7 +284,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onCancelled(@NonNull DatabaseError error) {
-            Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this,"Something went wrong! DATABASE CONNECTİON FAİLED.",Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this,MainActivity.class);
+            startActivity(intent);
         }
     };
 
@@ -312,7 +315,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onCancelled(@NonNull DatabaseError error) {
-            Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this,"Something went wrong! DATABASE CONNECTİON FAİLED.",Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this,MainActivity.class);
+            startActivity(intent);
         }
     };
 
