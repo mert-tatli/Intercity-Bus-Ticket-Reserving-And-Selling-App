@@ -64,9 +64,23 @@
         android:onClick="cancelReservation"
         android:text="cancelReservation"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/showTicketsButton"
-        app:layout_constraintVertical_bias="0.257"
-        tools:layout_editor_absoluteX="121dp" />
+        app:layout_constraintVertical_bias="0.257" />
+
+    <Spinner
+        android:id="@+id/TicketSpinner"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="88dp"
+        android:background="@drawable/spinner_style"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cancelReservation"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

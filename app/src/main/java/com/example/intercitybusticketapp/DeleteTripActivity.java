@@ -2,8 +2,14 @@ package com.example.intercitybusticketapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -27,11 +33,15 @@ public class DeleteTripActivity extends AppCompatActivity {
     private String deleteid;
     private DatabaseReference mDatabase;
     private ArrayList<String> trips=new ArrayList<>();
+    private NotificationManagerCompat managerCompat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_trip);
         deleteTripId = findViewById(R.id.inputDeleteTrip);
+        createNotificationChannel();
+        managerCompat = NotificationManagerCompat.from(this);
+
         mDatabase= FirebaseDatabase.getInstance().getReference();
         mDatabase.child("Trips").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -61,9 +71,11 @@ public class DeleteTripActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
+
+
+
+
         });
-
-
     }
     public void deleteTrip(View view){
         if(TextUtils.isEmpty(deleteid)){
@@ -74,7 +86,7 @@ public class DeleteTripActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if(snapshot.exists()){
                         if(snapshot.hasChild(deleteid)){
-                            mDatabase.child("Trips").child(deleteid).setValue(null);
+                            //mDatabase.child("Trips").child(deleteid).setValue(null);
                             deleteTripId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
@@ -90,14 +102,49 @@ public class DeleteTripActivity extends AppCompatActivity {
                                     android.R.layout.simple_spinner_item, trips);
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             deleteTripId.setAdapter(adapter);
-                            trips.remove(deleteid);
+                            //trips.remove(deleteid);
 
-                            Toast.makeText(DeleteTripActivity.this, "Trip deleted", Toast.LENGTH_LONG).show();
+                            mDatabase.child("Ticket").orderByChild("tripId").equalTo(deleteid).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if(snapshot.exists()){
+                                        for(DataSnapshot child : snapshot.getChildren()){
+                                            String mailAdress =child.child("userID").getValue().toString();
+                                        }
+
+                                        Notification notification = new NotificationCompat.Builder(DeleteTripActivity.this,"ID")
+                                                .setContentTitle("Title")
+                                                .setContentText("Your trip has been cancelled.")
+                                                .setPriority( NotificationCompat.PRIORITY_MAX)
+                                                .setCategory(NotificationCompat.CATEGORY_EVENT)
+                                                .setSmallIcon(R.drawable.notification_bus).build();
+
+                                        managerCompat.notify(1,notification);
+
+                                    }
+                                    else{
+                                        System.out.println("Can not found the tickets.");
+                                        Toast.makeText(DeleteTripActivity.this, "Can not found the tickets.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    Toast.makeText(DeleteTripActivity.this,"Something went wrong",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(DeleteTripActivity.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                                    Intent intent = new Intent(DeleteTripActivity.this,AdminActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
+
+
+
+                            Toast.makeText(DeleteTripActivity.this, "Trip deleted", Toast.LENGTH_SHORT).show();
                         }else{
-                            Toast.makeText(DeleteTripActivity.this, "Trip Can not Found.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(DeleteTripActivity.this, "Trip Can not Found.", Toast.LENGTH_SHORT).show();
                         }
                     }else{
-                        Toast.makeText(DeleteTripActivity.this, "Couldn't find anything on Database", Toast.LENGTH_LONG).show();
+                        Toast.makeText(DeleteTripActivity.this, "Couldn't find anything on Database", Toast.LENGTH_SHORT).show();
                     }
                 }
                 @Override
@@ -110,4 +157,16 @@ public class DeleteTripActivity extends AppCompatActivity {
             });
         }
     }
+
+    private void createNotificationChannel(){
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            NotificationChannel channel1= new NotificationChannel("ID","Channel1", NotificationManager.IMPORTANCE_DEFAULT);
+            channel1.setDescription("This is channel 1");
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel1);
+        }
+    }
+
+
+
 }
