@@ -32,34 +32,6 @@
                 android:contentDescription="TODO"
                 app:srcCompat="@drawable/ic_baseline_person" />
 
-            <TextView
-                android:id="@+id/textView2Unregistered"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginRight="32dp"
-                android:text="SIGN UP FOR"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                android:textStyle="normal" />
-
-            <TextView
-                android:id="@+id/textView3Unregistered"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginEnd="32dp"
-
-                android:layout_marginRight="32dp"
-                android:text="TRAVELLER'S Club Privileges"
-                android:textColor="@color/colorPrimary"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
             <EditText
                 android:id="@+id/idNumberUnregistered"
                 android:layout_width="match_parent"

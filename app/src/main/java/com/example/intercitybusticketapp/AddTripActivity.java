@@ -32,15 +32,16 @@ public class AddTripActivity extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
     private static Button departureDate;
     private EditText tripid;
-    private Spinner to,from,fromTime,toTime;
+    private Spinner to,from,fromTime,toTime,busplate;
     private EditText price;
     private TripModel tripmodel;
     private DatabaseReference mDatabase;
-    private String fromtrip,toTrip,fromtimetrip,totimetrip,departdate;
+    private String fromtrip,toTrip,fromtimetrip,totimetrip,departdate,selectedBus;
     private static int mYear1;
     private static int mMonth1;
     private static int mDay1;
 
+    //sadece array oluşturup busları içine atarsınız aşşağıda busplate diye spinner tanımladım seçildiğinde selectedBus'a string olarak atacak.
 
     private String[] arraySpinner = new String[]{"Select Departure City", "Adana", "Adiyaman", "Afyon", "Agri", "Aksaray", "Amasya", "Ankara", "Antalya", "Ardahan", "Artvin", "Aydin", "Balikesir", "Bartin", "Batman", "Bayburt", "Bilecik", "Bingol", "Bitlis", "Bolu", "Burdur", "Bursa", "Canakkale", "Cankiri", "Corum", "Denizli", "Diyarbakir", "Duzce", "Edirne", "Elazig", "Erzincan", "Erzurum", "Eskisehir", "Gaziantep", "Giresun", "Gumushane", "Hakkari", "Hatay", "Igdir", "Isparta", "Istanbul", "Izmir", "Kahramanmaras",
             "Karabuk", "Karaman", "Kars", "Kastamonu", "Kayseri", "Kilis", "Kirikkale", "Kirklareli", "Kirsehir", "Kocaeli", "Konya", "Kutahya", "Malatya", "Manisa", "Mardin", "Mersin", "Mugla", "Mus", "Nevsehir", "Nigde", "Ordu", "Osmaniye", "Rize", "Sakarya", "Samsun", "Sanliurfa", "Siirt", "Sinop", "Sirnak", "Sivas", "Tekirdag", "Tokat", "Trabzon", "Tunceli", "Usak", "Van", "Yalova", "Yozgat", "Zonguldak"};
@@ -68,6 +69,8 @@ public class AddTripActivity extends AppCompatActivity {
         fromTime = findViewById(R.id.inputTripFromTime);
         toTime=findViewById(R.id.inputTripToTime);
         price=findViewById(R.id.inputTripPrice);
+        busplate=findViewById(R.id.inputBusPlate2);
+
         tripmodel=new TripModel();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         departureDate = findViewById(R.id.departureDateButton2);
@@ -138,6 +141,34 @@ public class AddTripActivity extends AppCompatActivity {
         adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         fromTime.setAdapter(adapter2);
         toTime.setAdapter(adapter4);
+
+
+
+
+        ///////////////////////////////
+
+        busplate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
+                selectedBus = timeSpinner2[position];  //array ismi değişecek. // büyük ihitmal siz db den veri çekerken bunlar patlayacak geçenki gibi yazdığınız metodların içine almayı deneyin spinnerları patlarsa eğer.
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
+        ArrayAdapter<String> adapter5 = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, timeSpinner2); //time spinner yazan yere arrayin ismi gelecek.
+        adapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        busplate.setAdapter(adapter5);
+
+
+
+
+        ////////////////////////////////////////
+
+
 
 
         departureDate.setOnClickListener(new View.OnClickListener() {

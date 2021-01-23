@@ -293,10 +293,6 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
                             startActivity(intent);
                         }
                     });
-
-
-
-
                 Intent intent = new Intent(Selectseat2Activity.this, UnregisteredUserInfo.class);
                 startActivity(intent);
                 finish();

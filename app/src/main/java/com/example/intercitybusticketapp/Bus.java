@@ -6,11 +6,9 @@ import androidx.annotation.NonNull;
 public class Bus {
 
     private String plateNo;
-    private String capacity;
 
-    public Bus(String plateNo, String capacity) {
+    public Bus(String plateNo) {
         this.plateNo = plateNo;
-        this.capacity = capacity;
 
     }
 
@@ -18,8 +16,6 @@ public class Bus {
     @Override
     public String toString() {
         return "Bus{" +
-                "plateNo='" + plateNo + '\'' +
-                ", capacity='" + capacity + '\'' +
-                '}';
+                "plateNo='" + plateNo+"'}";
     }
 }

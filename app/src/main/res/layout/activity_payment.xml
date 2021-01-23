@@ -38,10 +38,10 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:background="@drawable/ic_text_round"
+        android:digits="0123456789+"
         android:drawableStart="@drawable/ic_baseline_create"
         android:drawablePadding="10dp"
         android:ems="10"
-        android:digits="0123456789+"
         android:hint="Card Number"
         android:inputType="textPersonName"
         android:padding="10dp"
@@ -64,6 +64,7 @@
         android:drawablePadding="10dp"
         android:ems="10"
         android:hint="Month"
+        android:digits="0123456789"
         android:inputType="textPersonName"
         android:padding="10dp"
         android:textColor="@color/black"
@@ -83,6 +84,7 @@
         android:drawablePadding="10dp"
         android:ems="10"
         android:hint="Year"
+        android:digits="0123456789"
         android:inputType="textPersonName"
         android:padding="10dp"
         android:textColor="@color/black"
@@ -106,6 +108,7 @@
         android:drawableStart="@drawable/ic_baseline_create"
         android:drawablePadding="10dp"
         android:ems="10"
+        android:digits="0123456789"
         android:hint="CVV2"
         android:inputType="textPersonName"
         android:padding="10dp"
@@ -157,19 +160,31 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/seatInfo" />
+        app:layout_constraintTop_toBottomOf="@+id/seatInfo1" />
 
     <ListView
-        android:id="@+id/seatInfo"
+        android:id="@+id/seatInfo1"
         android:layout_width="0dp"
         android:layout_height="200dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/seat2Info"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:layout_editor_absoluteY="16dp" />
+
+    <ListView
+        android:id="@+id/seat2Info"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/seatInfo1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/seatInfo1"
+        app:layout_constraintTop_toTopOf="@+id/seatInfo1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

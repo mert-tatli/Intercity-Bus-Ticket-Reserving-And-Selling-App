@@ -4,19 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.text.TextUtils;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.os.Bundle;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,14 +21,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.EventListener;
 
 
 public class PaymentActivity extends AppCompatActivity {
 
     private TextView price;
     private EditText holderName, cardNumber, month, year, cvv;
-    private ListView seatInfo;
+    private ListView seatInfo,seat2Info;
     private int tripGaping = 10;
     private int count = 0;
     private int autoTicketID;
@@ -43,7 +35,6 @@ public class PaymentActivity extends AppCompatActivity {
     private  String tripId, returntripId;
     private ArrayList<Integer> selectedSeatsReturn = new ArrayList<>();
     private ArrayList<Integer> selectedSeats = new ArrayList<>();
-    private ArrayList<Integer> selectedSeatsALL = new ArrayList<>();
     int total=0;
     private String selectSeatOne,unRegisteredUserMail;
     private String selectSeatOne1;
@@ -59,7 +50,8 @@ public class PaymentActivity extends AppCompatActivity {
 
         System.out.println("payment Activity");
 
-        seatInfo = findViewById(R.id.seatInfo);
+        seatInfo = findViewById(R.id.seatInfo1);
+        seat2Info = findViewById(R.id.seat2Info);
         holderName = findViewById(R.id.holderName);
         cardNumber = findViewById(R.id.cardNumber);
         month = findViewById(R.id.month);
@@ -95,29 +87,23 @@ public class PaymentActivity extends AppCompatActivity {
                         total += selectedSeats.size() * Integer.parseInt(snapshot.child(tripId).child("price").getValue().toString());
                         total += selectedSeatsReturn.size() * Integer.parseInt(snapshot.child(returntripId).child("price").getValue().toString());
                     }
-                    selectedSeatsALL.addAll(selectedSeats);
-                    selectedSeatsALL.addAll(selectedSeatsReturn);
-                    ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(PaymentActivity.this, android.R.layout.simple_list_item_1, selectedSeatsALL);
 
-
-
-
+                    ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(PaymentActivity.this, android.R.layout.simple_list_item_1, selectedSeats);
+                    ArrayAdapter<Integer> adapter2 = new ArrayAdapter<Integer>(PaymentActivity.this, android.R.layout.simple_list_item_1, selectedSeatsReturn);
+                    seat2Info.setAdapter(adapter2);
                     seatInfo.setAdapter(adapter);
                     price.setText("Price: "+ total + "₺");
                 }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(PaymentActivity.this,"Something went wrong! DATABASE CONNECTİON HAS FAİLED.",Toast.LENGTH_SHORT).show();
+                Toast.makeText(PaymentActivity.this,"Something went wrong! DATABASE CONNECTION HAS FAILED.",Toast.LENGTH_SHORT).show();
                 Toast.makeText(PaymentActivity.this,"Please Try Again With Better Connection.",Toast.LENGTH_SHORT).show();
                 Toast.makeText(PaymentActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(PaymentActivity.this,MainActivity.class);
                 startActivity(intent);
             }
         });
-
-
-
     }
 
     public void onBuyClick(View view) {

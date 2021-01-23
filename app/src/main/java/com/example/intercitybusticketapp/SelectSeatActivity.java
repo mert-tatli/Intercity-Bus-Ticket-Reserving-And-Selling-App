@@ -29,9 +29,7 @@ import java.util.List;
 
 public class SelectSeatActivity extends AppCompatActivity implements View.OnClickListener {
     private ViewGroup layout;
-
     private int autoTicketID;
-
     private String seats;
     private boolean reserved;
     private ArrayList<Integer> seatOriantation = new ArrayList<>();
@@ -40,7 +38,6 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
     private ArrayList<Integer> selectedSeats = new ArrayList<>();
     private int seatSize = 120;
     private int seatGaping = 10;
-
     private int STATUS_AVAILABLE = 1;
     private  int STATUS_BOOKED = 2;
     private  int STATUS_RESERVED = 3;
@@ -49,8 +46,6 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
     private DatabaseReference mSeats;
     private  String returnTripId;
     private FirebaseAuth mAuth;
-
-
     private DatabaseReference mTrips = FirebaseDatabase.getInstance().getReference("Trips");
     private DatabaseReference mTicket =  FirebaseDatabase.getInstance().getReference("Ticket");
     private DatabaseReference mDatabase =  FirebaseDatabase.getInstance().getReference();

@@ -20,7 +20,6 @@ import com.google.firebase.database.ValueEventListener;
 
 public class AddBusActivity extends AppCompatActivity {
     private EditText plateNo;
-    private EditText capacity;
     private BusModel busmodel;
     private DatabaseReference mDatabase;
 
@@ -30,7 +29,6 @@ public class AddBusActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_bus);
 
         plateNo = findViewById(R.id.inputBusPlate);
-        capacity = findViewById(R.id.inputBusCapacity);
         busmodel = new BusModel();
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
@@ -38,9 +36,7 @@ public class AddBusActivity extends AppCompatActivity {
 
     public void addbus(View view) {
         String plate = plateNo.getText().toString();
-        String capacityy = capacity.getText().toString();
-
-        if (TextUtils.isEmpty(plate) || TextUtils.isEmpty(capacityy)) {
+        if (TextUtils.isEmpty(plate)) {
             Toast.makeText(AddBusActivity.this, "All information are required please check", Toast.LENGTH_LONG).show();
         } else {
                 mDatabase.child("Buses").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -51,11 +47,10 @@ public class AddBusActivity extends AppCompatActivity {
                                 Toast.makeText(AddBusActivity.this, "THİS PLATE NUMBER İS ALREADY ON THE SYSTEM.", Toast.LENGTH_LONG).show();
                             }
                             else{
-                                Bus b = new Bus(plate, capacityy);
+                                Bus b = new Bus(plate);
                                 busmodel.setBus(b);
                                 Toast.makeText(AddBusActivity.this, "BUS WAS CREATED SUCCESFULLY", Toast.LENGTH_SHORT).show();
                                 Toast.makeText(AddBusActivity.this, b.toString(), Toast.LENGTH_SHORT).show();
-                                mDatabase.child("Buses").child(plate).child("Capacity").setValue(capacityy);
                                 mDatabase.child("Buses").child(plate).child("Plate").setValue(plate);
                             }
                         }

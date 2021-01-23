@@ -45,13 +45,9 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
         isReturn2 = isReturn;
         boolean reserved1 = intent.getBooleanExtra("reserve",false);
         reserved = reserved1;
-        System.out.println(reserved);
-
 
         Trips = MainActivity.getTripList();
         mAuth=FirebaseAuth.getInstance();
-
-
 
         layout = findViewById(R.id.layoutTrip);
         LinearLayout layoutSeat = new LinearLayout(this);
@@ -59,15 +55,6 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
         layoutSeat.setOrientation(LinearLayout.VERTICAL);
         layoutSeat.setLayoutParams(params);
         layoutSeat.setPadding(4 * tripGaping, 4 * tripGaping, 4 * tripGaping, 4 * tripGaping);
-        textview = new TextView(this);
-        LinearLayout.LayoutParams textParams0 = new LinearLayout.LayoutParams(300, 200);
-        textview.setLayoutParams(textParams0);
-        textview.setText("Outbound Trips");
-        textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
-        textview.setTextColor(Color.BLACK);
-        textview.setPadding(5, 5, 5, 5);
-        textview.setGravity(Gravity.CENTER);
-        layoutSeat.addView(textview);
         layout.addView(layoutSeat);
         mTrips = FirebaseDatabase.getInstance().getReference("Trips");
 
@@ -91,9 +78,9 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             view.setOnClickListener(this);
 
             textview = new TextView(this);
-            LinearLayout.LayoutParams textParams1 = new LinearLayout.LayoutParams(300, 200);
+            LinearLayout.LayoutParams textParams1 = new LinearLayout.LayoutParams(300, 300);
             textview.setLayoutParams(textParams1);
-            textview.setText("Departure Time :"  + Trips.get(index).getDepartTime());
+            textview.setText("Departure Time: "  + Trips.get(index).getDepartTime());
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.BLACK);
             textview.setPadding(5, 5, 5, 5);
@@ -101,9 +88,9 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             view.addView(textview);
 
             textview = new TextView(this);
-            LinearLayout.LayoutParams textParams2 = new LinearLayout.LayoutParams(300, 350);
+            LinearLayout.LayoutParams textParams2 = new LinearLayout.LayoutParams(300, 550);
             textview.setLayoutParams(textParams2);
-            textview.setText("Arrival Time :"  + Trips.get(index).getArrivaltime());
+            textview.setText("Arrival Time: "  + Trips.get(index).getArrivaltime());
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.BLACK);
             textview.setPadding(5, 5, 5, 5);
@@ -111,7 +98,7 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             view.addView(textview);
 
             textview = new TextView(this);
-            LinearLayout.LayoutParams textParams3 = new LinearLayout.LayoutParams(900, 200);
+            LinearLayout.LayoutParams textParams3 = new LinearLayout.LayoutParams(1100, 300);
             textview.setLayoutParams(textParams3);
             textview.setText("From: "+Trips.get(index).getFrom());
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
@@ -121,55 +108,44 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             view.addView(textview);
 
             textview = new TextView(this);
-            LinearLayout.LayoutParams textParams4 = new LinearLayout.LayoutParams(900, 350);
+            LinearLayout.LayoutParams textParams4 = new LinearLayout.LayoutParams(1100, 500);
             textview.setLayoutParams(textParams4);
-            textview.setText("To :"+Trips.get(index).getTo());
+            textview.setText("To:   "+Trips.get(index).getTo());
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.BLACK);
             textview.setPadding(5, 5, 5, 5);
             textview.setGravity(Gravity.CENTER);
             view.addView(textview);
 
-            /*textview = new TextView(this);
-            LinearLayout.LayoutParams textParams5 = new LinearLayout.LayoutParams(650, 680);
-            textview.setLayoutParams(textParams5);
-            textview.setText("Travel Time: " + (Integer.parseInt(Trips.get(index).getArrivalTime())- Integer.parseInt(Trips.get(index).getDepartTime())) +"Hours");
-            textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
-            textview.setTextColor(Color.BLACK);
-            textview.setPadding(5, 5, 5, 5);
-            textview.setGravity(Gravity.CENTER);
-            view.addView(textview);*/
 
             imageView = new ImageView(this);
             LinearLayout.LayoutParams imgParams1 = new LinearLayout.LayoutParams(550, 220);
             imageView.setLayoutParams(imgParams1);
             Drawable myDrawable2 = getResources().getDrawable(R.drawable.ic_three_dots);
-            imgParams1.setMargins(0, 30, 0, 30);
+            imgParams1.setMargins(70, 90, 70, 90);
             imageView.setPadding(0, 50, 0, 50);
             imageView.setImageDrawable(myDrawable2);
             view.addView(imageView);
 
             imageView = new ImageView(this);
-            LinearLayout.LayoutParams imgParams2 = new LinearLayout.LayoutParams(1500, 250);
+            LinearLayout.LayoutParams imgParams2 = new LinearLayout.LayoutParams(1700, 250);
             imageView.setLayoutParams(imgParams2);
             Drawable myDrawable3 = getResources().getDrawable(R.drawable.ic_bus_256);
             imageView.setImageDrawable(myDrawable3);
             view.addView(imageView);
 
             textview = new TextView(this);
-            LinearLayout.LayoutParams textParams6 = new LinearLayout.LayoutParams(400, 150);
+            LinearLayout.LayoutParams textParams6 = new LinearLayout.LayoutParams(500, 200);
             textview.setLayoutParams(textParams6);
             textview.setText("Select");
             Drawable myDrawable4 = getResources().getDrawable(R.drawable.ic_button_round);
             textview.setBackground(myDrawable4);
-            textParams6.setMargins(500, 470, 500, 0);
+            textParams6.setMargins(600, 400, 600, 0);
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.WHITE);
             textview.setPadding(5, 5, 5, 5);
             textview.setGravity(Gravity.CENTER);
             view.addView(textview);
-
-
             layout.addView(view);
             view.setOnClickListener(this);
         }
@@ -180,8 +156,6 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         int in = view.getId();
-
-        Toast.makeText(this, "Trip " + in + " is Selected", Toast.LENGTH_SHORT).show();
         if (isReturn2) {
             Intent intent = new Intent(this, ReturnTripActivity.class);
             intent.putExtra("isReturn", isReturn2);

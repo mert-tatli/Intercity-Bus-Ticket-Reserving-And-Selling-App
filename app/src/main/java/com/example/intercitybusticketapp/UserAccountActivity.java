@@ -90,6 +90,7 @@ public class UserAccountActivity extends AppCompatActivity {
                     cancelReservationSpinner.setAdapter(adapter);
                 }
                 else{
+
                     Toast.makeText(UserAccountActivity.this,"Ticket(s) Cannot Found.",Toast.LENGTH_SHORT).show();
                 }
             }
