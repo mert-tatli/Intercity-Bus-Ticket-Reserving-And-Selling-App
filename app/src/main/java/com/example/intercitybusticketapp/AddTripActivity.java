@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class AddTripActivity extends AppCompatActivity {
@@ -35,12 +36,12 @@ public class AddTripActivity extends AppCompatActivity {
     private Spinner to,from,fromTime,toTime,busplate;
     private EditText price;
     private TripModel tripmodel;
-    private DatabaseReference mDatabase;
+    private DatabaseReference mDatabase,mBuses;
     private String fromtrip,toTrip,fromtimetrip,totimetrip,departdate,selectedBus;
     private static int mYear1;
     private static int mMonth1;
     private static int mDay1;
-
+    private ArrayList<String> availableBusPlates;
     //sadece array oluşturup busları içine atarsınız aşşağıda busplate diye spinner tanımladım seçildiğinde selectedBus'a string olarak atacak.
 
     private String[] arraySpinner = new String[]{"Select Departure City", "Adana", "Adiyaman", "Afyon", "Agri", "Aksaray", "Amasya", "Ankara", "Antalya", "Ardahan", "Artvin", "Aydin", "Balikesir", "Bartin", "Batman", "Bayburt", "Bilecik", "Bingol", "Bitlis", "Bolu", "Burdur", "Bursa", "Canakkale", "Cankiri", "Corum", "Denizli", "Diyarbakir", "Duzce", "Edirne", "Elazig", "Erzincan", "Erzurum", "Eskisehir", "Gaziantep", "Giresun", "Gumushane", "Hakkari", "Hatay", "Igdir", "Isparta", "Istanbul", "Izmir", "Kahramanmaras",
@@ -74,6 +75,51 @@ public class AddTripActivity extends AppCompatActivity {
         tripmodel=new TripModel();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         departureDate = findViewById(R.id.departureDateButton2);
+        availableBusPlates = new ArrayList<>();
+        mBuses=FirebaseDatabase.getInstance().getReference("Buses");
+        mBuses.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    for(DataSnapshot buses : snapshot.getChildren()){
+                        if(!buses.hasChild("Trip")){
+                            availableBusPlates.add(buses.getKey());
+                        }
+                    }
+
+                    busplate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
+                            selectedBus = availableBusPlates.get(position);
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> arg0) {
+                            // TODO Auto-generated method stub
+                        }
+                    });
+                    ArrayAdapter<String> adapter5 = new ArrayAdapter<String>(AddTripActivity.this,
+                            android.R.layout.simple_spinner_item, availableBusPlates);
+                    adapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    busplate.setAdapter(adapter5);
+
+
+                }
+                else{
+                    Toast.makeText(AddTripActivity.this,"Buses Cannot Found.",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(AddTripActivity.this,"Something went wrong",Toast.LENGTH_LONG).show();
+                Toast.makeText(AddTripActivity.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(AddTripActivity.this,AdminActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
 
         from.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -144,33 +190,6 @@ public class AddTripActivity extends AppCompatActivity {
 
 
 
-
-        ///////////////////////////////
-
-        busplate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
-                selectedBus = timeSpinner2[position];  //array ismi değişecek. // büyük ihitmal siz db den veri çekerken bunlar patlayacak geçenki gibi yazdığınız metodların içine almayı deneyin spinnerları patlarsa eğer.
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-                // TODO Auto-generated method stub
-            }
-        });
-        ArrayAdapter<String> adapter5 = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, timeSpinner2); //time spinner yazan yere arrayin ismi gelecek.
-        adapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        busplate.setAdapter(adapter5);
-
-
-
-
-        ////////////////////////////////////////
-
-
-
-
         departureDate.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 DialogFragment newFragment1 = new DatePickerFragment1();
@@ -214,6 +233,8 @@ public class AddTripActivity extends AppCompatActivity {
                             mDatabase.child("Trips").child(tripid1).child("arrivaltime").setValue(totimetrip1);
                             mDatabase.child("Trips").child(tripid1).child("date").setValue(departdate);
                             mDatabase.child("Trips").child(tripid1).child("price").setValue(price1);
+                            mDatabase.child("Trips").child(tripid1).child("busPlate").setValue(busplate);
+                            availableBusPlates.remove(busplate);
                             mDatabase.child("Trips").child(tripid1).child("TripSeats").child("Seat").setValue("/AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/" + "AA___AA/"+ "AA___AA/");
                         }
                     }

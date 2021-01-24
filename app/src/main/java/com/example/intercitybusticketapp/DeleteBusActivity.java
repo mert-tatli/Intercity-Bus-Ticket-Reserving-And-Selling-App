@@ -87,28 +87,34 @@ public class DeleteBusActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
                     if(snapshot.hasChild(busplate)){
-                        mDatabase.child("Buses").child(busplate).setValue(null);
-
                         deletebusId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
                                 busplate = buses.get(position);
                             }
-
                             @Override
                             public void onNothingSelected(AdapterView<?> arg0) {
                                 // TODO Auto-generated method stub
                             }
                         });
 
-                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(DeleteBusActivity.this,
-                                android.R.layout.simple_spinner_item, buses);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        deletebusId.setAdapter(adapter);
-                        buses.remove(busplate);
+                        if(snapshot.child(busplate).hasChild("Trip")){
+                            //SİLİNEN OTOBÜS AVAİLABLE DEĞİLSE...
+                            //SİLİNEN OTOBUS HALİ HAZIRDA BİR TRİP İÇİN ATANMIŞ İSE.
 
 
-                        Toast.makeText(DeleteBusActivity.this, "Bus deleted", Toast.LENGTH_SHORT).show();
+
+                        }else{
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(DeleteBusActivity.this,
+                                    android.R.layout.simple_spinner_item, buses);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            deletebusId.setAdapter(adapter);
+                            mDatabase.child("Buses").child(busplate).setValue(null);
+                            buses.remove(busplate);
+                            Toast.makeText(DeleteBusActivity.this, "Bus deleted", Toast.LENGTH_SHORT).show();
+                        }
+
+
                     }
                     else{
                         Toast.makeText(DeleteBusActivity.this, "Bus can not found.", Toast.LENGTH_SHORT).show();

@@ -120,26 +120,22 @@ public class DeleteTripActivity extends AppCompatActivity {
                                                 .setSmallIcon(R.drawable.notification_bus).build();
 
                                         managerCompat.notify(1,notification);
+                                        Toast.makeText(DeleteTripActivity.this, "Trip deleted", Toast.LENGTH_SHORT).show();
 
                                     }
                                     else{
-                                        System.out.println("Can not found the tickets.");
                                         Toast.makeText(DeleteTripActivity.this, "Can not found the tickets.", Toast.LENGTH_SHORT).show();
                                     }
                                 }
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
-                                    Toast.makeText(DeleteTripActivity.this,"Something went wrong",Toast.LENGTH_LONG).show();
-                                    Toast.makeText(DeleteTripActivity.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                                    Toast.makeText(DeleteTripActivity.this,"Something went wrong",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(DeleteTripActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(DeleteTripActivity.this,AdminActivity.class);
                                     startActivity(intent);
                                 }
                             });
-
-
-
-                            Toast.makeText(DeleteTripActivity.this, "Trip deleted", Toast.LENGTH_SHORT).show();
                         }else{
                             Toast.makeText(DeleteTripActivity.this, "Trip Can not Found.", Toast.LENGTH_SHORT).show();
                         }
@@ -149,8 +145,8 @@ public class DeleteTripActivity extends AppCompatActivity {
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(DeleteTripActivity.this,"Something went wrong",Toast.LENGTH_LONG).show();
-                    Toast.makeText(DeleteTripActivity.this,error.getMessage(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(DeleteTripActivity.this,"Something went wrong",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DeleteTripActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(DeleteTripActivity.this,AdminActivity.class);
                     startActivity(intent);
                 }
