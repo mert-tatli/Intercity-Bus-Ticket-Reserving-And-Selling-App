@@ -223,6 +223,29 @@ public class AddTripActivity extends AppCompatActivity {
                         if(snapshot.hasChild(tripid1)){
                             Toast.makeText(AddTripActivity.this,"The trip is already Created",Toast.LENGTH_SHORT).show();
                         }else{
+
+                            ////////////////////////////
+                            busplate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
+                                    selectedBus = availableBusPlates.get(position);
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> arg0) {
+                                    // TODO Auto-generated method stub
+                                }
+                            });
+                            ArrayAdapter<String> adapter6 = new ArrayAdapter<String>(AddTripActivity.this,
+                                    android.R.layout.simple_spinner_item, availableBusPlates);
+                            adapter6.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            busplate.setAdapter(adapter6);
+
+                            /////////////////////////////
+
+
+
+                            availableBusPlates.remove(selectedBus);
                             Trip t = new Trip(tripid1,from1,to1,fromtimetrip1,totimetrip1,departdate,price1);
                             tripmodel.setTrip(t);
                             Toast.makeText(AddTripActivity.this,"TRIP WAS CREATED SUCCESFULLY",Toast.LENGTH_SHORT).show();
@@ -233,9 +256,10 @@ public class AddTripActivity extends AppCompatActivity {
                             mDatabase.child("Trips").child(tripid1).child("arrivaltime").setValue(totimetrip1);
                             mDatabase.child("Trips").child(tripid1).child("date").setValue(departdate);
                             mDatabase.child("Trips").child(tripid1).child("price").setValue(price1);
-                            mDatabase.child("Trips").child(tripid1).child("busPlate").setValue(busplate);
-                            availableBusPlates.remove(busplate);
+                            mDatabase.child("Trips").child(tripid1).child("busPlate").setValue(selectedBus);
+                            mDatabase.child("Buses").child(selectedBus).child("Trip").setValue(tripid1);
                             mDatabase.child("Trips").child(tripid1).child("TripSeats").child("Seat").setValue("/AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/" + "AA___AA/"+ "AA___AA/");
+
                         }
                     }
                 }

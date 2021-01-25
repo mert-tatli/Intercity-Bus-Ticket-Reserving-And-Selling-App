@@ -210,6 +210,7 @@ public class PaymentActivity extends AppCompatActivity {
                             mTicket.child(TicketId).child("date").setValue(date);
                             mTicket.child(TicketId).child("price").setValue(String.valueOf(Integer.parseInt(price)* selectedSeatsReturn.size()));
                             mTicket.child(TicketId).child("userID").setValue(userID);
+                            mTicket.child(TicketId).child("isReserved").setValue(false);
                             autoTicketID++;
                             String Seats ="";
                             for(int i=0 ; i<selectedSeatsReturn.size() ; i++){

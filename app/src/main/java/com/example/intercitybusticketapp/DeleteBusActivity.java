@@ -102,20 +102,19 @@ public class DeleteBusActivity extends AppCompatActivity {
                                 }
                             });
 
-                            if (snapshot.child(busplate).hasChild("Trip")) {
-                                //SİLİNEN OTOBÜS AVAİLABLE DEĞİLSE...
-                                //SİLİNEN OTOBUS HALİ HAZIRDA BİR TRİP İÇİN ATANMIŞ İSE.
-//                                Query query2 = mDatabase.child("Trips").orderByChild("").equalTo(from);
-//                                query2.addListenerForSingleValueEvent(valueEventListener1);
+                            if (snapshot.child(busplate).hasChild("Trip")) { //OTOBUSUN TRİP i VAR İSE
+
+
                                 String currentTrip = snapshot.child(busplate).child("Trip").getValue().toString();
                                 mDatabase.child("Trips").child(currentTrip).setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
+                                            buses.remove(busplate);
+                                            mDatabase.child("Buses").child(busplate).setValue(null);
                                             Toast.makeText(DeleteBusActivity.this, "Bus deleted", Toast.LENGTH_SHORT).show();
                                         } else {
                                             Toast.makeText(DeleteBusActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-
                                         }
                                     }
                                 });

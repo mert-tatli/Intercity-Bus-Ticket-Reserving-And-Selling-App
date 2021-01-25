@@ -86,7 +86,7 @@ public class DeleteTripActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if(snapshot.exists()){
                         if(snapshot.hasChild(deleteid)){
-                            //mDatabase.child("Trips").child(deleteid).setValue(null);
+                            mDatabase.child("Trips").child(deleteid).setValue(null);
                             deleteTripId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
@@ -102,7 +102,8 @@ public class DeleteTripActivity extends AppCompatActivity {
                                     android.R.layout.simple_spinner_item, trips);
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             deleteTripId.setAdapter(adapter);
-                            //trips.remove(deleteid);
+                            trips.remove(deleteid);
+                            mDatabase.child("Buses").child(snapshot.child(deleteid).child("busPlate").getValue().toString()).child("Trip").setValue(null);
 
                             mDatabase.child("Ticket").orderByChild("tripId").equalTo(deleteid).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -110,21 +111,14 @@ public class DeleteTripActivity extends AppCompatActivity {
                                     if(snapshot.exists()){
                                         for(DataSnapshot child : snapshot.getChildren()){
                                             String mailAdress =child.child("userID").getValue().toString();
+                                            mDatabase.child("Ticket").child(child.getKey()).setValue(null);
                                         }
 
-                                        Notification notification = new NotificationCompat.Builder(DeleteTripActivity.this,"ID")
-                                                .setContentTitle("Title")
-                                                .setContentText("Your trip has been cancelled.")
-                                                .setPriority( NotificationCompat.PRIORITY_MAX)
-                                                .setCategory(NotificationCompat.CATEGORY_EVENT)
-                                                .setSmallIcon(R.drawable.notification_bus).build();
 
-                                        managerCompat.notify(1,notification);
-                                        Toast.makeText(DeleteTripActivity.this, "Trip deleted", Toast.LENGTH_SHORT).show();
 
                                     }
                                     else{
-                                        Toast.makeText(DeleteTripActivity.this, "Can not found the tickets.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(DeleteTripActivity.this, "Trip Deleted.", Toast.LENGTH_SHORT).show();
                                     }
                                 }
 
@@ -142,7 +136,9 @@ public class DeleteTripActivity extends AppCompatActivity {
                     }else{
                         Toast.makeText(DeleteTripActivity.this, "Couldn't find anything on Database", Toast.LENGTH_SHORT).show();
                     }
+
                 }
+
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                     Toast.makeText(DeleteTripActivity.this,"Something went wrong",Toast.LENGTH_SHORT).show();
@@ -151,6 +147,8 @@ public class DeleteTripActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
+
+
         }
     }
 
