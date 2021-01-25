@@ -14,10 +14,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -25,7 +28,7 @@ import java.util.ArrayList;
 public class DeleteBusActivity extends AppCompatActivity {
     private Spinner deletebusId;
     private DatabaseReference mDatabase;
-    private static ArrayList<String> buses =new ArrayList<>();
+    private static ArrayList<String> buses = new ArrayList<>();
     private String busplate;
 
     @Override
@@ -33,7 +36,7 @@ public class DeleteBusActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_bus);
         deletebusId = findViewById(R.id.inputBusPlateDelete);
-        mDatabase= FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("Buses").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -61,75 +64,88 @@ public class DeleteBusActivity extends AppCompatActivity {
                     deletebusId.setAdapter(adapter);
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(DeleteBusActivity.this,"Something went wrong",Toast.LENGTH_SHORT).show();
-                Toast.makeText(DeleteBusActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(DeleteBusActivity.this,AdminActivity.class);
+                Toast.makeText(DeleteBusActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DeleteBusActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(DeleteBusActivity.this, AdminActivity.class);
                 startActivity(intent);
             }
         });
 
 
-
     }
 
-    public void deleteBus(View view){
-       for (int i =0;i<buses.size();i++){
-           System.out.println(buses.get(i));
-       }
-        if(TextUtils.isEmpty(busplate)){
-           Toast.makeText(DeleteBusActivity.this, "Select The Bus", Toast.LENGTH_SHORT).show();
-       }else{
+    public void deleteBus(View view) {
+        for (int i = 0; i < buses.size(); i++) {
+            System.out.println(buses.get(i));
+        }
+        if (TextUtils.isEmpty(busplate)) {
+            Toast.makeText(DeleteBusActivity.this, "Select The Bus", Toast.LENGTH_SHORT).show();
+        } else {
 
             mDatabase.child("Buses").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    if(snapshot.hasChild(busplate)){
-                        deletebusId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
-                                busplate = buses.get(position);
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        if (snapshot.hasChild(busplate)) {
+                            deletebusId.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
+                                    busplate = buses.get(position);
+                                }
+
+                                @Override
+                                public void onNothingSelected(AdapterView<?> arg0) {
+                                    // TODO Auto-generated method stub
+                                }
+                            });
+
+                            if (snapshot.child(busplate).hasChild("Trip")) {
+                                //SİLİNEN OTOBÜS AVAİLABLE DEĞİLSE...
+                                //SİLİNEN OTOBUS HALİ HAZIRDA BİR TRİP İÇİN ATANMIŞ İSE.
+//                                Query query2 = mDatabase.child("Trips").orderByChild("").equalTo(from);
+//                                query2.addListenerForSingleValueEvent(valueEventListener1);
+                                String currentTrip = snapshot.child(busplate).child("Trip").getValue().toString();
+                                mDatabase.child("Trips").child(currentTrip).setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(DeleteBusActivity.this, "Bus deleted", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(DeleteBusActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    }
+                                });
+
+                            } else {
+                                ArrayAdapter<String> adapter = new ArrayAdapter<String>(DeleteBusActivity.this,
+                                        android.R.layout.simple_spinner_item, buses);
+                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                deletebusId.setAdapter(adapter);
+                                mDatabase.child("Buses").child(busplate).setValue(null);
+                                buses.remove(busplate);
+                                Toast.makeText(DeleteBusActivity.this, "Bus deleted", Toast.LENGTH_SHORT).show();
                             }
-                            @Override
-                            public void onNothingSelected(AdapterView<?> arg0) {
-                                // TODO Auto-generated method stub
-                            }
-                        });
-
-                        if(snapshot.child(busplate).hasChild("Trip")){
-                            //SİLİNEN OTOBÜS AVAİLABLE DEĞİLSE...
-                            //SİLİNEN OTOBUS HALİ HAZIRDA BİR TRİP İÇİN ATANMIŞ İSE.
 
 
-
-                        }else{
-                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(DeleteBusActivity.this,
-                                    android.R.layout.simple_spinner_item, buses);
-                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            deletebusId.setAdapter(adapter);
-                            mDatabase.child("Buses").child(busplate).setValue(null);
-                            buses.remove(busplate);
-                            Toast.makeText(DeleteBusActivity.this, "Bus deleted", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(DeleteBusActivity.this, "Bus can not found.", Toast.LENGTH_SHORT).show();
                         }
-
-
-                    }
-                    else{
-                        Toast.makeText(DeleteBusActivity.this, "Bus can not found.", Toast.LENGTH_SHORT).show();
                     }
                 }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(DeleteBusActivity.this,"Something went wrong",Toast.LENGTH_SHORT).show();
-                Toast.makeText(DeleteBusActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(DeleteBusActivity.this,AdminActivity.class);
-                startActivity(intent);
-            }
-        });
 
-    }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(DeleteBusActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DeleteBusActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(DeleteBusActivity.this, AdminActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+        }
     }
 }
