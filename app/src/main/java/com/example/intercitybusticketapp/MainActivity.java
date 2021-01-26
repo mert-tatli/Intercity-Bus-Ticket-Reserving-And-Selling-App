@@ -242,7 +242,9 @@ public class MainActivity extends AppCompatActivity {
             if (datasnapshot.exists()) {
                 for (DataSnapshot snapshot : datasnapshot.getChildren()) {
                     Trip trip = snapshot.getValue(Trip.class);
-                    System.out.println(trip.toString());
+                    trip.setDepartTime(snapshot.child("departuretime").getValue().toString());
+//                    System.out.println(trip.getDepartTime());
+//                    System.out.println(trip.toString());
                     tripList.add(trip);
                 }
             }
@@ -299,6 +301,7 @@ public class MainActivity extends AppCompatActivity {
                 if (datasnapshot.exists()) {
                     for (DataSnapshot snapshot : datasnapshot.getChildren()) {
                         Trip trip1 = snapshot.getValue(Trip.class);
+                        trip1.setDepartTime(snapshot.child("departuretime").getValue().toString());
                         tripsReturn.add(trip1);
                     }
                 }

@@ -236,6 +236,7 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
                                 mTicket.child(TicketIdDept).child("date").setValue(dateDeparture);
                                 mTicket.child(TicketIdDept).child("price").setValue(priceDeparture);
                                 mTicket.child(TicketIdDept).child("userID").setValue(userID);
+                                mTicket.child(TicketIdDept).child("isReserved").setValue(reserved);
 
                                 //
                                 autoTicketID++;
@@ -262,6 +263,7 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
                                 mTicket.child(TicketIdArrive).child("date").setValue(dateArrival);
                                 mTicket.child(TicketIdArrive).child("price").setValue(priceArrival);
                                 mTicket.child(TicketIdArrive).child("userID").setValue(userID);
+                                mTicket.child(TicketIdArrive).child("isReserved").setValue(reserved);
 
                                 //
                                 autoTicketID++;

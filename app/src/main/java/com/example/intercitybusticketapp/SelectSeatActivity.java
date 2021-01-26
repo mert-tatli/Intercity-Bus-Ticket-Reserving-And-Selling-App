@@ -233,6 +233,8 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
                             mTicket.child(TicketId).child("price").setValue(price);
                             mTicket.child(TicketId).child("userID").setValue(userID);
                             //
+                            mTicket.child(TicketId).child("isReserved").setValue(reserved);
+
                             autoTicketID++;
                             String SeatsDeparture = "";
                             for (int i = 0; i < selectedSeats.size(); i++) {
