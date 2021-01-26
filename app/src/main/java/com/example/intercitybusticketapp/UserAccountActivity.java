@@ -54,66 +54,67 @@ public class UserAccountActivity extends AppCompatActivity {
         freeSeatNumbersList = new ArrayList<>();
         userTickets = new ArrayList<>();
         createNotificationChannel();
+        if (mAuth.getCurrentUser() == null) {
+            Intent intent = new Intent(UserAccountActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            mTicket = FirebaseDatabase.getInstance().getReference("Ticket");
+            mTrips = FirebaseDatabase.getInstance().getReference("Trips");
 
-        mTicket = FirebaseDatabase.getInstance().getReference("Ticket");
-        mTrips = FirebaseDatabase.getInstance().getReference("Trips");
-
-        mTicket.orderByChild("userID").equalTo(mAuth.getCurrentUser().getEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    for (DataSnapshot ticket : snapshot.getChildren()) {
-                        userTickets.add(ticket.getKey());
-
-                    }
-                    for (int i = 0; i < userTickets.size(); i++) {
-                        System.out.println(userTickets.get(i));
-                    }
-
-                    cancelReservationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
-                            ticketID = userTickets.get(position);
+            mTicket.orderByChild("userID").equalTo(mAuth.getCurrentUser().getEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        for (DataSnapshot ticket : snapshot.getChildren()) {
+                            if ((Boolean) ticket.child("isReserved").getValue()) {
+                                userTickets.add(ticket.getKey());
+                            }
                         }
+                        cancelReservationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
+                                ticketID = userTickets.get(position);
+                            }
 
-                        @Override
-                        public void onNothingSelected(AdapterView<?> arg0) {
-                            // TODO Auto-generated method stub
-                        }
+                            @Override
+                            public void onNothingSelected(AdapterView<?> arg0) {
+                                // TODO Auto-generated method stub
+                            }
 
-                    });
+                        });
 
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(UserAccountActivity.this,
-                            android.R.layout.simple_spinner_item, userTickets);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    cancelReservationSpinner.setAdapter(adapter);
-                } else {
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(UserAccountActivity.this,
+                                android.R.layout.simple_spinner_item, userTickets);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        cancelReservationSpinner.setAdapter(adapter);
+                    } else {
 
-                    Toast.makeText(UserAccountActivity.this, "Ticket(s) Cannot Found.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(UserAccountActivity.this, "Ticket(s) Cannot Found.", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(UserAccountActivity.this, "Something went wrong! DATABASE CONNECTİON HAS FAİLED.", Toast.LENGTH_SHORT).show();
-                Toast.makeText(UserAccountActivity.this, "Please Try Again With Better Connection.", Toast.LENGTH_SHORT).show();
-                Toast.makeText(UserAccountActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(UserAccountActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(UserAccountActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(UserAccountActivity.this, "Something went wrong! DATABASE CONNECTİON HAS FAİLED.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UserAccountActivity.this, "Please Try Again With Better Connection.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UserAccountActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(UserAccountActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+            });
 
 
+            back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(UserAccountActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    //  finish();
+                }
+            });
+
+        }
     }
 
     public void logOut(View view) {
@@ -199,7 +200,7 @@ public class UserAccountActivity extends AppCompatActivity {
                                 char[] currentSeatsArray = currentSeats.toCharArray();
                                 int index = 0;
                                 int counter = 0;
-                                System.out.println("ESKİ HALİ : " + currentSeats);
+//                                System.out.println("ESKİ HALİ : " + currentSeats);
                                 for (int i = 0; i < currentSeatsArray.length; i++) {
                                     if (currentSeatsArray[i] == 'A' || currentSeatsArray[i] == 'U') {
                                         index++;
@@ -213,7 +214,7 @@ public class UserAccountActivity extends AppCompatActivity {
                                     }
                                 }
                                 currentSeats = String.copyValueOf(currentSeatsArray);
-                                System.out.println("YENİ HALİ : " + currentSeats);
+//                                System.out.println("YENİ HALİ : " + currentSeats);
                                 mTrips.child(tripID).child("TripSeats").child("Seat").setValue(currentSeats).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {

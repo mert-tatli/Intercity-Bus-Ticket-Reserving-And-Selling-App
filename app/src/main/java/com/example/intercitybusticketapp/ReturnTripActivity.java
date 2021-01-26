@@ -146,7 +146,7 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
         intent.putExtra("TripID",TripId);
         intent.putExtra("reserve",reserved);
         startActivity(intent);
-        finish();
+       // finish();
     }
 
 

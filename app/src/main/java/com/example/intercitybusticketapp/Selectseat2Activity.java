@@ -297,7 +297,7 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
                     });
                 Intent intent = new Intent(Selectseat2Activity.this, UnregisteredUserInfo.class);
                 startActivity(intent);
-                finish();
+             //   finish();
             }
             else if (mAuth.getCurrentUser() == null) {
                 Intent intent = new Intent(this, UnregisteredUserInfo.class);
@@ -310,7 +310,7 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
                 intent.putExtra("selectSeatOne", seatsFromSeatActivityOne);
                 intent.putExtra("reserve", reserved);
                 startActivity(intent);
-                finish();
+               // finish();
             }
             else{
                 Intent intent = new Intent(this, PaymentActivity.class);
@@ -324,7 +324,7 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
                 intent.putExtra("reserve", reserved);
 
                 startActivity(intent);
-                finish();
+                //finish();
             }
         }
         else{

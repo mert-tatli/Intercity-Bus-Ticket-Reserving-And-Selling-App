@@ -271,7 +271,7 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
                     intent.putExtra("oneWaySeats", seats);
                     intent.putExtra("reserve", reserved);
                     startActivity(intent);
-                    finish();
+                  //  finish();
                 } else {
                     Intent intent = new Intent(this, PaymentActivity.class);
                     intent.putIntegerArrayListExtra("selectedSeats", selectedSeats);
@@ -280,7 +280,7 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
                     intent.putExtra("oneWaySeats", seats);
                     intent.putExtra("reserve", reserved);
                     startActivity(intent);
-                    finish();
+                    //finish();
                 }
             }
         } else {

@@ -310,7 +310,7 @@ public class PaymentActivity extends AppCompatActivity {
             Toast.makeText(PaymentActivity.this, "The ticket(s) is paid. Have a Nice Trip", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(PaymentActivity.this, MainActivity.class);
             startActivity(intent);
-            finish();
+            //finish();
 
         }
     }

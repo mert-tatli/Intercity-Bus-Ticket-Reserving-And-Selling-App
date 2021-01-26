@@ -39,18 +39,17 @@ public class AddBusActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(plate)) {
             Toast.makeText(AddBusActivity.this, "All information are required please check", Toast.LENGTH_LONG).show();
         } else {
-                mDatabase.child("Buses").addListenerForSingleValueEvent(new ValueEventListener() {
+                mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.exists()){
-                            if(snapshot.hasChild(plate)){
+                            if(snapshot.child("Buses").hasChild(plate)){
                                 Toast.makeText(AddBusActivity.this, "THİS PLATE NUMBER İS ALREADY ON THE SYSTEM.", Toast.LENGTH_LONG).show();
                             }
                             else{
                                 Bus b = new Bus(plate);
                                 busmodel.setBus(b);
                                 Toast.makeText(AddBusActivity.this, "BUS WAS CREATED SUCCESFULLY", Toast.LENGTH_SHORT).show();
-                                Toast.makeText(AddBusActivity.this, b.toString(), Toast.LENGTH_SHORT).show();
                                 mDatabase.child("Buses").child(plate).child("Plate").setValue(plate);
                             }
                         }

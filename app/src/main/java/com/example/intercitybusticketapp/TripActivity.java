@@ -162,14 +162,14 @@ public class TripActivity extends AppCompatActivity implements View.OnClickListe
             intent.putExtra("TripID" , Trips.get(in-1).getTripid());
             intent.putExtra("reserve" , reserved);
             startActivity(intent);
-            finish();
+         //   finish();
         } else {
             Intent intent = new Intent(this, SelectSeatActivity.class);
             intent.putExtra("TripID" , Trips.get(in-1).getTripid());
             intent.putExtra("isReturn", isReturn2);
             intent.putExtra("reserve" , reserved);
             startActivity(intent);
-            finish();
+           // finish();
         }
 
 

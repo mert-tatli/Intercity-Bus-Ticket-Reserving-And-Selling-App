@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent=new Intent(MainActivity.this,UserAccountActivity.class);
                 startActivity(intent);
-                finish();
+             //   finish();
             }
         });
 
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
     public void signmain(View view) {
         Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
         startActivity(intent);
-        finish();
+       // finish();
     }
 
     public void loginmain(View view) {
@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(this, "To Make a Reservation Please First Login", Toast.LENGTH_LONG).show();
                     Intent intent1 = new Intent(MainActivity.this, LoginActivity.class);
                     startActivity(intent1);
-                    finish();
+                   // finish();
                 }
                 else {
                     if (isReturn) {
@@ -267,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("reserve", reserve);
                     System.out.println("MAİN:" + reserve);
                     startActivity(intent);
-                    finish();
+                  //  finish();
                 }
             } else {
                 if (tripList.isEmpty() || tripsReturn.isEmpty()) {
@@ -278,7 +278,7 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("reserve", reserve);
                     System.out.println("MAİN:" + reserve);
                     startActivity(intent);
-                    finish();
+                 //   finish();
                 }
             }
         }

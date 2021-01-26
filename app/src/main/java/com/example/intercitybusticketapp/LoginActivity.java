@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
         startActivity(intent);
-        finish();
+        //finish();
     }
 
     public void loginButton(View view) {
@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         if(id.equals("admin")&&password.equals("123456")){
             Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
             startActivity(intent);
-            finish();
+           // finish();
         }
         else{
 
@@ -77,13 +77,13 @@ public class LoginActivity extends AppCompatActivity {
     public void backbutton(View view) {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
-        finish();
+       // finish();
     }
 
     public void forgetMyPassword(View view){
         Intent intent = new Intent(LoginActivity.this, ForgetMyPasswordActivity.class);
         startActivity(intent);
-        finish();
+        //finish();
     }
 
 
