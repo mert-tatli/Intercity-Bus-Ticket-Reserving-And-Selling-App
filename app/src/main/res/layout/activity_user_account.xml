@@ -86,19 +86,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/showTicketsButton" />
 
-    <Spinner
-        android:id="@+id/TicketSpinner"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="55dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        android:background="@drawable/spinner_style"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

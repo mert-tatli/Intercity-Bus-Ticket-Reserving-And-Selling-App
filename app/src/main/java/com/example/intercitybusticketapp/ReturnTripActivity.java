@@ -21,7 +21,7 @@ import java.util.List;
 
 
 public class ReturnTripActivity extends AppCompatActivity implements View.OnClickListener {
-    private TextView textview;
+    private TextView textview,textView189;
     private ImageView imageView;
     private ViewGroup layout;
     private int tripGaping = 10;
@@ -33,6 +33,8 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip);
+        textView189=findViewById(R.id.textView18);
+
         arr = MainActivity.getTripsReturn();
         Intent intent = getIntent();
         isReturn = intent.getBooleanExtra("isReturn",false);
@@ -69,7 +71,7 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
             textview.setLayoutParams(textParams1);
             textview.setText("Departure Time: "  + arr.get(index).getDepartTime());
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
-            textview.setTextColor(Color.BLACK);
+            textview.setTextColor(Color.WHITE);
             textview.setPadding(5, 5, 5, 5);
             textview.setGravity(Gravity.CENTER);
             view.addView(textview);
@@ -79,7 +81,7 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
             textview.setLayoutParams(textParams2);
             textview.setText("Arrival Time: "  + arr.get(index).getArrivaltime());
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
-            textview.setTextColor(Color.BLACK);
+            textview.setTextColor(Color.WHITE);
             textview.setPadding(5, 5, 5, 5);
             textview.setGravity(Gravity.CENTER);
             view.addView(textview);
@@ -89,7 +91,7 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
             textview.setLayoutParams(textParams3);
             textview.setText("From: " + arr.get(index).getFrom());
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
-            textview.setTextColor(Color.BLACK);
+            textview.setTextColor(Color.WHITE);
             textview.setPadding(5, 5, 5, 5);
             textview.setGravity(Gravity.CENTER);
             view.addView(textview);
@@ -99,7 +101,7 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
             textview.setLayoutParams(textParams4);
             textview.setText("To: " + arr.get(index).getTo());
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
-            textview.setTextColor(Color.BLACK);
+            textview.setTextColor(Color.WHITE);
             textview.setPadding(5, 5, 5, 5);
             textview.setGravity(Gravity.CENTER);
             view.addView(textview);

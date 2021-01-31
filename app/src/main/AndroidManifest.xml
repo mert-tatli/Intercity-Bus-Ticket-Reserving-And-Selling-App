@@ -11,7 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
-        <activity android:name=".UnregisteredUserInfo"></activity>
+        <activity android:name=".CancelTicketActivity"></activity>
+        <activity android:name=".MyTicketsActivity" />
+        <activity android:name=".UnregisteredUserInfo" />
         <activity android:name=".ForgetMyPasswordActivity" />
         <activity android:name=".PasswordChangeActivity" />
         <activity android:name=".UserAccountActivity" />

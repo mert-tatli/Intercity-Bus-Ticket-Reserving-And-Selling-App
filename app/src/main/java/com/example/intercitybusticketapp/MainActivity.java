@@ -170,63 +170,77 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+    public void onClickOneWayRadio(View view) {
+        option = "OneWay";
+        returnDate.setVisibility(View.INVISIBLE);
+        returnDate.setText("");
+    }
+
+    @SuppressLint("SetTextI18n")
+    public void onClickRoundRadio(View view) {
+        option = "Round";
+        returnDate.setVisibility(View.VISIBLE);
+        returnDate.setText("RETURN DATE");
+    }
 
     public void searchtrip(View view) {
         departdate = departureDate.getText().toString();
         returndate = returnDate.getText().toString();
-        boolean check;
         if (option.equals("OneWay")) {
             isReturn = false;
-            check = returndate.equals("");
-
         } else {
             isReturn = true;
-            check = returndate.equals("RETURN DATE");
         }
-        if (!from.equals(to) && !from.equals("Select the City") && !to.equals("Select the City") && !departdate.equals("DEPARTURE DATE") && !check) {
+        if (!isReturn || returndate.equals("")){
+            if (!from.equals(to) && !from.equals("Select the City") && !to.equals("Select the City") && !departdate.equals("")) {
 
 
-            reserve = reservation.isChecked();
+                reserve = reservation.isChecked();
 
 
-            if (!reserve) { // burda kullanıcı ise , && ile kontrol edilmeli ,, (Sorgu yaparken iki date demek iki trip demek)
-                // dönüş için from --> to  , , , to--> from olucak   (2. trip yani)
-                // burda veritabınında trip varmı diye kontrol edilip ona göre yönlendirilmesi lazım
+                if (!reserve) { // burda kullanıcı ise , && ile kontrol edilmeli ,, (Sorgu yaparken iki date demek iki trip demek)
+                    // dönüş için from --> to  , , , to--> from olucak   (2. trip yani)
+                    // burda veritabınında trip varmı diye kontrol edilip ona göre yönlendirilmesi lazım
 
 
-               if(isReturn) {
-                   Query query2 = mTrips.orderByChild("to").equalTo(from);
-                   query2.addListenerForSingleValueEvent(valueEventListener1);
-               }
-                Query query1 = mTrips.orderByChild("from").equalTo(from);
-                query1.addListenerForSingleValueEvent(valueEventListener);
-
-
-            } else {  // USER DEĞİL İSE
-
-                if (User == null) {
-                    Toast.makeText(this, "To Make a Reservation Please First Login", Toast.LENGTH_LONG).show();
-                    Intent intent1 = new Intent(MainActivity.this, LoginActivity.class);
-                    startActivity(intent1);
-                   // finish();
-                }
-                else {
-                    if (isReturn) {
+                    if(isReturn) {
                         Query query2 = mTrips.orderByChild("to").equalTo(from);
                         query2.addListenerForSingleValueEvent(valueEventListener1);
                     }
                     Query query1 = mTrips.orderByChild("from").equalTo(from);
                     query1.addListenerForSingleValueEvent(valueEventListener);
-                }
 
+
+                } else {  // USER DEĞİL İSE
+
+                    if (User == null) {
+                        Toast.makeText(this, "To Make a Reservation Please First Login", Toast.LENGTH_LONG).show();
+                        Intent intent1 = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent1);
+                        // finish();
+                    }
+                    else {
+                        if (isReturn) {
+                            Query query2 = mTrips.orderByChild("to").equalTo(from);
+                            query2.addListenerForSingleValueEvent(valueEventListener1);
+                        }
+                        Query query1 = mTrips.orderByChild("from").equalTo(from);
+                        query1.addListenerForSingleValueEvent(valueEventListener);
+                    }
+
+                }
+            } else {
+                Toast.makeText(this, "Check Your Selections", Toast.LENGTH_SHORT).show();
             }
-        } else {
-            Toast.makeText(this, "All information is required -- You cannot select the same city", Toast.LENGTH_SHORT).show();
         }
+        else{
+            Toast.makeText(this, "All information are required", Toast.LENGTH_SHORT).show();
+        }
+
+
     }
 
     public static List<Trip> getTripList() {
-
         return tripList;
     }
 
@@ -388,18 +402,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void onClickOneWayRadio(View view) {
-        option = "OneWay";
-        returnDate.setVisibility(View.INVISIBLE);
-        returnDate.setText("");
-    }
 
-    @SuppressLint("SetTextI18n")
-    public void onClickRoundRadio(View view) {
-        option = "Round";
-        returnDate.setVisibility(View.VISIBLE);
-        returnDate.setText("RETURN DATE");
-    }
 
 
 }

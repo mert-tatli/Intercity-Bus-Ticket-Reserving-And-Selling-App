@@ -32,16 +32,17 @@ public class DeleteTripActivity extends AppCompatActivity {
     private Spinner deleteTripId;
     private String deleteid;
     private DatabaseReference mDatabase;
-    private ArrayList<String> trips=new ArrayList<>();
+    private ArrayList<String> trips;
     private NotificationManagerCompat managerCompat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_trip);
         deleteTripId = findViewById(R.id.inputDeleteTrip);
+        trips =new ArrayList<>();
+        trips.add("Select The Trip");
         createNotificationChannel();
         managerCompat = NotificationManagerCompat.from(this);
-
         mDatabase= FirebaseDatabase.getInstance().getReference();
         mDatabase.child("Trips").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -71,15 +72,11 @@ public class DeleteTripActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-
-
-
-
         });
     }
     public void deleteTrip(View view){
-        if(TextUtils.isEmpty(deleteid)){
-            Toast.makeText(DeleteTripActivity.this, "Fill the Text Area", Toast.LENGTH_LONG).show();
+        if(deleteid.equals("Select The Trip")){
+            Toast.makeText(DeleteTripActivity.this, "Please Select a Trip", Toast.LENGTH_LONG).show();
         }else{
             mDatabase.child("Trips").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -113,9 +110,6 @@ public class DeleteTripActivity extends AppCompatActivity {
                                             String mailAdress =child.child("userID").getValue().toString();
                                             mDatabase.child("Ticket").child(child.getKey()).setValue(null);
                                         }
-
-
-
                                     }
                                     else{
                                         Toast.makeText(DeleteTripActivity.this, "Trip Deleted.", Toast.LENGTH_SHORT).show();

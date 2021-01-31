@@ -47,9 +47,6 @@ public class PaymentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
-
-        System.out.println("payment Activity");
-
         seatInfo = findViewById(R.id.seatInfo1);
         seat2Info = findViewById(R.id.seat2Info);
         holderName = findViewById(R.id.holderName);

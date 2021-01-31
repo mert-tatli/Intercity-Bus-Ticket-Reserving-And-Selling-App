@@ -28,7 +28,7 @@ import java.util.ArrayList;
 public class DeleteBusActivity extends AppCompatActivity {
     private Spinner deletebusId;
     private DatabaseReference mDatabase;
-    private static ArrayList<String> buses = new ArrayList<>();
+    private static ArrayList<String> buses ;
     private String busplate;
 
     @Override
@@ -36,6 +36,8 @@ public class DeleteBusActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_bus);
         deletebusId = findViewById(R.id.inputBusPlateDelete);
+        buses= new ArrayList<>();
+        buses.add("Select The Bus");
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("Buses").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -81,8 +83,8 @@ public class DeleteBusActivity extends AppCompatActivity {
         for (int i = 0; i < buses.size(); i++) {
             System.out.println(buses.get(i));
         }
-        if (TextUtils.isEmpty(busplate)) {
-            Toast.makeText(DeleteBusActivity.this, "Select The Bus", Toast.LENGTH_SHORT).show();
+        if (busplate.equals("Select The Bus")) {
+            Toast.makeText(DeleteBusActivity.this, "Please Select a Bus", Toast.LENGTH_SHORT).show();
         } else {
 
             mDatabase.child("Buses").addListenerForSingleValueEvent(new ValueEventListener() {

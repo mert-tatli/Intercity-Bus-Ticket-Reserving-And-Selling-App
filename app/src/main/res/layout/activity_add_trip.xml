@@ -137,6 +137,7 @@
         android:layout_marginRight="32dp"
         android:background="@drawable/ic_text_round"
         android:digits="0123456789"
+        android:maxLength="3"
         android:drawableStart="@drawable/ic_baseline_create"
         android:drawableLeft="@drawable/ic_baseline_create"
         android:drawablePadding="10dp"

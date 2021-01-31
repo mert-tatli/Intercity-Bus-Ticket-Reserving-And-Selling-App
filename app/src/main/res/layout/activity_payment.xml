@@ -21,6 +21,7 @@
         android:drawablePadding="10dp"
         android:ems="10"
         android:hint="Cardholder's Name"
+        android:maxLength="25"
         android:inputType="textPersonName"
         android:padding="10dp"
         android:textColor="@color/black"
@@ -38,7 +39,8 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:background="@drawable/ic_text_round"
-        android:digits="0123456789+"
+        android:digits="0123456789"
+        android:maxLength="16"
         android:drawableStart="@drawable/ic_baseline_create"
         android:drawablePadding="10dp"
         android:ems="10"
@@ -64,6 +66,7 @@
         android:drawablePadding="10dp"
         android:ems="10"
         android:hint="Month"
+        android:maxLength="2"
         android:digits="0123456789"
         android:inputType="textPersonName"
         android:padding="10dp"
@@ -84,6 +87,7 @@
         android:drawablePadding="10dp"
         android:ems="10"
         android:hint="Year"
+        android:maxLength="2"
         android:digits="0123456789"
         android:inputType="textPersonName"
         android:padding="10dp"
@@ -109,6 +113,7 @@
         android:drawablePadding="10dp"
         android:ems="10"
         android:digits="0123456789"
+        android:maxLength="3"
         android:hint="CVV2"
         android:inputType="textPersonName"
         android:padding="10dp"
@@ -168,12 +173,13 @@
         android:layout_height="200dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         app:layout_constraintEnd_toStartOf="@+id/seat2Info"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="16dp" />
+        app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
     <ListView
         android:id="@+id/seat2Info"
@@ -186,5 +192,34 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/seatInfo1"
         app:layout_constraintTop_toTopOf="@+id/seatInfo1" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Outbound Seats"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="108dp"
+        android:layout_marginLeft="108dp"
+        android:text="Return Seats"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView19"
+        app:layout_constraintStart_toEndOf="@+id/textView19"
+        app:layout_constraintTop_toTopOf="@+id/textView19"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

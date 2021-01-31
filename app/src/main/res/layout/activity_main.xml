@@ -45,19 +45,21 @@
 
     <Button
         android:id="@+id/returnDateButton"
-        android:layout_width="150dp"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
         android:background="@drawable/ic_button_round_pink"
+        android:drawableLeft="@drawable/ic_baseline_date"
         android:enabled="false"
+        android:hint="RETURN DATE"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
-        android:text="RETURN DATE"
         android:textColor="#FFFFFF"
+        android:textColorHint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/departureDateButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner2" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/departureDateButton"
+        app:layout_constraintTop_toTopOf="@+id/departureDateButton" />
 
     <TextView
         android:id="@+id/signUptext"
@@ -93,17 +95,19 @@
 
     <Button
         android:id="@+id/departureDateButton"
-        android:layout_width="150dp"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_button_round_pink"
+        android:drawableLeft="@drawable/ic_baseline_date"
+        android:hint="DEPARTURE DATE"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
-        android:text="DEPARTURE DATE"
         android:textColor="#FFFFFF"
+        android:textColorHint="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/returnDateButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner2" />
 
     <RadioGroup
