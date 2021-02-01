@@ -215,13 +215,14 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
                             String userID = mAuth.getCurrentUser().getEmail();
-                            String TicketId = "Ticket" + autoTicketID;
+                            String TicketId = "PNR2021" + autoTicketID;
                             String from = snapshot.child("from").getValue().toString();
                             String to = snapshot.child("to").getValue().toString();
                             String departureTime = snapshot.child("departuretime").getValue().toString();
                             String arrivalTime = snapshot.child("arrivaltime").getValue().toString();
                             String date = snapshot.child("date").getValue().toString();
                             String price = snapshot.child("price").getValue().toString();
+                            String busPlate = snapshot.child("busPlate").getValue().toString();
                             Ticket a = new Ticket(tripId, "TicketID", userID, from, to, departureTime, arrivalTime, date, price, selectedSeats);
                             mTicket.child(TicketId).child("tripId").setValue(tripId);
                             mTicket.child(TicketId).child("ticketId").setValue(TicketId);
@@ -232,7 +233,7 @@ public class SelectSeatActivity extends AppCompatActivity implements View.OnClic
                             mTicket.child(TicketId).child("date").setValue(date);
                             mTicket.child(TicketId).child("price").setValue(price);
                             mTicket.child(TicketId).child("userID").setValue(userID);
-                            //
+                            mTicket.child(TicketId).child("busPlate").setValue(busPlate);
                             mTicket.child(TicketId).child("isReserved").setValue(reserved);
 
                             autoTicketID++;

@@ -56,6 +56,14 @@ public class UnregisteredUserInfo extends AppCompatActivity {
             tripId = intent.getStringExtra("TripId");
             selectSeatOne = intent.getStringExtra("oneWaySeats");
         }
+
+        System.out.println("ÇİFT YÖN GİDİŞ : " + selectSeatOne1);
+        System.out.println("ÇİFT YÖN DÖNÜŞ : " + selectSeatTwo);
+
+        System.out.println("Sadece Gidiş : " + selectSeatOne);
+
+
+
         id = findViewById(R.id.idNumberUnregistered);
         name =  findViewById(R.id.inputNameUnregistered);
         surname = findViewById(R.id.inputSurnameUnregistered);
@@ -91,14 +99,27 @@ public class UnregisteredUserInfo extends AppCompatActivity {
                         mDatabase.child("users").child(id1).child("email").setValue(email1);
                         Intent intent = new Intent(UnregisteredUserInfo.this, PaymentActivity.class);
 
-                        intent.putIntegerArrayListExtra("selectedSeats",selectedSeats);
-                        intent.putIntegerArrayListExtra("selectedSeatsReturn",selectedSeatsReturn);
-                        intent.putExtra("ReturnTripId", returntripId);
-                        intent.putExtra("TripId", tripId);
-                        intent.putExtra("isReturn",isReturn2);
-                        intent.putExtra("selectSeatTwo",selectSeatTwo);
-                        intent.putExtra("selectSeatOne",selectedSeats);
-                        intent.putExtra("unregisteredUser",email1);
+                        if(isReturn2) {
+                            intent.putIntegerArrayListExtra("selectedSeatsReturn", selectedSeatsReturn);    //DÖNÜŞ
+                            intent.putExtra("ReturnTripId", returntripId);                      //DÖNÜŞ
+                            intent.putExtra("selectSeatTwo", selectSeatTwo);                    //DÖNÜŞ
+
+                            intent.putIntegerArrayListExtra("selectedSeats", selectedSeats);  // GİDİŞ
+                            intent.putExtra("TripId", tripId);                               //GİDİŞ
+                            intent.putExtra("selectSeatOne", selectSeatOne1);                  //GİDİŞ
+
+                            intent.putExtra("isReturn", isReturn2);
+                            intent.putExtra("unregisteredUser", email1);
+                        }
+                        else{
+                            intent.putIntegerArrayListExtra("selectedSeats", selectedSeats);  // GİDİŞ
+                            intent.putExtra("TripId", tripId);                               //GİDİŞ
+                            intent.putExtra("selectSeatOne", selectSeatOne);                  //GİDİŞ
+
+                            intent.putExtra("isReturn", isReturn2);
+                            intent.putExtra("unregisteredUser", email1);
+                        }
+
 
                         startActivity(intent);
                     } else {

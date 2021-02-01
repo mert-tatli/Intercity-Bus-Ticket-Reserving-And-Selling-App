@@ -61,16 +61,34 @@ public class PaymentActivity extends AppCompatActivity {
         Intent intent = getIntent();
         isReturn2 = intent.getBooleanExtra("isReturn", false);
         if (isReturn2) {
-            selectedSeatsReturn = intent.getIntegerArrayListExtra("selectedSeatsReturn");
-            returntripId = intent.getStringExtra("ReturnTripId");
-            selectSeatTwo = intent.getStringExtra("selectSeatTwo");
-            selectSeatOne1 = intent.getStringExtra("selectSeatOne");
-            selectedSeats = intent.getIntegerArrayListExtra("selectedSeats");
-            tripId = intent.getStringExtra("TripId");
+            if(mAuth.getCurrentUser()==null){
+                selectedSeatsReturn = intent.getIntegerArrayListExtra("selectedSeatsReturn");
+                returntripId = intent.getStringExtra("ReturnTripId");
+                selectSeatTwo = intent.getStringExtra("selectSeatTwo");
+                selectSeatOne1 = intent.getStringExtra("selectSeatOne");
+                selectedSeats = intent.getIntegerArrayListExtra("selectedSeats");
+                tripId = intent.getStringExtra("TripId");
+
+            }else{
+                selectedSeatsReturn = intent.getIntegerArrayListExtra("selectedSeatsReturn");
+                returntripId = intent.getStringExtra("ReturnTripId");
+                selectSeatTwo = intent.getStringExtra("selectSeatTwo");
+                selectSeatOne1 = intent.getStringExtra("selectSeatOne");
+                selectedSeats = intent.getIntegerArrayListExtra("selectedSeats");
+                tripId = intent.getStringExtra("TripId");
+            }
+
         }else {
-            selectedSeats = intent.getIntegerArrayListExtra("selectedSeats");
-            tripId = intent.getStringExtra("TripId");
-            selectSeatOne = intent.getStringExtra("oneWaySeats");
+            if(mAuth.getCurrentUser()==null){
+                selectedSeats = intent.getIntegerArrayListExtra("selectedSeats");
+                tripId = intent.getStringExtra("TripId");
+                selectSeatOne = intent.getStringExtra("selectSeatOne");
+            }else{
+                selectedSeats = intent.getIntegerArrayListExtra("selectedSeats");
+                tripId = intent.getStringExtra("TripId");
+                selectSeatOne = intent.getStringExtra("oneWaySeats");
+            }
+
         }
 
         unRegisteredUserMail = intent.getStringExtra("unregisteredUser");
@@ -150,8 +168,9 @@ public class PaymentActivity extends AppCompatActivity {
                             String arrivalTime = snapshot.child("arrivaltime").getValue().toString();
                             String date = snapshot.child("date").getValue().toString();
                             String price = snapshot.child("price").getValue().toString();
+                            String busPlate = snapshot.child("busPlate").getValue().toString();
 
-                            String TicketId="Ticket" + autoTicketID;
+                            String TicketId="PNR2021" + autoTicketID;
 
                             Ticket a = new Ticket(tripId,TicketId,userID,from,to,departureTime,arrivalTime,date,price,selectedSeats);
                             mTicket.child(TicketId).child("tripId").setValue(tripId);
@@ -163,6 +182,7 @@ public class PaymentActivity extends AppCompatActivity {
                             mTicket.child(TicketId).child("date").setValue(date);
                             mTicket.child(TicketId).child("price").setValue(String.valueOf(Integer.parseInt(price)* selectedSeats.size()));
                             mTicket.child(TicketId).child("userID").setValue(userID);
+                            mTicket.child(TicketId).child("busPlate").setValue(busPlate);
                             mTicket.child(TicketId).child("isReserved").setValue(false);
 
                             autoTicketID++;
@@ -202,7 +222,8 @@ public class PaymentActivity extends AppCompatActivity {
                             String arrivalTime = snapshot.child("arrivaltime").getValue().toString();
                             String date = snapshot.child("date").getValue().toString();
                             String price = snapshot.child("price").getValue().toString();
-                            String TicketId="Ticket" + (String)Integer.toString(autoTicketID);
+                            String busPlate = snapshot.child("busPlate").getValue().toString();
+                            String TicketId="PNR2021" + (String)Integer.toString(autoTicketID);
                             Ticket a = new Ticket(tripId,TicketId,userID,from,to,departureTime,arrivalTime,date,price,selectedSeatsReturn);
                             mTicket.child(TicketId).child("tripId").setValue(returntripId);
                             mTicket.child(TicketId).child("ticketId").setValue(TicketId);
@@ -213,6 +234,7 @@ public class PaymentActivity extends AppCompatActivity {
                             mTicket.child(TicketId).child("date").setValue(date);
                             mTicket.child(TicketId).child("price").setValue(String.valueOf(Integer.parseInt(price)* selectedSeatsReturn.size()));
                             mTicket.child(TicketId).child("userID").setValue(userID);
+                            mTicket.child(TicketId).child("busPlate").setValue(busPlate);
                             mTicket.child(TicketId).child("isReserved").setValue(false);
                             autoTicketID++;
                             String Seats ="";
@@ -270,7 +292,8 @@ public class PaymentActivity extends AppCompatActivity {
                             String arrivalTime = snapshot.child("arrivaltime").getValue().toString();
                             String date = snapshot.child("date").getValue().toString();
                             String price = snapshot.child("price").getValue().toString();
-                            String TicketId="Ticket" + (String)Integer.toString(autoTicketID);
+                            String busPlate = snapshot.child("busPlate").getValue().toString();
+                            String TicketId="PNR2021" + (String)Integer.toString(autoTicketID);
                             Ticket a = new Ticket(tripId,TicketId,userID,from,to,departureTime,arrivalTime,date,price,selectedSeats);
                             mTicket.child(TicketId).child("tripId").setValue(tripId);
                             mTicket.child(TicketId).child("ticketId").setValue(TicketId);
@@ -282,6 +305,8 @@ public class PaymentActivity extends AppCompatActivity {
                             mTicket.child(TicketId).child("price").setValue(price);
                             mTicket.child(TicketId).child("userID").setValue(userID);
                             mTicket.child(TicketId).child("isReserved").setValue(false);
+                            mTicket.child(TicketId).child("busPlate").setValue(busPlate);
+
 
                             autoTicketID++;
                             String Seats ="";

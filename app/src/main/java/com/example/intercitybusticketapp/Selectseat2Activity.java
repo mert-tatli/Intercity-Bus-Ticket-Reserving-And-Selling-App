@@ -210,14 +210,14 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
 
                                 String userID = mAuth.getCurrentUser().getEmail();
 
-                                String TicketIdDept="Ticket" + autoTicketID;
+                                String TicketIdDept="PNR2021" + autoTicketID;
                                 String fromDeparture = snapshot.child(tripId).child("from").getValue().toString();
                                 String toDeparture = snapshot.child(tripId).child("to").getValue().toString();
                                 String departureTimeDeparture = snapshot.child(tripId).child("departuretime").getValue().toString();
                                 String arrivalTimeDeparture = snapshot.child(tripId).child("arrivaltime").getValue().toString();
                                 String dateDeparture= snapshot.child(tripId).child("date").getValue().toString();
                                 String priceDeparture = snapshot.child(tripId).child("price").getValue().toString();
-
+                                String busPlateDeparture = snapshot.child(tripId).child("busPlate").getValue().toString();
 
                                 String fromArrival = snapshot.child(returntripId).child("from").getValue().toString();
                                 String toArrival = snapshot.child(returntripId).child("to").getValue().toString();
@@ -225,6 +225,7 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
                                 String arrivalTimeArrival = snapshot.child(returntripId).child("arrivaltime").getValue().toString();
                                 String dateArrival= snapshot.child(returntripId).child("date").getValue().toString();
                                 String priceArrival = snapshot.child(returntripId).child("price").getValue().toString();
+                                String busPlateArrival = snapshot.child(returntripId).child("busPlate").getValue().toString();
 
                                 Ticket a = new Ticket(tripId,TicketIdDept,userID,fromDeparture,toDeparture,departureTimeDeparture,arrivalTimeDeparture,dateDeparture,priceDeparture,selectedSeats);
                                 mTicket.child(TicketIdDept).child("tripId").setValue(tripId);
@@ -237,6 +238,7 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
                                 mTicket.child(TicketIdDept).child("price").setValue(priceDeparture);
                                 mTicket.child(TicketIdDept).child("userID").setValue(userID);
                                 mTicket.child(TicketIdDept).child("isReserved").setValue(reserved);
+                                mTicket.child(TicketIdDept).child("busPlate").setValue(busPlateDeparture);
 
                                 //
                                 autoTicketID++;
@@ -251,7 +253,7 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
                                 mDatabase.child("autoTicketID").setValue(autoTicketID);
                                 //
 
-                                String TicketIdArrive="Ticket" + autoTicketID;
+                                String TicketIdArrive="PNR2021" + autoTicketID;
 
                                 Ticket b = new Ticket(returntripId,TicketIdArrive,userID,fromArrival,toArrival,departureTimeArrival,arrivalTimeArrival,dateArrival,priceArrival,selectedSeatsReturn);
                                 mTicket.child(TicketIdArrive).child("tripId").setValue(returntripId);
@@ -264,6 +266,7 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
                                 mTicket.child(TicketIdArrive).child("price").setValue(priceArrival);
                                 mTicket.child(TicketIdArrive).child("userID").setValue(userID);
                                 mTicket.child(TicketIdArrive).child("isReserved").setValue(reserved);
+                                mTicket.child(TicketIdArrive).child("busPlate").setValue(busPlateArrival);
 
                                 //
                                 autoTicketID++;
@@ -295,8 +298,6 @@ public class Selectseat2Activity extends AppCompatActivity implements View.OnCli
                             startActivity(intent);
                         }
                     });
-                Intent intent = new Intent(Selectseat2Activity.this, UnregisteredUserInfo.class);
-                startActivity(intent);
              //   finish();
             }
             else if (mAuth.getCurrentUser() == null) {

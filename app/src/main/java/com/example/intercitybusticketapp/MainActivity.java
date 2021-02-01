@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             isReturn = true;
         }
-        if (!isReturn || returndate.equals("")){
+        if (true){
             if (!from.equals(to) && !from.equals("Select the City") && !to.equals("Select the City") && !departdate.equals("")) {
 
 
