@@ -102,6 +102,7 @@
         android:ems="10"
         android:hint="Phone Number (5xx-xxx-xx-xx)"
         android:inputType="text"
+
         android:maxLength="13"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"

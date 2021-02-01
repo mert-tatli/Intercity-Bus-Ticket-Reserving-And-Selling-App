@@ -109,9 +109,12 @@ public class PaymentActivity extends AppCompatActivity {
         String month1 = month.getText().toString();
         String year1 = year.getText().toString();
         String cvv1 = cvv.getText().toString();
+        int y=Integer.valueOf(year1);
+        int m=Integer.valueOf(month1);
 
-        if (TextUtils.isEmpty(holderName1) || TextUtils.isEmpty(cardNumber1) || TextUtils.isEmpty(month1)||TextUtils.isEmpty(year1) || TextUtils.isEmpty(cvv1)){
-                Toast.makeText(PaymentActivity.this, "All the Informations Are Required", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(holderName1) || TextUtils.isEmpty(cardNumber1) || TextUtils.isEmpty(month1)||TextUtils.isEmpty(year1) || TextUtils.isEmpty(cvv1)
+        || y<21  || m>12 || cvv1.length()<3 || m==0 || y==0){
+                Toast.makeText(PaymentActivity.this, "All the Informations Are Required,Check your information", Toast.LENGTH_LONG).show();
         }
         else{
             if(isReturn2) {
@@ -129,6 +132,7 @@ public class PaymentActivity extends AppCompatActivity {
                         Toast.makeText(PaymentActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(PaymentActivity.this,MainActivity.class);
                         startActivity(intent);
+
                     }
                 });
 
@@ -307,7 +311,7 @@ public class PaymentActivity extends AppCompatActivity {
             Toast.makeText(PaymentActivity.this, "The ticket(s) is paid. Have a Nice Trip", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(PaymentActivity.this, MainActivity.class);
             startActivity(intent);
-            //finish();
+            finish();
 
         }
     }
