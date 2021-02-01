@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private String departdate, returndate;
     private static List<Trip> tripList;
     private static List<Trip> tripsReturn;
-    private Button logintext;
+    private Button logintext, ticketButton;
     private TextView signup;
     private ImageView userAccount;
     private FirebaseUser User;
@@ -79,20 +79,20 @@ public class MainActivity extends AppCompatActivity {
         Spinner s1 = findViewById(R.id.spinner);
         Spinner s2 = findViewById(R.id.spinner2);
         reservation = findViewById(R.id.reservation);
-        signup=findViewById(R.id.signUptext);
-        logintext=findViewById(R.id.selectButton);
-        userAccount=findViewById(R.id.userAccount);
-
+        signup = findViewById(R.id.signUptext);
+        logintext = findViewById(R.id.selectButton);
+        userAccount = findViewById(R.id.userAccount);
+        ticketButton = findViewById(R.id.ticketSearchButton);
         mAuth = FirebaseAuth.getInstance();
         User = mAuth.getCurrentUser();
 
-        if (User!=null) {
+        if (User != null) {
             signup.setVisibility(View.INVISIBLE);
             logintext.setVisibility(View.INVISIBLE);
             userAccount.setVisibility(View.VISIBLE);
-
-        }else{
-
+            ticketButton.setVisibility(View.INVISIBLE);
+        } else {
+            ticketButton.setVisibility(View.VISIBLE);
             userAccount.setVisibility(View.INVISIBLE);
             logintext.setVisibility(View.VISIBLE);
             signup.setVisibility(View.VISIBLE);
@@ -101,9 +101,9 @@ public class MainActivity extends AppCompatActivity {
         userAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this,UserAccountActivity.class);
+                Intent intent = new Intent(MainActivity.this, UserAccountActivity.class);
                 startActivity(intent);
-             //   finish();
+                //   finish();
             }
         });
 
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
     public void signmain(View view) {
         Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
         startActivity(intent);
-       // finish();
+        // finish();
     }
 
     public void loginmain(View view) {
@@ -170,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+
     public void onClickOneWayRadio(View view) {
         option = "OneWay";
         returnDate.setVisibility(View.INVISIBLE);
@@ -183,61 +184,66 @@ public class MainActivity extends AppCompatActivity {
         returnDate.setText("RETURN DATE");
     }
 
+    public void onClickTicketSearchButton(View view) {
+        Intent intent = new Intent(MainActivity.this, UnregisteredTicketSearch.class);
+        startActivity(intent);
+    }
+
     public void searchtrip(View view) {
         departdate = departureDate.getText().toString();
         returndate = returnDate.getText().toString();
+        boolean check = false;
         if (option.equals("OneWay")) {
+            if (!departdate.equals("")) {
+                check = true;
+            }
             isReturn = false;
         } else {
+            if (!departdate.equals("") && !returndate.equals("")) {
+                check = true;
+            }
             isReturn = true;
         }
-        if (true){
-            if (!from.equals(to) && !from.equals("Select the City") && !to.equals("Select the City") && !departdate.equals("")) {
+
+        if (!from.equals(to) && !from.equals("Select the City") && !to.equals("Select the City") && !departdate.equals("")) {
 
 
-                reserve = reservation.isChecked();
+            reserve = reservation.isChecked();
 
 
-                if (!reserve) { // burda kullanıcı ise , && ile kontrol edilmeli ,, (Sorgu yaparken iki date demek iki trip demek)
-                    // dönüş için from --> to  , , , to--> from olucak   (2. trip yani)
-                    // burda veritabınında trip varmı diye kontrol edilip ona göre yönlendirilmesi lazım
+            if (!reserve) { // burda kullanıcı ise , && ile kontrol edilmeli ,, (Sorgu yaparken iki date demek iki trip demek)
+                // dönüş için from --> to  , , , to--> from olucak   (2. trip yani)
+                // burda veritabınında trip varmı diye kontrol edilip ona göre yönlendirilmesi lazım
 
 
-                    if(isReturn) {
+                if (isReturn) {
+                    Query query2 = mTrips.orderByChild("to").equalTo(from);
+                    query2.addListenerForSingleValueEvent(valueEventListener1);
+                }
+                Query query1 = mTrips.orderByChild("from").equalTo(from);
+                query1.addListenerForSingleValueEvent(valueEventListener);
+
+
+            } else {  // USER DEĞİL İSE
+
+                if (User == null) {
+                    Toast.makeText(this, "To Make a Reservation Please First Login", Toast.LENGTH_LONG).show();
+                    Intent intent1 = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent1);
+                    // finish();
+                } else {
+                    if (isReturn) {
                         Query query2 = mTrips.orderByChild("to").equalTo(from);
                         query2.addListenerForSingleValueEvent(valueEventListener1);
                     }
                     Query query1 = mTrips.orderByChild("from").equalTo(from);
                     query1.addListenerForSingleValueEvent(valueEventListener);
-
-
-                } else {  // USER DEĞİL İSE
-
-                    if (User == null) {
-                        Toast.makeText(this, "To Make a Reservation Please First Login", Toast.LENGTH_LONG).show();
-                        Intent intent1 = new Intent(MainActivity.this, LoginActivity.class);
-                        startActivity(intent1);
-                        // finish();
-                    }
-                    else {
-                        if (isReturn) {
-                            Query query2 = mTrips.orderByChild("to").equalTo(from);
-                            query2.addListenerForSingleValueEvent(valueEventListener1);
-                        }
-                        Query query1 = mTrips.orderByChild("from").equalTo(from);
-                        query1.addListenerForSingleValueEvent(valueEventListener);
-                    }
-
                 }
-            } else {
-                Toast.makeText(this, "Check Your Selections", Toast.LENGTH_SHORT).show();
+
             }
+        } else {
+            Toast.makeText(this, "Check Your Selections", Toast.LENGTH_SHORT).show();
         }
-        else{
-            Toast.makeText(this, "All information are required", Toast.LENGTH_SHORT).show();
-        }
-
-
     }
 
     public static List<Trip> getTripList() {
@@ -271,7 +277,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-
             if (!isReturn) {
                 if (tripList.isEmpty()) {
                     Toast.makeText(MainActivity.this, "Trip can not found!!", Toast.LENGTH_LONG).show();
@@ -281,18 +286,18 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("reserve", reserve);
                     System.out.println("MAİN:" + reserve);
                     startActivity(intent);
-                  //  finish();
+                    //  finish();
                 }
             } else {
                 if (tripList.isEmpty() || tripsReturn.isEmpty()) {
                     Toast.makeText(MainActivity.this, "Trip can not found!!", Toast.LENGTH_LONG).show();
-                } else  {
+                } else {
                     Intent intent = new Intent(MainActivity.this, TripActivity.class);
                     intent.putExtra("isReturn", isReturn);
                     intent.putExtra("reserve", reserve);
                     System.out.println("MAİN:" + reserve);
                     startActivity(intent);
-                 //   finish();
+                    //   finish();
                 }
             }
         }
@@ -300,9 +305,9 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onCancelled(@NonNull DatabaseError error) {
-            Toast.makeText(MainActivity.this,"Something went wrong! DATABASE CONNECTİON FAİLED.",Toast.LENGTH_SHORT).show();
-            Toast.makeText(MainActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(MainActivity.this,MainActivity.class);
+            Toast.makeText(MainActivity.this, "Something went wrong! DATABASE CONNECTİON FAİLED.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this, MainActivity.class);
             startActivity(intent);
         }
     };
@@ -332,9 +337,9 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onCancelled(@NonNull DatabaseError error) {
-            Toast.makeText(MainActivity.this,"Something went wrong! DATABASE CONNECTİON FAİLED.",Toast.LENGTH_SHORT).show();
-            Toast.makeText(MainActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(MainActivity.this,MainActivity.class);
+            Toast.makeText(MainActivity.this, "Something went wrong! DATABASE CONNECTİON FAİLED.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this, MainActivity.class);
             startActivity(intent);
         }
     };
@@ -401,8 +406,6 @@ public class MainActivity extends AppCompatActivity {
                     .append(year).append(""));
         }
     }
-
-
 
 
 }

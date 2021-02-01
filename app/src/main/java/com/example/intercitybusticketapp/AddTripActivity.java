@@ -33,11 +33,11 @@ public class AddTripActivity extends AppCompatActivity {
     @SuppressLint("StaticFieldLeak")
     private static Button departureDate;
     private EditText tripid;
-    private Spinner to,from,fromTime,toTime,busplate;
+    private Spinner to, from, fromTime, toTime, busplate;
     private EditText price;
     private TripModel tripmodel;
-    private DatabaseReference mDatabase,mBuses;
-    private String fromtrip,toTrip,fromtimetrip,totimetrip,departdate,selectedBus;
+    private DatabaseReference mDatabase, mBuses;
+    private String fromtrip, toTrip, fromtimetrip, totimetrip, departdate, selectedBus;
     private static int mYear1;
     private static int mMonth1;
     private static int mDay1;
@@ -64,30 +64,30 @@ public class AddTripActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_trip);
-        tripid=findViewById(R.id.inputTripId);
+        tripid = findViewById(R.id.inputTripId);
         from = findViewById(R.id.inputTripFrom);
-        to=findViewById(R.id.inputTripTo);
+        to = findViewById(R.id.inputTripTo);
         fromTime = findViewById(R.id.inputTripFromTime);
-        toTime=findViewById(R.id.inputTripToTime);
-        price=findViewById(R.id.inputTripPrice);
-        busplate=findViewById(R.id.inputBusPlate2);
+        toTime = findViewById(R.id.inputTripToTime);
+        price = findViewById(R.id.inputTripPrice);
+        busplate = findViewById(R.id.inputBusPlate2);
         departureDate = findViewById(R.id.departureDateButton2);
 
 
-        tripmodel=new TripModel();
+        tripmodel = new TripModel();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
 
-        availableBusPlates= new ArrayList<>();
+        availableBusPlates = new ArrayList<>();
         availableBusPlates.add("Select The Bus");
 
-        mBuses=FirebaseDatabase.getInstance().getReference("Buses");
+        mBuses = FirebaseDatabase.getInstance().getReference("Buses");
         mBuses.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    for(DataSnapshot buses : snapshot.getChildren()){
-                        if(!buses.hasChild("Trip")){
+                if (snapshot.exists()) {
+                    for (DataSnapshot buses : snapshot.getChildren()) {
+                        if (!buses.hasChild("Trip")) {
                             availableBusPlates.add(buses.getKey());
                         }
                     }
@@ -106,26 +106,24 @@ public class AddTripActivity extends AppCompatActivity {
 
 
                     ArrayAdapter<String> adapter5 = new ArrayAdapter<String>(AddTripActivity.this,
-                                android.R.layout.simple_spinner_item, availableBusPlates);
-                        adapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        busplate.setAdapter(adapter5);
+                            android.R.layout.simple_spinner_item, availableBusPlates);
+                    adapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    busplate.setAdapter(adapter5);
 
 
-                }
-                else{
-                    Toast.makeText(AddTripActivity.this,"Buses Cannot Found.",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(AddTripActivity.this, "Buses Cannot Found.", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(AddTripActivity.this,"Something went wrong",Toast.LENGTH_LONG).show();
-                Toast.makeText(AddTripActivity.this,error.getMessage(),Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(AddTripActivity.this,AdminActivity.class);
+                Toast.makeText(AddTripActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
+                Toast.makeText(AddTripActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(AddTripActivity.this, AdminActivity.class);
                 startActivity(intent);
             }
         });
-
 
 
         from.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -201,92 +199,88 @@ public class AddTripActivity extends AppCompatActivity {
             }
         });
     }
-    public void addtrip(View view){
-        String tripid1 =tripid.getText().toString();
-        String from1=fromtrip;
-        String to1=toTrip;
-        String fromtimetrip1=fromtimetrip;
-        String totimetrip1=totimetrip;
+
+    public void addtrip(View view) {
+        String tripid1 = tripid.getText().toString();
+        String from1 = fromtrip;
+        String to1 = toTrip;
+        String fromtimetrip1 = fromtimetrip;
+        String totimetrip1 = totimetrip;
         departdate = departureDate.getText().toString();
 
-        String price1=price.getText().toString();
-        if (selectedBus.equals("Select The Bus")){
-            Toast.makeText(AddTripActivity.this,"You Have to Select The Bus",Toast.LENGTH_SHORT).show();
-        }
-        else{
-            if (TextUtils.isEmpty(tripid1) ||  TextUtils.isEmpty(from1) || TextUtils.isEmpty(to1)|| TextUtils.isEmpty(fromtimetrip1) || TextUtils.isEmpty(totimetrip1)|| TextUtils.isEmpty(price1) )
-            {
-                Toast.makeText(AddTripActivity.this,"All the Information Are Required,PLEASE CHECK",Toast.LENGTH_SHORT).show();
-            }
-            else{
-                mDatabase.child("Trips").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.exists()){
-                            if(snapshot.hasChild(tripid1)){
-                                Toast.makeText(AddTripActivity.this,"The trip is already Created",Toast.LENGTH_SHORT).show();
-                            }else{
+        String price1 = price.getText().toString();
+        if (selectedBus.equals("Select The Bus")) {
+            Toast.makeText(AddTripActivity.this, "You Have to Select The Bus", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(tripid1) || TextUtils.isEmpty(from1) || TextUtils.isEmpty(to1) || TextUtils.isEmpty(fromtimetrip1) || TextUtils.isEmpty(totimetrip1) || TextUtils.isEmpty(price1)) {
+            Toast.makeText(AddTripActivity.this, "All the Information Are Required,PLEASE CHECK", Toast.LENGTH_SHORT).show();
+        } else {
 
-                                ////////////////////////////
-                                busplate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                    @Override
-                                    public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
-                                        selectedBus = availableBusPlates.get(position);
-                                    }
+            mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        if (snapshot.child("Trips").hasChild(tripid1)) {
+                            Toast.makeText(AddTripActivity.this, "The trip is already Created", Toast.LENGTH_SHORT).show();
+                        } else {
 
-                                    @Override
-                                    public void onNothingSelected(AdapterView<?> arg0) {
-                                        // TODO Auto-generated method stub
-                                    }
-                                });
-                                ArrayAdapter<String> adapter6 = new ArrayAdapter<String>(AddTripActivity.this,
-                                        android.R.layout.simple_spinner_item, availableBusPlates);
-                                adapter6.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                busplate.setAdapter(adapter6);
-
-                                /////////////////////////////
-
-
-                                if (availableBusPlates.size()==1){
-                                    availableBusPlates.remove(selectedBus);
-
-
-                                }
-                                else{
-                                    availableBusPlates.remove(selectedBus);
+                            ////////////////////////////
+                            busplate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
+                                    selectedBus = availableBusPlates.get(position);
                                 }
 
+                                @Override
+                                public void onNothingSelected(AdapterView<?> arg0) {
+                                    // TODO Auto-generated method stub
+                                }
+                            });
+                            ArrayAdapter<String> adapter6 = new ArrayAdapter<String>(AddTripActivity.this,
+                                    android.R.layout.simple_spinner_item, availableBusPlates);
+                            adapter6.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            busplate.setAdapter(adapter6);
 
-                                Trip t = new Trip(tripid1,from1,to1,fromtimetrip1,totimetrip1,departdate,price1);
-                                tripmodel.setTrip(t);
-                                Toast.makeText(AddTripActivity.this,"TRIP WAS CREATED SUCCESFULLY",Toast.LENGTH_SHORT).show();
-                                mDatabase.child("Trips").child(tripid1).child("tripid").setValue(tripid1);
-                                mDatabase.child("Trips").child(tripid1).child("from").setValue(from1);
-                                mDatabase.child("Trips").child(tripid1).child("to").setValue(to1);
-                                mDatabase.child("Trips").child(tripid1).child("departuretime").setValue(fromtimetrip1);
-                                mDatabase.child("Trips").child(tripid1).child("arrivaltime").setValue(totimetrip1);
-                                mDatabase.child("Trips").child(tripid1).child("date").setValue(departdate);
-                                mDatabase.child("Trips").child(tripid1).child("price").setValue(price1);
-                                mDatabase.child("Trips").child(tripid1).child("busPlate").setValue(selectedBus);
-                                mDatabase.child("Buses").child(selectedBus).child("Trip").setValue(tripid1);
-                                mDatabase.child("Trips").child(tripid1).child("TripSeats").child("Seat").setValue("/AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/"+ "AA___AA/" + "AA___AA/"+ "AA___AA/");
+                            /////////////////////////////
 
+
+                            if (availableBusPlates.size() == 1) {
+                                availableBusPlates.remove(selectedBus);
+
+
+                            } else {
+                                availableBusPlates.remove(selectedBus);
                             }
+
+
+                            Trip t = new Trip(tripid1, from1, to1, fromtimetrip1, totimetrip1, departdate, price1);
+                            tripmodel.setTrip(t);
+                            Toast.makeText(AddTripActivity.this, "TRIP WAS CREATED SUCCESFULLY", Toast.LENGTH_SHORT).show();
+                            mDatabase.child("Trips").child(tripid1).child("tripid").setValue(tripid1);
+                            mDatabase.child("Trips").child(tripid1).child("from").setValue(from1);
+                            mDatabase.child("Trips").child(tripid1).child("to").setValue(to1);
+                            mDatabase.child("Trips").child(tripid1).child("departuretime").setValue(fromtimetrip1);
+                            mDatabase.child("Trips").child(tripid1).child("arrivaltime").setValue(totimetrip1);
+                            mDatabase.child("Trips").child(tripid1).child("date").setValue(departdate);
+                            mDatabase.child("Trips").child(tripid1).child("price").setValue(price1);
+                            mDatabase.child("Trips").child(tripid1).child("busPlate").setValue(selectedBus);
+                            mDatabase.child("Buses").child(selectedBus).child("Trip").setValue(tripid1);
+                            mDatabase.child("Trips").child(tripid1).child("TripSeats").child("Seat").setValue("/AA___AA/" + "AA___AA/" + "AA___AA/" + "AA___AA/" + "AA___AA/" + "AA___AA/" + "AA___AA/" + "AA___AA/" + "AA___AA/" + "AA___AA/" + "AA___AA/" + "AA___AA/");
+
                         }
                     }
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(AddTripActivity.this,"Something went wrong",Toast.LENGTH_LONG).show();
-                        Toast.makeText(AddTripActivity.this,error.getMessage(),Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(AddTripActivity.this,AdminActivity.class);
-                        startActivity(intent);
-                    }
-                });
-            }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(AddTripActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddTripActivity.this, error.getMessage(), Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(AddTripActivity.this, AdminActivity.class);
+                    startActivity(intent);
+                }
+            });
         }
-
     }
+
 
     public static class DatePickerFragment1 extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
@@ -317,8 +311,6 @@ public class AddTripActivity extends AppCompatActivity {
         }
 
     }
-
-
 
 
 }

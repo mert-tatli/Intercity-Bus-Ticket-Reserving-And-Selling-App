@@ -42,7 +42,7 @@ public class DeleteTripActivity extends AppCompatActivity {
         trips =new ArrayList<>();
         trips.add("Select The Trip");
         createNotificationChannel();
-        managerCompat = NotificationManagerCompat.from(this);
+        managerCompat = NotificationManagerCompat.from(DeleteTripActivity.this);
         mDatabase= FirebaseDatabase.getInstance().getReference();
         mDatabase.child("Trips").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

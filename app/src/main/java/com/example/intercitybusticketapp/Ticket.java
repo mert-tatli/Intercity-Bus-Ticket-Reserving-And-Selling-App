@@ -15,9 +15,29 @@ public class Ticket {
     private String price;
     private ArrayList<Integer> seats;
     private String plateNumber;
+    private boolean isReserved;
 
+    public boolean isReserved() {
+        return isReserved;
+    }
 
-    public Ticket(String tripId, String ticketId, String userId, String from, String to, String departureTime, String arrivalTime, String date, String price,ArrayList<Integer> seats/*String plateNumber*/) {
+    public void setReserved(boolean reserved) {
+        isReserved = reserved;
+    }
+
+    public void setPlateNumber(String plateNumber) {
+        this.plateNumber = plateNumber;
+    }
+
+    public void setSeats(ArrayList<Integer> seats) {
+        this.seats = seats;
+    }
+
+    public Ticket() {
+
+    }
+
+    public Ticket(String tripId, String ticketId, String userId, String from, String to, String departureTime, String arrivalTime, String date, String price, ArrayList<Integer> seats/*String plateNumber*/) {
         this.tripId = tripId;
         this.TicketId = ticketId;
         this.UserId = userId;
@@ -27,7 +47,7 @@ public class Ticket {
         this.arrivalTime = arrivalTime;
         this.date = date;
         this.price = price;
-        this.seats= seats;
+        this.seats = seats;
         /*this.plateNumber=plateNumber;*/
     }
 
@@ -45,7 +65,7 @@ public class Ticket {
                 ", date='" + date + '\'' +
                 ", price='" + price + '\'' +
                 ", seats='" + seats + '\'' +
-                /*", plateNumber='" + plateNumber + '\'' +*/
+                ", plateNumber='" + plateNumber + '\'' +
                 '}';
     }
 
