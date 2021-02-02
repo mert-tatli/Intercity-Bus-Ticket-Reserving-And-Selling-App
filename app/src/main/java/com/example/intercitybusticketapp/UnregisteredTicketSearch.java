@@ -33,6 +33,8 @@ public class UnregisteredTicketSearch extends AppCompatActivity {
         ticketss = new ArrayList<>();
     }
 
+
+
     public void onClickCheckButton(View view) {
 
         if (validateEmail(ticketMail1))

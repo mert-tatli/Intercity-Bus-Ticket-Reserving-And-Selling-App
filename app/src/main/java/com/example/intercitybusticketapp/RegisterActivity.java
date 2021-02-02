@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -66,6 +67,18 @@ public class RegisterActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private boolean validateEmail(EditText email){
+        String emailinput = email.getText().toString();
+
+        if(!emailinput.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(emailinput).matches()){
+
+            return true;
+        }else{
+            Toast.makeText(this,"Invalid Email Address",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
     public void onClickSignup(View view) {
 
         if (terms.isChecked()) {
@@ -81,7 +94,12 @@ public class RegisterActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(id1) || TextUtils.isEmpty(name1) || TextUtils.isEmpty(surname1) || TextUtils.isEmpty(phone1) || TextUtils.isEmpty(birthday1) || TextUtils.isEmpty(email1) || TextUtils.isEmpty(password1)
                         || password1.length()<6) {
                     Toast.makeText(RegisterActivity.this, "All the Information Are Required and CHECK the password length", Toast.LENGTH_SHORT).show();
-                } else {
+                }
+
+                if(!validateEmail(email)){
+                    Toast.makeText(RegisterActivity.this, "Check Your Email Type", Toast.LENGTH_SHORT).show();
+                }
+                else {
 
                     User usr = new User(id1, name1, surname1, gender, phone1, birthday1, email1, password1);
                     mAuth.createUserWithEmailAndPassword(email1, password1).addOnCompleteListener(new OnCompleteListener<AuthResult>() {

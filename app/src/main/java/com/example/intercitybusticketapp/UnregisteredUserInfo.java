@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -73,6 +74,19 @@ public class UnregisteredUserInfo extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
+
+    private boolean validateEmail(EditText email){
+        String emailinput = email.getText().toString();
+
+        if(!emailinput.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(emailinput).matches()){
+
+            return true;
+        }else{
+            Toast.makeText(this,"Invalid Email Address",Toast.LENGTH_LONG).show();
+            return false;
+        }
+    }
+
     public void backbutton1(View view) {
         Intent intent = new Intent(UnregisteredUserInfo.this, SelectSeatActivity.class);
         startActivity(intent);
@@ -86,7 +100,7 @@ public class UnregisteredUserInfo extends AppCompatActivity {
         String phone1 = phone.getText().toString();
         String email1 = email.getText().toString();
 
-        if (TextUtils.isEmpty(id1) || TextUtils.isEmpty(name1) || TextUtils.isEmpty(surname1) || TextUtils.isEmpty(phone1) || TextUtils.isEmpty(email1)) {
+        if (TextUtils.isEmpty(id1) || TextUtils.isEmpty(name1) || TextUtils.isEmpty(surname1) || TextUtils.isEmpty(phone1) || TextUtils.isEmpty(email1) || !validateEmail(email)) {
             Toast.makeText(UnregisteredUserInfo.this, "All the Information Are Required", Toast.LENGTH_SHORT).show();
         } else {
             mDatabase.child("users").child(id1).child("id").setValue(id1).addOnCompleteListener(new OnCompleteListener<Void>() {

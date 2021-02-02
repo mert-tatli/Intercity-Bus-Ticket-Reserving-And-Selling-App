@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,7 +30,7 @@ public class ForgetMyPasswordActivity extends AppCompatActivity {
         sendPassEmailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if(!TextUtils.isEmpty(eMail.getText().toString())) {
+               if(validateEmail(eMail)) {
                    mAuth.sendPasswordResetEmail(eMail.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
                        @Override
                        public void onComplete(@NonNull Task<Void> task) {
@@ -41,12 +42,21 @@ public class ForgetMyPasswordActivity extends AppCompatActivity {
                            }
                        }
                    });
-               }else{
-                   Log.d("E-mail input is empty.", "Email sent.");
-                   Toast.makeText(ForgetMyPasswordActivity.this, "E-mail input is empty.", Toast.LENGTH_LONG).show();
                }
             }
             }
         );
+    }
+
+    private boolean validateEmail(EditText email){
+        String emailinput = eMail.getText().toString();
+
+        if(!emailinput.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(emailinput).matches()){
+
+            return true;
+        }else{
+            Toast.makeText(this,"Invalid Email Address",Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 }
