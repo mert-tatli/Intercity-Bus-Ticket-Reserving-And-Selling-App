@@ -10,10 +10,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class PaymentReservedActivity extends AppCompatActivity {
     private EditText holderName, cardNumber, month, year, cvv;
     private TextView price;
     private String ticket_id,price1;
+    private DatabaseReference mDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +32,7 @@ public class PaymentReservedActivity extends AppCompatActivity {
         ticket_id=intent.getStringExtra("ticket_id");
         price1=intent.getStringExtra("price");
         price.setText("Price: "+ price1 + "₺");
-
+        mDatabase= FirebaseDatabase.getInstance().getReference();
     }
     public void onBuyClick(View view) {
         String holderName1 = holderName.getText().toString();
@@ -44,10 +48,10 @@ public class PaymentReservedActivity extends AppCompatActivity {
         }
         else
         {
+            mDatabase.child("Ticket").child(ticket_id).child("isReserved").setValue(false);
             Intent intent=new Intent(getApplicationContext(),MyTicketsActivity.class);
             startActivity(intent);
             finish();
-            // burada kart bilgileri girildikten sonra sadece kullanıcının ticket_id sini alıp isreserved kısmını false yapmanız gerekiyor db den. thats all we need.
         }
 
 
