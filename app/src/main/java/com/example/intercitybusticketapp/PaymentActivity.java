@@ -91,6 +91,7 @@ public class PaymentActivity extends AppCompatActivity {
 
         }
 
+
         unRegisteredUserMail = intent.getStringExtra("unregisteredUser");
         mTrips.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

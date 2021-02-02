@@ -1,9 +1,11 @@
 package com.example.intercitybusticketapp;
 
+import androidx.annotation.FontRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -43,8 +46,6 @@ public class MyTicketsActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_tickets);
 
-
-        // Tickets = MainActivity.getTripList();
         mAuth = FirebaseAuth.getInstance();
         Tickets = new ArrayList<>();
         layout = findViewById(R.id.linearLayoutTickets);
@@ -52,15 +53,21 @@ public class MyTicketsActivity extends AppCompatActivity implements View.OnClick
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutSeat.setOrientation(LinearLayout.VERTICAL);
         layoutSeat.setLayoutParams(params);
-        layoutSeat.setPadding(4 * tripGaping, 4 * tripGaping, 4 * tripGaping, 4 * tripGaping);
+        layoutSeat.setPadding(4 * tripGaping, 8 * tripGaping, 4 * tripGaping, 8 * tripGaping);
         layout.addView(layoutSeat);
         mTickets = FirebaseDatabase.getInstance().getReference("Ticket");
-        if (isReserved) {
-            ticketCondition = "RESERVED";
-        } else {
-            ticketCondition = "TICKET";
+
+
+        String email="";
+        if (mAuth.getCurrentUser()==null){
+            Intent intent=getIntent();
+            email=intent.getStringExtra("email");
         }
-        mTickets.orderByChild("userID").equalTo(mAuth.getCurrentUser().getEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
+        else{
+            email=mAuth.getCurrentUser().getEmail();
+        }
+
+        mTickets.orderByChild("userID").equalTo(email).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot datasnapshot) {
                 if (datasnapshot.exists()) {
@@ -78,8 +85,6 @@ public class MyTicketsActivity extends AppCompatActivity implements View.OnClick
                         ticket1.setPlateNumber(snapshot.child("busPlate").getValue().toString());
                         ticket1.setReserved((Boolean) snapshot.child("isReserved").getValue());
 
-//busplate yazdırılacak
-// seatler yazdırılacak
                         ArrayList<Integer> a = new ArrayList();
                         String emptiedSeats = snapshot.child("seats").getValue().toString();
                         String[] freeSeatNumbers = emptiedSeats.split(" --> ");
@@ -87,12 +92,17 @@ public class MyTicketsActivity extends AppCompatActivity implements View.OnClick
                             a.add(Integer.parseInt(freeSeatNumbers[i]));
                         }
                         ticket1.setSeats(a);
-                        System.out.println(ticket1.toString());
                         Tickets.add(ticket1);
 
                     }
+
                     LinearLayout layout = null;
                     for (int index = 0; index < Tickets.size(); index++) {
+                        if (Tickets.get(index).isReserved()) {
+                            ticketCondition = "RESERVED";
+                        } else {
+                            ticketCondition = "BOOKED";
+                        }
                         count++;
                         layout = new LinearLayout(MyTicketsActivity.this);
                         layout.setOrientation(LinearLayout.VERTICAL);
@@ -101,7 +111,7 @@ public class MyTicketsActivity extends AppCompatActivity implements View.OnClick
                         Drawable myDrawable = getResources().getDrawable(R.drawable.home_gradient_maths);
                         view.setBackground(myDrawable);
                         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                        layoutParams.setMargins(5, 30, 5, 30);
+                        layoutParams.setMargins(10, 30, 10, 30);
                         view.setLayoutParams(layoutParams);
                         view.setPadding(0, 20, 0, 20);
                         view.setId(count);
@@ -109,77 +119,104 @@ public class MyTicketsActivity extends AppCompatActivity implements View.OnClick
                         view.setRadius(15);
 
                         textview = new TextView(MyTicketsActivity.this);
-                        LinearLayout.LayoutParams textParams0 = new LinearLayout.LayoutParams(300, 100);
+                        LinearLayout.LayoutParams textParams0 = new LinearLayout.LayoutParams(450, 200);
                         textview.setLayoutParams(textParams0);
                         textview.setText("Ticket PNR: " + Tickets.get(index).getTicketId());
+                        textParams0.setMargins(220, -50, 220, 50);
                         textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
                         textview.setTextColor(Color.WHITE);
-                        textview.setPadding(5, 5, 5, 5);
                         textview.setGravity(Gravity.CENTER);
                         view.addView(textview);
 
                         textview = new TextView(MyTicketsActivity.this);
-                        LinearLayout.LayoutParams textParams1 = new LinearLayout.LayoutParams(300, 300);
+                        LinearLayout.LayoutParams textParams1 = new LinearLayout.LayoutParams(450, 200);
                         textview.setLayoutParams(textParams1);
                         textview.setText("Departure Time: " + Tickets.get(index).getDepartureTime());
+                        textParams1.setMargins(20, 50, 20, 0);
                         textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
                         textview.setTextColor(Color.WHITE);
-                        textview.setPadding(5, 5, 5, 5);
+                        textview.setPadding(0, 0, 0, 0);
                         textview.setGravity(Gravity.CENTER);
                         view.addView(textview);
 
                         textview = new TextView(MyTicketsActivity.this);
-                        LinearLayout.LayoutParams textParams2 = new LinearLayout.LayoutParams(300, 550);
+                        LinearLayout.LayoutParams textParams2 = new LinearLayout.LayoutParams(400, 200);
                         textview.setLayoutParams(textParams2);
                         textview.setText("Arrival Time: " + Tickets.get(index).getArrivalTime());
+                        textParams2.setMargins(10, 150, 10, 0);
                         textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
                         textview.setTextColor(Color.WHITE);
-                        textview.setPadding(5, 5, 5, 5);
                         textview.setGravity(Gravity.CENTER);
                         view.addView(textview);
 
                         textview = new TextView(MyTicketsActivity.this);
-                        LinearLayout.LayoutParams textParams3 = new LinearLayout.LayoutParams(1100, 300);
+                        LinearLayout.LayoutParams textParams3 = new LinearLayout.LayoutParams(450, 200);
                         textview.setLayoutParams(textParams3);
                         textview.setText("From: " + Tickets.get(index).getFrom());
+                        textParams3.setMargins(440, 50, 440, 0);
                         textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
                         textview.setTextColor(Color.WHITE);
-                        textview.setPadding(5, 5, 5, 5);
                         textview.setGravity(Gravity.CENTER);
                         view.addView(textview);
 
                         textview = new TextView(MyTicketsActivity.this);
-                        LinearLayout.LayoutParams textParams4 = new LinearLayout.LayoutParams(1100, 500);
+                        LinearLayout.LayoutParams textParams4 = new LinearLayout.LayoutParams(450, 200);
                         textview.setLayoutParams(textParams4);
                         textview.setText("To:   " + Tickets.get(index).getTo());
+                        textParams4.setMargins(450, 150, 450, 0);
                         textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
                         textview.setTextColor(Color.WHITE);
                         textview.setPadding(5, 5, 5, 5);
                         textview.setGravity(Gravity.CENTER);
                         view.addView(textview);
 
-
                         imageView = new ImageView(MyTicketsActivity.this);
-                        LinearLayout.LayoutParams imgParams1 = new LinearLayout.LayoutParams(550, 220);
+                        LinearLayout.LayoutParams imgParams1 = new LinearLayout.LayoutParams(150, 200);
                         imageView.setLayoutParams(imgParams1);
                         Drawable myDrawable2 = getResources().getDrawable(R.drawable.ic_three_dots);
-                        imgParams1.setMargins(120, 90, 120, 90);
-                        imageView.setPadding(0, 50, 0, 50);
+                        imgParams1.setMargins(415, 90, 415, 90);
                         imageView.setImageDrawable(myDrawable2);
                         view.addView(imageView);
 
                         textview = new TextView(MyTicketsActivity.this);
-                        LinearLayout.LayoutParams textParams7 = new LinearLayout.LayoutParams(300, 750);
+                        LinearLayout.LayoutParams textParams7 = new LinearLayout.LayoutParams(400, 200);
                         textview.setLayoutParams(textParams7);
-                        textview.setText("Date:   " + Tickets.get(index).getDate());
+                        textview.setText("Date: " + Tickets.get(index).getDate());
+                        textParams7.setMargins(5, 250, 5, 0);
                         textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
                         textview.setTextColor(Color.WHITE);
-                        textview.setPadding(5, 5, 5, 5);
                         textview.setGravity(Gravity.CENTER);
                         view.addView(textview);
 
                         textview = new TextView(MyTicketsActivity.this);
-                        LinearLayout.LayoutParams textParams6 = new LinearLayout.LayoutParams(500, 200);
+                        LinearLayout.LayoutParams textParams8 = new LinearLayout.LayoutParams(550, 200);
+                        textview.setLayoutParams(textParams8);
+                        textview.setText("Bus Plate No: " + Tickets.get(index).getPlateNumber());
+                        textParams8.setMargins(10, 350, 10, 0);
+                        textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
+                        textview.setTextColor(Color.WHITE);
+                        textview.setGravity(Gravity.CENTER);
+                        view.addView(textview);
+
+
+                        String seats=" [ - ";
+                        for (int i = 0; i < Tickets.get(index).getSeats().size(); i++){
+                             seats+=Tickets.get(index).getSeats().get(i)+" - ";
+                        }
+                        seats+=" ]";
+
+                        textview = new TextView(MyTicketsActivity.this);
+                        LinearLayout.LayoutParams textParams9 = new LinearLayout.LayoutParams(550, 200);
+                        textview.setLayoutParams(textParams9);
+                        textview.setText("Seat(s): " + seats);
+                        textParams9.setMargins(10, 450, 10, 0);
+                        textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
+                        textview.setTextColor(Color.WHITE);
+                        textview.setGravity(Gravity.CENTER);
+                        view.addView(textview);
+
+                        textview = new TextView(MyTicketsActivity.this);
+                        LinearLayout.LayoutParams textParams6 = new LinearLayout.LayoutParams(450, 200);
                         textview.setLayoutParams(textParams6);
                         textview.setText(ticketCondition);
                         Drawable myDrawable4 = getResources().getDrawable(R.drawable.ic_button_round);
@@ -190,10 +227,11 @@ public class MyTicketsActivity extends AppCompatActivity implements View.OnClick
                         textview.setPadding(5, 5, 5, 5);
                         textview.setGravity(Gravity.CENTER);
                         view.addView(textview);
+                        if (Tickets.get(index).isReserved()){
+                            view.setOnClickListener(MyTicketsActivity.this);
+                        }
                         layout.addView(view);
-                        view.setOnClickListener(MyTicketsActivity.this);
                     }
-
 
                 }
             }
@@ -207,6 +245,12 @@ public class MyTicketsActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
-
+        Intent intent =new Intent(getApplicationContext(),PaymentReservedActivity.class);
+        String ticket_id=Tickets.get((v.getId())-1).getTicketId();
+        String price=Tickets.get((v.getId())-1).getPrice();
+        intent.putExtra("ticket_id",ticket_id);
+        intent.putExtra("price",price);
+        startActivity(intent);
+        finish();
     }
 }
