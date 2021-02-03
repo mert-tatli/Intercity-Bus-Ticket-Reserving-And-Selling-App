@@ -30,7 +30,8 @@ public class CancelTicketActivity extends AppCompatActivity {
     Spinner ticketSpinner;
     private FirebaseAuth mAuth;
     private DatabaseReference mTicket, mTrips;
-    private String emptiedSeats, currentSeats, from, to, date, ticketID;
+    private String emptiedSeats, currentSeats, from, to, date;
+    private String  ticketID="";
     private ArrayList<Integer> freeSeatNumbersList;
     private String[] freeSeatNumbers;
     private NotificationManagerCompat managerCompat;
@@ -146,7 +147,6 @@ public class CancelTicketActivity extends AppCompatActivity {
                                     char[] currentSeatsArray = currentSeats.toCharArray();
                                     int index = 0;
                                     int counter = 0;
-//                                System.out.println("ESKİ HALİ : " + currentSeats);
                                     for (int i = 0; i < currentSeatsArray.length; i++) {
                                         if (currentSeatsArray[i] == 'A' || currentSeatsArray[i] == 'U') {
                                             index++;
@@ -160,7 +160,6 @@ public class CancelTicketActivity extends AppCompatActivity {
                                         }
                                     }
                                     currentSeats = String.copyValueOf(currentSeatsArray);
-//                                System.out.println("YENİ HALİ : " + currentSeats);
                                     mTrips.child(tripID).child("TripSeats").child("Seat").setValue(currentSeats).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
@@ -192,23 +191,12 @@ public class CancelTicketActivity extends AppCompatActivity {
                                                 Toast.makeText(getApplicationContext(), "Dear Passenger, Your Reservation of Trip on " + date + " From: " + from + " To: " +
                                                         to + "has been canceled.  TripID: " + tripID, Toast.LENGTH_SHORT).show();
 
-
-
-                                           /*Notification notification = new NotificationCompat.Builder(UserAccountActivity.this, "cancelReservation")
-                                                   .setContentTitle("Your Reservation Has Been Canceled!")
-                                                   .setContentText("Dear Passenger, Your Reservation of Trip on " + date + " From: " + from + " To: " + to + "has been canceled.  TripID: " + tripID)
-                                                   .setPriority(NotificationCompat.PRIORITY_MAX)
-                                                   .setCategory(NotificationCompat.CATEGORY_EVENT)
-                                                   .setSmallIcon(R.drawable.notification_bus).build();
-
-                                           managerCompat.notify(2, notification);*/
                                             } else {
                                                 Toast.makeText(getApplicationContext(), "Sorry we couldn't answer your request. Please try Again Later.", Toast.LENGTH_SHORT).show();
 
                                             }
                                         }
                                     });
-
 
                                 } else {
                                     Toast.makeText(getApplicationContext(), "Ticket Cannot Found.", Toast.LENGTH_SHORT).show();
@@ -243,9 +231,6 @@ public class CancelTicketActivity extends AppCompatActivity {
         else{
             Toast.makeText(getApplicationContext(), "Select a Reservation PNR", Toast.LENGTH_SHORT).show();
         }
-
-
-
 
         }
 

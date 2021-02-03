@@ -49,6 +49,7 @@ public class PaymentReservedActivity extends AppCompatActivity {
         else
         {
             mDatabase.child("Ticket").child(ticket_id).child("isReserved").setValue(false);
+            Toast.makeText(PaymentReservedActivity.this, "The Ticket is paid", Toast.LENGTH_LONG).show();
             Intent intent=new Intent(getApplicationContext(),MyTicketsActivity.class);
             startActivity(intent);
             finish();

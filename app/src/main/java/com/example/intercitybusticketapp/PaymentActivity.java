@@ -128,217 +128,223 @@ public class PaymentActivity extends AppCompatActivity {
         String month1 = month.getText().toString();
         String year1 = year.getText().toString();
         String cvv1 = cvv.getText().toString();
-        int y=Integer.valueOf(year1);
-        int m=Integer.valueOf(month1);
 
-        if (TextUtils.isEmpty(holderName1) || TextUtils.isEmpty(cardNumber1) || TextUtils.isEmpty(month1)||TextUtils.isEmpty(year1) || TextUtils.isEmpty(cvv1)
-        || y<21  || m>12 || cvv1.length()<3 || m==0 || y==0){
-                Toast.makeText(PaymentActivity.this, "All the Informations Are Required,Check your information", Toast.LENGTH_LONG).show();
-        }
-        else{
-            if(isReturn2) {
-                mTrips.child(tripId).child("TripSeats").child("Seat").setValue(selectSeatOne1);
-                mTrips.child(returntripId).child("TripSeats").child("Seat").setValue(selectSeatTwo);
-
-                mDatabase.child("autoTicketID").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot autoTicket) {
-                        autoTicketID = Integer.parseInt(autoTicket.getValue().toString());
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(PaymentActivity.this,"Something went wrong! DATABASE CONNECTİON FAİLED.",Toast.LENGTH_SHORT).show();
-                        Toast.makeText(PaymentActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(PaymentActivity.this,MainActivity.class);
-                        startActivity(intent);
-
-                    }
-                });
-
-                mDatabase.child("Trips").child(tripId).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.exists()){
-                            String userID = unRegisteredUserMail;
-                            if(mAuth.getCurrentUser()!=null){
-                                userID = mAuth.getCurrentUser().getEmail();
-                            }
-                            String from = snapshot.child("from").getValue().toString();
-                            String to = snapshot.child("to").getValue().toString();
-                            String departureTime = snapshot.child("departuretime").getValue().toString();
-                            String arrivalTime = snapshot.child("arrivaltime").getValue().toString();
-                            String date = snapshot.child("date").getValue().toString();
-                            String price = snapshot.child("price").getValue().toString();
-                            String busPlate = snapshot.child("busPlate").getValue().toString();
-
-                            String TicketId="PNR2021" + autoTicketID;
-
-                            Ticket a = new Ticket(tripId,TicketId,userID,from,to,departureTime,arrivalTime,date,price,selectedSeats);
-                            mTicket.child(TicketId).child("tripId").setValue(tripId);
-                            mTicket.child(TicketId).child("ticketId").setValue(TicketId);
-                            mTicket.child(TicketId).child("from").setValue(from);
-                            mTicket.child(TicketId).child("to").setValue(to);
-                            mTicket.child(TicketId).child("deptime").setValue(departureTime);
-                            mTicket.child(TicketId).child("arrivetime").setValue(arrivalTime);
-                            mTicket.child(TicketId).child("date").setValue(date);
-                            mTicket.child(TicketId).child("price").setValue(String.valueOf(Integer.parseInt(price)* selectedSeats.size()));
-                            mTicket.child(TicketId).child("userID").setValue(userID);
-                            mTicket.child(TicketId).child("busPlate").setValue(busPlate);
-                            mTicket.child(TicketId).child("isReserved").setValue(false);
-
-                            autoTicketID++;
-                            String Seatsa ="";
-                            for(int i=0 ; i<selectedSeats.size() ; i++){
-                                if(Seatsa.equals("")){
-                                    Seatsa =selectedSeats.get(i).toString();
-                                }else
-                                    Seatsa = Seatsa + " --> " +  selectedSeats.get(i).toString();
-                            }
-                            mTicket.child(TicketId).child("seats").setValue(Seatsa);
-                            mDatabase.child("autoTicketID").setValue(autoTicketID);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(PaymentActivity.this,"Something went wrong! DATABASE CONNECTİON HAS FAİLED.",Toast.LENGTH_SHORT).show();
-                        Toast.makeText(PaymentActivity.this,"Please Try Again With Better Connection.",Toast.LENGTH_SHORT).show();
-                        Toast.makeText(PaymentActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(PaymentActivity.this,MainActivity.class);
-                        startActivity(intent);
-                    }
-                });
-
-                mDatabase.child("Trips").child(returntripId).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.exists()){
-                            String userID = unRegisteredUserMail;
-                            if(mAuth.getCurrentUser()!=null){
-                                userID = mAuth.getCurrentUser().getEmail();
-                            }
-                            String from = snapshot.child("from").getValue().toString();
-                            String to = snapshot.child("to").getValue().toString();
-                            String departureTime = snapshot.child("departuretime").getValue().toString();
-                            String arrivalTime = snapshot.child("arrivaltime").getValue().toString();
-                            String date = snapshot.child("date").getValue().toString();
-                            String price = snapshot.child("price").getValue().toString();
-                            String busPlate = snapshot.child("busPlate").getValue().toString();
-                            String TicketId="PNR2021" + (String)Integer.toString(autoTicketID);
-                            Ticket a = new Ticket(tripId,TicketId,userID,from,to,departureTime,arrivalTime,date,price,selectedSeatsReturn);
-                            mTicket.child(TicketId).child("tripId").setValue(returntripId);
-                            mTicket.child(TicketId).child("ticketId").setValue(TicketId);
-                            mTicket.child(TicketId).child("from").setValue(from);
-                            mTicket.child(TicketId).child("to").setValue(to);
-                            mTicket.child(TicketId).child("deptime").setValue(departureTime);
-                            mTicket.child(TicketId).child("arrivetime").setValue(arrivalTime);
-                            mTicket.child(TicketId).child("date").setValue(date);
-                            mTicket.child(TicketId).child("price").setValue(String.valueOf(Integer.parseInt(price)* selectedSeatsReturn.size()));
-                            mTicket.child(TicketId).child("userID").setValue(userID);
-                            mTicket.child(TicketId).child("busPlate").setValue(busPlate);
-                            mTicket.child(TicketId).child("isReserved").setValue(false);
-                            autoTicketID++;
-                            String Seats ="";
-                            for(int i=0 ; i<selectedSeatsReturn.size() ; i++){
-                                if(Seats.equals("")){
-                                    Seats =selectedSeatsReturn.get(i).toString();
-                                }else
-                                    Seats = Seats + " --> " +  selectedSeatsReturn.get(i).toString();
-                            }
-                            mTicket.child(TicketId).child("seats").setValue(Seats);
-                            mDatabase.child("autoTicketID").setValue(autoTicketID);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(PaymentActivity.this,"Something went wrong! DATABASE CONNECTİON HAS FAİLED.",Toast.LENGTH_SHORT).show();
-                        Toast.makeText(PaymentActivity.this,"Please Try Again With Better Connection.",Toast.LENGTH_SHORT).show();
-                        Toast.makeText(PaymentActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(PaymentActivity.this,MainActivity.class);
-                        startActivity(intent);
-                    }
-                });
-
-
+        if (!TextUtils.isEmpty(holderName1) && !TextUtils.isEmpty(cardNumber1) && !TextUtils.isEmpty(month.getText().toString()) && !TextUtils.isEmpty(year.getText().toString())  && !TextUtils.isEmpty(cvv1)){
+            int y=Integer.parseInt(year1);
+            int m=Integer.parseInt(month1);
+            if (y<21  || m>12 || cvv1.length()<3 || m==0 || y==0)
+            {
+                Toast.makeText(PaymentActivity.this, "Incorrect Date Type", Toast.LENGTH_LONG).show();
             }
             else{
-                mDatabase.child("autoTicketID").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot autoTicket) {
-                        autoTicketID = Integer.parseInt(autoTicket.getValue().toString());
-                    }
+                if(isReturn2) {
+                    mTrips.child(tripId).child("TripSeats").child("Seat").setValue(selectSeatOne1);
+                    mTrips.child(returntripId).child("TripSeats").child("Seat").setValue(selectSeatTwo);
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(PaymentActivity.this,"Something went wrong! DATABASE CONNECTİON FAİLED.",Toast.LENGTH_SHORT).show();
-                        Toast.makeText(PaymentActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(PaymentActivity.this,MainActivity.class);
-                        startActivity(intent);
-                    }
-                });
-
-                mDatabase.child("Trips").child(tripId).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.exists()){
-
-                            String userID = unRegisteredUserMail;
-                            if(mAuth.getCurrentUser()!=null){
-                                userID = mAuth.getCurrentUser().getEmail();
-                            }
-                            String from = snapshot.child("from").getValue().toString();
-                            String to = snapshot.child("to").getValue().toString();
-                            String departureTime = snapshot.child("departuretime").getValue().toString();
-                            String arrivalTime = snapshot.child("arrivaltime").getValue().toString();
-                            String date = snapshot.child("date").getValue().toString();
-                            String price = snapshot.child("price").getValue().toString();
-                            String busPlate = snapshot.child("busPlate").getValue().toString();
-                            String TicketId="PNR2021" + (String)Integer.toString(autoTicketID);
-                            Ticket a = new Ticket(tripId,TicketId,userID,from,to,departureTime,arrivalTime,date,price,selectedSeats);
-                            mTicket.child(TicketId).child("tripId").setValue(tripId);
-                            mTicket.child(TicketId).child("ticketId").setValue(TicketId);
-                            mTicket.child(TicketId).child("from").setValue(from);
-                            mTicket.child(TicketId).child("to").setValue(to);
-                            mTicket.child(TicketId).child("deptime").setValue(departureTime);
-                            mTicket.child(TicketId).child("arrivetime").setValue(arrivalTime);
-                            mTicket.child(TicketId).child("date").setValue(date);
-                            mTicket.child(TicketId).child("price").setValue(price);
-                            mTicket.child(TicketId).child("userID").setValue(userID);
-                            mTicket.child(TicketId).child("isReserved").setValue(false);
-                            mTicket.child(TicketId).child("busPlate").setValue(busPlate);
-
-
-                            autoTicketID++;
-                            String Seats ="";
-                            for(int i=0 ; i<selectedSeats.size() ; i++){
-                                if(Seats.equals("")){
-                                    Seats =selectedSeats.get(i).toString();
-                                }else
-                                Seats = Seats + " --> " +  selectedSeats.get(i).toString();
-                            }
-                            mTicket.child(TicketId).child("seats").setValue(Seats);
-                            mDatabase.child("autoTicketID").setValue(autoTicketID);
-
-                            mTrips.child(tripId).child("TripSeats").child("Seat").setValue(selectSeatOne);
+                    mDatabase.child("autoTicketID").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot autoTicket) {
+                            autoTicketID = Integer.parseInt(autoTicket.getValue().toString());
                         }
-                    }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(PaymentActivity.this,"Something went wrong! DATABASE CONNECTİON FAİLED.",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PaymentActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(PaymentActivity.this,MainActivity.class);
+                            startActivity(intent);
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(PaymentActivity.this,"Something went wrong! DATABASE CONNECTİON HAS FAİLED.",Toast.LENGTH_SHORT).show();
-                        Toast.makeText(PaymentActivity.this,"Please Try Again With Better Connection.",Toast.LENGTH_SHORT).show();
-                        Toast.makeText(PaymentActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(PaymentActivity.this,MainActivity.class);
-                        startActivity(intent);
-                    }
-                });
+                        }
+                    });
+
+                    mDatabase.child("Trips").child(tripId).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if(snapshot.exists()){
+                                String userID = unRegisteredUserMail;
+                                if(mAuth.getCurrentUser()!=null){
+                                    userID = mAuth.getCurrentUser().getEmail();
+                                }
+                                String from = snapshot.child("from").getValue().toString();
+                                String to = snapshot.child("to").getValue().toString();
+                                String departureTime = snapshot.child("departuretime").getValue().toString();
+                                String arrivalTime = snapshot.child("arrivaltime").getValue().toString();
+                                String date = snapshot.child("date").getValue().toString();
+                                String price = snapshot.child("price").getValue().toString();
+                                String busPlate = snapshot.child("busPlate").getValue().toString();
+
+                                String TicketId="PNR2021" + autoTicketID;
+
+                                Ticket a = new Ticket(tripId,TicketId,userID,from,to,departureTime,arrivalTime,date,price,selectedSeats);
+                                mTicket.child(TicketId).child("tripId").setValue(tripId);
+                                mTicket.child(TicketId).child("ticketId").setValue(TicketId);
+                                mTicket.child(TicketId).child("from").setValue(from);
+                                mTicket.child(TicketId).child("to").setValue(to);
+                                mTicket.child(TicketId).child("deptime").setValue(departureTime);
+                                mTicket.child(TicketId).child("arrivetime").setValue(arrivalTime);
+                                mTicket.child(TicketId).child("date").setValue(date);
+                                mTicket.child(TicketId).child("price").setValue(String.valueOf(Integer.parseInt(price)* selectedSeats.size()));
+                                mTicket.child(TicketId).child("userID").setValue(userID);
+                                mTicket.child(TicketId).child("busPlate").setValue(busPlate);
+                                mTicket.child(TicketId).child("isReserved").setValue(false);
+
+                                autoTicketID++;
+                                String Seatsa ="";
+                                for(int i=0 ; i<selectedSeats.size() ; i++){
+                                    if(Seatsa.equals("")){
+                                        Seatsa =selectedSeats.get(i).toString();
+                                    }else
+                                        Seatsa = Seatsa + " --> " +  selectedSeats.get(i).toString();
+                                }
+                                mTicket.child(TicketId).child("seats").setValue(Seatsa);
+                                mDatabase.child("autoTicketID").setValue(autoTicketID);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(PaymentActivity.this,"Something went wrong! DATABASE CONNECTİON HAS FAİLED.",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PaymentActivity.this,"Please Try Again With Better Connection.",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PaymentActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(PaymentActivity.this,MainActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
+                    mDatabase.child("Trips").child(returntripId).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if(snapshot.exists()){
+                                String userID = unRegisteredUserMail;
+                                if(mAuth.getCurrentUser()!=null){
+                                    userID = mAuth.getCurrentUser().getEmail();
+                                }
+                                String from = snapshot.child("from").getValue().toString();
+                                String to = snapshot.child("to").getValue().toString();
+                                String departureTime = snapshot.child("departuretime").getValue().toString();
+                                String arrivalTime = snapshot.child("arrivaltime").getValue().toString();
+                                String date = snapshot.child("date").getValue().toString();
+                                String price = snapshot.child("price").getValue().toString();
+                                String busPlate = snapshot.child("busPlate").getValue().toString();
+                                String TicketId="PNR2021" + (String)Integer.toString(autoTicketID);
+                                Ticket a = new Ticket(tripId,TicketId,userID,from,to,departureTime,arrivalTime,date,price,selectedSeatsReturn);
+                                mTicket.child(TicketId).child("tripId").setValue(returntripId);
+                                mTicket.child(TicketId).child("ticketId").setValue(TicketId);
+                                mTicket.child(TicketId).child("from").setValue(from);
+                                mTicket.child(TicketId).child("to").setValue(to);
+                                mTicket.child(TicketId).child("deptime").setValue(departureTime);
+                                mTicket.child(TicketId).child("arrivetime").setValue(arrivalTime);
+                                mTicket.child(TicketId).child("date").setValue(date);
+                                mTicket.child(TicketId).child("price").setValue(String.valueOf(Integer.parseInt(price)* selectedSeatsReturn.size()));
+                                mTicket.child(TicketId).child("userID").setValue(userID);
+                                mTicket.child(TicketId).child("busPlate").setValue(busPlate);
+                                mTicket.child(TicketId).child("isReserved").setValue(false);
+                                autoTicketID++;
+                                String Seats ="";
+                                for(int i=0 ; i<selectedSeatsReturn.size() ; i++){
+                                    if(Seats.equals("")){
+                                        Seats =selectedSeatsReturn.get(i).toString();
+                                    }else
+                                        Seats = Seats + " --> " +  selectedSeatsReturn.get(i).toString();
+                                }
+                                mTicket.child(TicketId).child("seats").setValue(Seats);
+                                mDatabase.child("autoTicketID").setValue(autoTicketID);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(PaymentActivity.this,"Something went wrong! DATABASE CONNECTİON HAS FAİLED.",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PaymentActivity.this,"Please Try Again With Better Connection.",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PaymentActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(PaymentActivity.this,MainActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
+
+                }
+                else{
+                    mDatabase.child("autoTicketID").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot autoTicket) {
+                            autoTicketID = Integer.parseInt(autoTicket.getValue().toString());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(PaymentActivity.this,"Something went wrong! DATABASE CONNECTİON FAİLED.",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PaymentActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(PaymentActivity.this,MainActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
+                    mDatabase.child("Trips").child(tripId).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if(snapshot.exists()){
+
+                                String userID = unRegisteredUserMail;
+                                if(mAuth.getCurrentUser()!=null){
+                                    userID = mAuth.getCurrentUser().getEmail();
+                                }
+                                String from = snapshot.child("from").getValue().toString();
+                                String to = snapshot.child("to").getValue().toString();
+                                String departureTime = snapshot.child("departuretime").getValue().toString();
+                                String arrivalTime = snapshot.child("arrivaltime").getValue().toString();
+                                String date = snapshot.child("date").getValue().toString();
+                                String price = snapshot.child("price").getValue().toString();
+                                String busPlate = snapshot.child("busPlate").getValue().toString();
+                                String TicketId="PNR2021" + (String)Integer.toString(autoTicketID);
+                                Ticket a = new Ticket(tripId,TicketId,userID,from,to,departureTime,arrivalTime,date,price,selectedSeats);
+                                mTicket.child(TicketId).child("tripId").setValue(tripId);
+                                mTicket.child(TicketId).child("ticketId").setValue(TicketId);
+                                mTicket.child(TicketId).child("from").setValue(from);
+                                mTicket.child(TicketId).child("to").setValue(to);
+                                mTicket.child(TicketId).child("deptime").setValue(departureTime);
+                                mTicket.child(TicketId).child("arrivetime").setValue(arrivalTime);
+                                mTicket.child(TicketId).child("date").setValue(date);
+                                mTicket.child(TicketId).child("price").setValue(price);
+                                mTicket.child(TicketId).child("userID").setValue(userID);
+                                mTicket.child(TicketId).child("isReserved").setValue(false);
+                                mTicket.child(TicketId).child("busPlate").setValue(busPlate);
+
+
+                                autoTicketID++;
+                                String Seats ="";
+                                for(int i=0 ; i<selectedSeats.size() ; i++){
+                                    if(Seats.equals("")){
+                                        Seats =selectedSeats.get(i).toString();
+                                    }else
+                                        Seats = Seats + " --> " +  selectedSeats.get(i).toString();
+                                }
+                                mTicket.child(TicketId).child("seats").setValue(Seats);
+                                mDatabase.child("autoTicketID").setValue(autoTicketID);
+
+                                mTrips.child(tripId).child("TripSeats").child("Seat").setValue(selectSeatOne);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(PaymentActivity.this,"Something went wrong! DATABASE CONNECTİON HAS FAİLED.",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PaymentActivity.this,"Please Try Again With Better Connection.",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PaymentActivity.this,error.getMessage(),Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(PaymentActivity.this,MainActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                }
+                Toast.makeText(PaymentActivity.this, "The ticket(s) is paid. Have a Nice Trip", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(PaymentActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             }
-            Toast.makeText(PaymentActivity.this, "The ticket(s) is paid. Have a Nice Trip", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(PaymentActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
 
+        }
+        else{
+
+            Toast.makeText(PaymentActivity.this, "All Information are required", Toast.LENGTH_LONG).show();
         }
     }
 

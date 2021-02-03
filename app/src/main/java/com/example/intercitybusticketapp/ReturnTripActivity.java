@@ -32,7 +32,7 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trip);
+        setContentView(R.layout.activity_return_trip);
         textView189=findViewById(R.id.textView18);
 
         arr = MainActivity.getTripsReturn();
@@ -41,12 +41,12 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
         reserved = intent.getBooleanExtra("reserve",false);
         TripId = intent.getStringExtra("TripID");
 
-        layout = findViewById(R.id.layoutTrip);
+        layout = findViewById(R.id.layoutTrip2);
         LinearLayout layoutSeat = new LinearLayout(this);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutSeat.setOrientation(LinearLayout.VERTICAL);
         layoutSeat.setLayoutParams(params);
-        layoutSeat.setPadding(4 * tripGaping, 4 * tripGaping, 4 * tripGaping, 4 * tripGaping);
+        layoutSeat.setPadding(4 * tripGaping, 8 * tripGaping, 4 * tripGaping, 8 * tripGaping);
         layout.addView(layoutSeat);
         LinearLayout layout = null;
         for (int index = 0; index < arr.size(); index++) {
@@ -58,7 +58,7 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
             Drawable myDrawable = getResources().getDrawable(R.drawable.home_gradient_maths);
             view.setBackground(myDrawable);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            layoutParams.setMargins(5, 30, 5, 30);
+            layoutParams.setMargins(10, 30, 10, 30);
             view.setLayoutParams(layoutParams);
             view.setPadding(0, 20, 0, 20);
             view.setId(count);
@@ -66,57 +66,68 @@ public class ReturnTripActivity extends AppCompatActivity implements View.OnClic
             view.setRadius(15);
             view.setOnClickListener(this);
 
-            textview = new TextView(this);
-            LinearLayout.LayoutParams textParams1 = new LinearLayout.LayoutParams(300, 300);
+            textview = new TextView(ReturnTripActivity.this);
+            LinearLayout.LayoutParams textParams1 = new LinearLayout.LayoutParams(450, 200);
             textview.setLayoutParams(textParams1);
-            textview.setText("Departure Time: "  + arr.get(index).getDepartTime());
+            textview.setText("Departure Time: " + arr.get(index).getDepartTime());
+            textParams1.setMargins(20, 50, 20, 0);
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.WHITE);
-            textview.setPadding(5, 5, 5, 5);
+            textview.setPadding(0, 0, 0, 0);
             textview.setGravity(Gravity.CENTER);
             view.addView(textview);
 
-            textview = new TextView(this);
-            LinearLayout.LayoutParams textParams2 = new LinearLayout.LayoutParams(300, 550);
+            textview = new TextView(ReturnTripActivity.this);
+            LinearLayout.LayoutParams textParams2 = new LinearLayout.LayoutParams(400, 200);
             textview.setLayoutParams(textParams2);
-            textview.setText("Arrival Time: "  + arr.get(index).getArrivaltime());
+            textview.setText("Arrival Time: " + arr.get(index).getArrivaltime());
+            textParams2.setMargins(10, 150, 10, 0);
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.WHITE);
-            textview.setPadding(5, 5, 5, 5);
             textview.setGravity(Gravity.CENTER);
             view.addView(textview);
 
-            textview = new TextView(this);
-            LinearLayout.LayoutParams textParams3 = new LinearLayout.LayoutParams(1100, 300);
+            textview = new TextView(ReturnTripActivity.this);
+            LinearLayout.LayoutParams textParams3 = new LinearLayout.LayoutParams(450, 200);
             textview.setLayoutParams(textParams3);
             textview.setText("From: " + arr.get(index).getFrom());
+            textParams3.setMargins(440, 50, 440, 0);
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.WHITE);
-            textview.setPadding(5, 5, 5, 5);
             textview.setGravity(Gravity.CENTER);
             view.addView(textview);
 
-            textview = new TextView(this);
-            LinearLayout.LayoutParams textParams4 = new LinearLayout.LayoutParams(1100, 500);
+            textview = new TextView(ReturnTripActivity.this);
+            LinearLayout.LayoutParams textParams4 = new LinearLayout.LayoutParams(450, 200);
             textview.setLayoutParams(textParams4);
-            textview.setText("To: " + arr.get(index).getTo());
+            textview.setText("To:   " + arr.get(index).getTo());
+            textParams4.setMargins(450, 150, 450, 0);
             textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
             textview.setTextColor(Color.WHITE);
             textview.setPadding(5, 5, 5, 5);
             textview.setGravity(Gravity.CENTER);
             view.addView(textview);
 
-            imageView = new ImageView(this);
-            LinearLayout.LayoutParams imgParams1 = new LinearLayout.LayoutParams(550, 220);
+            imageView = new ImageView(ReturnTripActivity.this);
+            LinearLayout.LayoutParams imgParams1 = new LinearLayout.LayoutParams(150, 200);
             imageView.setLayoutParams(imgParams1);
             Drawable myDrawable2 = getResources().getDrawable(R.drawable.ic_three_dots);
-            imgParams1.setMargins(70, 90, 70, 90);
-            imageView.setPadding(0, 50, 0, 50);
+            imgParams1.setMargins(415, 90, 415, 90);
             imageView.setImageDrawable(myDrawable2);
             view.addView(imageView);
 
+            textview = new TextView(ReturnTripActivity.this);
+            LinearLayout.LayoutParams textParams7 = new LinearLayout.LayoutParams(400, 200);
+            textview.setLayoutParams(textParams7);
+            textview.setText("Date: " + arr.get(index).getDate());
+            textParams7.setMargins(5, 250, 5, 0);
+            textview.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
+            textview.setTextColor(Color.WHITE);
+            textview.setGravity(Gravity.CENTER);
+            view.addView(textview);
+
             imageView = new ImageView(this);
-            LinearLayout.LayoutParams imgParams2 = new LinearLayout.LayoutParams(1700, 250);
+            LinearLayout.LayoutParams imgParams2 = new LinearLayout.LayoutParams(1800, 250);
             imageView.setLayoutParams(imgParams2);
             Drawable myDrawable3 = getResources().getDrawable(R.drawable.ic_bus_256);
             imageView.setImageDrawable(myDrawable3);

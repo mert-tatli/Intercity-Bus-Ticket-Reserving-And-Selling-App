@@ -71,34 +71,6 @@ public class UserAccountActivity extends AppCompatActivity {
     public void showMyTickets(View view) {
         Intent intent = new Intent(UserAccountActivity.this, MyTicketsActivity.class);
         startActivity(intent);
-
-
-
-       /*Query myTickets = mTicket.orderByChild("userID").equalTo(mAuth.getCurrentUser().getEmail());
-        myTickets.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    for (DataSnapshot child : snapshot.getChildren()) {
-                        System.out.println(child.getKey());
-                    }
-                } else {
-                    Toast.makeText(UserAccountActivity.this, "Ticket(s) Cannot Found.", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(UserAccountActivity.this, "Something went wrong! DATABASE CONNECTİON HAS FAİLED.", Toast.LENGTH_SHORT).show();
-                Toast.makeText(UserAccountActivity.this, "Please Try Again With Better Connection.", Toast.LENGTH_SHORT).show();
-                Toast.makeText(UserAccountActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(UserAccountActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });*/
-
-
-
     }
 
     public void cancelReservation(View view) {

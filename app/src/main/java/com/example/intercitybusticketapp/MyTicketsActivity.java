@@ -227,7 +227,7 @@ public class MyTicketsActivity extends AppCompatActivity implements View.OnClick
                         textview.setPadding(5, 5, 5, 5);
                         textview.setGravity(Gravity.CENTER);
                         view.addView(textview);
-                        if (Tickets.get(index).isReserved()){
+                        if (Tickets.get(index).isReserved()&& mAuth.getCurrentUser()!=null){
                             view.setOnClickListener(MyTicketsActivity.this);
                         }
                         layout.addView(view);
