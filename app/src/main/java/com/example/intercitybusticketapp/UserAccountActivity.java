@@ -33,6 +33,8 @@ import java.util.ArrayList;
 public class UserAccountActivity extends AppCompatActivity {
     private ImageView back;
     private FirebaseAuth mAuth;
+    private DatabaseReference mTicket;
+    private boolean aaa = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class UserAccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_account);
         back = findViewById(R.id.backToMain);
         mAuth = FirebaseAuth.getInstance();
+        mTicket=FirebaseDatabase.getInstance().getReference("Ticket");
         if (mAuth.getCurrentUser() == null) {
             Intent intent = new Intent(UserAccountActivity.this, MainActivity.class);
             startActivity(intent);
@@ -74,8 +77,39 @@ public class UserAccountActivity extends AppCompatActivity {
     }
 
     public void cancelReservation(View view) {
-        Intent intent = new Intent(UserAccountActivity.this, CancelTicketActivity.class);
-        startActivity(intent);
+
+        mTicket.orderByChild("userID").equalTo(mAuth.getCurrentUser().getEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists()){
+                    for(DataSnapshot ticket : snapshot.getChildren()){
+                        if(ticket.child("isReserved").getValue().equals(true)){
+                           aaa=true;
+                            break;
+                        }
+                    }
+                    if(aaa){
+                        Intent intent = new Intent(UserAccountActivity.this,CancelTicketActivity.class);
+                        startActivity(intent);
+                    }else {
+                        Toast.makeText(UserAccountActivity.this, "You have not any Reserved Tickets.", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(UserAccountActivity.this,"You have not any Tickets.",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(UserAccountActivity.this, "Something went wrong! DATABASE CONNECTİON FAİLED.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserAccountActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(UserAccountActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
     }
 
 

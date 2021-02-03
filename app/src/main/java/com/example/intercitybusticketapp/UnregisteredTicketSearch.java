@@ -24,6 +24,7 @@ public class UnregisteredTicketSearch extends AppCompatActivity {
     private DatabaseReference mTicket;
     private ArrayList<Ticket> ticketss;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,9 +41,28 @@ public class UnregisteredTicketSearch extends AppCompatActivity {
         if (validateEmail(ticketMail1))
         {
             String userMail = ticketMail1.getText().toString();
-            Intent intent=new Intent(getApplicationContext(),MyTicketsActivity.class);
-            intent.putExtra("email",userMail);
-            startActivity(intent);
+            mTicket.orderByChild("userID").equalTo(userMail).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(snapshot.exists()){
+                        Intent intent=new Intent(getApplicationContext(),MyTicketsActivity.class);
+                        intent.putExtra("email",userMail);
+                        startActivity(intent);
+                    }else{
+                        Toast.makeText(UnregisteredTicketSearch.this,"No Tickets Has Been Found.",Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(UnregisteredTicketSearch.this, "Something went wrong! DATABASE CONNECTİON FAİLED.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UnregisteredTicketSearch.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(UnregisteredTicketSearch.this, MainActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+
         }
 
     }
