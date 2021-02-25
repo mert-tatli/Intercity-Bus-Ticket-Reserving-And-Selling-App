@@ -109,6 +109,16 @@ public class DeleteTripActivity extends AppCompatActivity {
                                         for(DataSnapshot child : snapshot.getChildren()){
                                             String mailAdress =child.child("userID").getValue().toString();
                                             mDatabase.child("Ticket").child(child.getKey()).setValue(null);
+
+                                            Notification notification = new NotificationCompat.Builder(DeleteTripActivity.this,"ID")
+                                                    .setContentTitle("Your Trip has been cancelled.")
+                                                    .setContentText("Your Trip with ID: " + child.child("tripId").getValue().toString() + " with bus plate: " + child.child("busPlate").getValue().toString() + "has been cancelled.")
+                                                    .setPriority( NotificationCompat.PRIORITY_MAX)
+                                                    .setCategory(NotificationCompat.CATEGORY_EVENT)
+                                                    .setSmallIcon(R.drawable.notification_bus).build();
+
+                                            managerCompat.notify(1,notification);
+
                                         }
                                     }
                                     else{

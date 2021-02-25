@@ -103,44 +103,51 @@ public class UnregisteredUserInfo extends AppCompatActivity {
         if (TextUtils.isEmpty(id1) || TextUtils.isEmpty(name1) || TextUtils.isEmpty(surname1) || TextUtils.isEmpty(phone1) || TextUtils.isEmpty(email1) || !validateEmail(email)) {
             Toast.makeText(UnregisteredUserInfo.this, "All the Information Are Required", Toast.LENGTH_SHORT).show();
         } else {
-            mDatabase.child("users").child(id1).child("id").setValue(id1).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        mDatabase.child("users").child(id1).child("name").setValue(name1);
-                        mDatabase.child("users").child(id1).child("surname").setValue(surname1);
-                        mDatabase.child("users").child(id1).child("phone").setValue(phone1);
-                        mDatabase.child("users").child(id1).child("email").setValue(email1);
-                        Intent intent = new Intent(UnregisteredUserInfo.this, PaymentActivity.class);
+            if (id1.length()==11&&phone1.length()==10) {
 
-                        if(isReturn2) {
-                            intent.putIntegerArrayListExtra("selectedSeatsReturn", selectedSeatsReturn);    //DÖNÜŞ
-                            intent.putExtra("ReturnTripId", returntripId);                      //DÖNÜŞ
-                            intent.putExtra("selectSeatTwo", selectSeatTwo);                    //DÖNÜŞ
+                mDatabase.child("users").child(id1).child("id").setValue(id1).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            mDatabase.child("users").child(id1).child("name").setValue(name1);
+                            mDatabase.child("users").child(id1).child("surname").setValue(surname1);
+                            mDatabase.child("users").child(id1).child("phone").setValue(phone1);
+                            mDatabase.child("users").child(id1).child("email").setValue(email1);
+                            Intent intent = new Intent(UnregisteredUserInfo.this, PaymentActivity.class);
 
-                            intent.putIntegerArrayListExtra("selectedSeats", selectedSeats);  // GİDİŞ
-                            intent.putExtra("TripId", tripId);                               //GİDİŞ
-                            intent.putExtra("selectSeatOne", selectSeatOne1);                  //GİDİŞ
+                            if(isReturn2) {
+                                intent.putIntegerArrayListExtra("selectedSeatsReturn", selectedSeatsReturn);    //DÖNÜŞ
+                                intent.putExtra("ReturnTripId", returntripId);                      //DÖNÜŞ
+                                intent.putExtra("selectSeatTwo", selectSeatTwo);                    //DÖNÜŞ
 
-                            intent.putExtra("isReturn", isReturn2);
-                            intent.putExtra("unregisteredUser", email1);
+                                intent.putIntegerArrayListExtra("selectedSeats", selectedSeats);  // GİDİŞ
+                                intent.putExtra("TripId", tripId);                               //GİDİŞ
+                                intent.putExtra("selectSeatOne", selectSeatOne1);                  //GİDİŞ
+
+                                intent.putExtra("isReturn", isReturn2);
+                                intent.putExtra("unregisteredUser", email1);
+                            }
+                            else{
+                                intent.putIntegerArrayListExtra("selectedSeats", selectedSeats);  // GİDİŞ
+                                intent.putExtra("TripId", tripId);                               //GİDİŞ
+                                intent.putExtra("selectSeatOne", selectSeatOne);                  //GİDİŞ
+
+                                intent.putExtra("isReturn", isReturn2);
+                                intent.putExtra("unregisteredUser", email1);
+                            }
+
+
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(UnregisteredUserInfo.this, "Something is wrong check values and try again", Toast.LENGTH_SHORT).show();
                         }
-                        else{
-                            intent.putIntegerArrayListExtra("selectedSeats", selectedSeats);  // GİDİŞ
-                            intent.putExtra("TripId", tripId);                               //GİDİŞ
-                            intent.putExtra("selectSeatOne", selectSeatOne);                  //GİDİŞ
-
-                            intent.putExtra("isReturn", isReturn2);
-                            intent.putExtra("unregisteredUser", email1);
-                        }
-
-
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(UnregisteredUserInfo.this, "Something is wrong check values and try again", Toast.LENGTH_SHORT).show();
                     }
-                }
-            });
+                });
+            }
+            else{
+                Toast.makeText(UnregisteredUserInfo.this, "Id number must be 11 Character Or Phone Number must be 10 Character", Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 

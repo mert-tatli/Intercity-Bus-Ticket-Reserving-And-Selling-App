@@ -90,19 +90,15 @@ public class RegisterActivity extends AppCompatActivity {
             String email1 = email.getText().toString();
             String password1 = password.getText().toString();
 
-            if(checkDate()){
-                if (TextUtils.isEmpty(id1) || TextUtils.isEmpty(name1) || TextUtils.isEmpty(surname1) || TextUtils.isEmpty(phone1) || TextUtils.isEmpty(birthday1) || TextUtils.isEmpty(email1) || TextUtils.isEmpty(password1)
-                        || password1.length()<6) {
-                    Toast.makeText(RegisterActivity.this, "All the Information Are Required and CHECK the password length", Toast.LENGTH_SHORT).show();
-                }
+                if (!TextUtils.isEmpty(id1) && !TextUtils.isEmpty(name1) && !TextUtils.isEmpty(surname1) && !TextUtils.isEmpty(phone1) && !TextUtils.isEmpty(birthday1) && !TextUtils.isEmpty(email1) && !TextUtils.isEmpty(password1)) {
+                    if (!(password1.length()<6))
+                    {
+                    if (validateEmail(email))
+                    {
+                        if(checkDate()){
 
-                if(!validateEmail(email)){
-                    Toast.makeText(RegisterActivity.this, "Check Your Email Type", Toast.LENGTH_SHORT).show();
-                }
-                else {
-
-                    User usr = new User(id1, name1, surname1, gender, phone1, birthday1, email1, password1);
-                    mAuth.createUserWithEmailAndPassword(email1, password1).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        User usr = new User(id1, name1, surname1, gender, phone1, birthday1, email1, password1);
+                        mAuth.createUserWithEmailAndPassword(email1, password1).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
@@ -129,12 +125,21 @@ public class RegisterActivity extends AppCompatActivity {
                     });
 
 
+                }else {
+                        Toast.makeText(RegisterActivity.this, "Check Your Birth Date.", Toast.LENGTH_SHORT).show();
                 }
+                }else {
+                        Toast.makeText(RegisterActivity.this, "Check Your Email", Toast.LENGTH_SHORT).show();
+                    }
+                    }else {
+                        Toast.makeText(RegisterActivity.this, "Check Your Password", Toast.LENGTH_SHORT).show();
+                    }
+
+
+                } else{
+                    Toast.makeText(RegisterActivity.this, "All the Information Are Required", Toast.LENGTH_SHORT).show();
             }
-            else{
-                Toast.makeText(RegisterActivity.this, "Check Your Birth Date.", Toast.LENGTH_SHORT).show();
-            }
-        } else {
+        }else {
             Toast.makeText(RegisterActivity.this, "Please Accept the Terms And Conditions", Toast.LENGTH_SHORT).show();
         }
     }
@@ -161,7 +166,7 @@ public class RegisterActivity extends AppCompatActivity {
         int day= Integer.parseInt(birth[1]);
         int year= Integer.parseInt(birth[2]);
 
-        if ( year<= now-18 && month>0 && month<13 && day>0 && day<=31){
+        if (birth[2].length()==4  &&year<= now-18 && month>0 && month<13 && day>0 && day<=31){
                 return true;
         }
         else{
